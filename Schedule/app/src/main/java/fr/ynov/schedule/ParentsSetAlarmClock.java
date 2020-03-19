@@ -36,8 +36,6 @@ public class ParentsSetAlarmClock extends AppCompatActivity implements View.OnCl
             TimePicker picker=(TimePicker)findViewById(R.id.alarmTimePicker);
             picker.setIs24HourView(true);
 
-            TextView settedAlarm = findViewById(R.id.settedAlarm);
-            settedAlarm.setText(String.format("%02d:%02d", picker.getHour(), picker.getMinute()));
             Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM);
             intent.putExtra(AlarmClock.EXTRA_HOUR,picker.getHour());
             intent.putExtra(AlarmClock.EXTRA_MINUTES,picker.getMinute());
