@@ -19,6 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity" />
+        <activity android:name=".LoginUsername" />
+        <activity android:name=".LoginPassword" />
     </application>
 
 </manifest>
