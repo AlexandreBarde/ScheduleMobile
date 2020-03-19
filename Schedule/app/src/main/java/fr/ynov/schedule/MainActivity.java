@@ -17,6 +17,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.main_activity);
         Button btn_parents = findViewById(R.id.btn_parents);
         btn_parents.setOnClickListener(this);
+
+        Button btn_childs = findViewById(R.id.btn_childs);
+        btn_childs.setOnClickListener(this);
     }
 
     @Override
@@ -26,6 +29,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
             Intent parentsView = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(parentsView);
+        }
+        else if(view.getId() == R.id.btn_childs) {
+            Intent childView = new Intent(getApplicationContext(), MainChildActivity.class);
+            startActivity(childView);
         }
     }
 }
