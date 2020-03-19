@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         if(view.getId() == R.id.btn_parents)
         {
-            Intent parentsView = new Intent(getApplicationContext(), LoginActivity.class);
+            Intent parentsView = new Intent(getApplicationContext(), ParentsSetAlarmClock.class);
             startActivity(parentsView);
         }
         else if(view.getId() == R.id.btn_childs) {
