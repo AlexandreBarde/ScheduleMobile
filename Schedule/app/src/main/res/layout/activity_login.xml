@@ -83,6 +83,7 @@
         android:id="@+id/error_login"
         android:layout_width="291dp"
         android:layout_height="64dp"
+        android:textAlignment="center"
         android:textColor="#B30000"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

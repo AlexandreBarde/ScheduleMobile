@@ -22,7 +22,6 @@ public class LoginButton extends AppCompatActivity implements View.OnClickListen
 
     private View parent;
 
-
     @Override
     public void onClick(View view)
     {
@@ -38,33 +37,42 @@ public class LoginButton extends AppCompatActivity implements View.OnClickListen
     @Override
     public void onComplete(@NonNull Task task)
     {
+        Log.i("xxxx", "Data : Complete");
         TextView username = this.parent.findViewById(R.id.username);
+        TextView password = this.parent.findViewById(R.id.password);
         QuerySnapshot querySnap = (QuerySnapshot) task.getResult();
         List<DocumentSnapshot> documents = querySnap.getDocuments();
         boolean isFound = false;
+        boolean correctPassword = false;
         for(DocumentSnapshot doc : documents)
         {
             Map<String, Object> map = doc.getData();
-            for(Map.Entry<String, Object> entry: map.entrySet())
+            Log.i("xxxx", "doc :: " + doc.get("name"));
+            if(doc.get("name").equals(username.getText().toString()))
             {
-                Log.i("xxxx", "entrée : " + entry.getValue().toString());
-                Log.i("xxxx", "egal : " + entry.getValue().toString() + " " + username.getText());
-                if(entry.getValue().toString().equals(username.getText().toString()))
+                isFound = true;
+                if(doc.get("name").equals(username.getText().toString()) && doc.get("password").equals(password.getText().toString()))
                 {
-                    Log.i("xxxx", "oui");
-                    isFound = true;
+                    correctPassword = true;
                 }
             }
         }
         TextView error = this.parent.findViewById(R.id.error_login);
-
         if(!isFound)
         {
             error.setText("Utilisateur non trouvé !");
         }
+        else if(isFound && !correctPassword)
+        {
+            error.setText("Le mot de passe n'est pas correct !");
+        }
+        else if(isFound && correctPassword)
+        {
+            error.setText("Connexion OK");
+        }
         else
         {
-            error.setText("Yes");
+            error.setText("Autre...");
         }
     }
 
