@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "860398557975-du2g8g5dqdpc05phmv9qs83c3778gbb1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fr.ynov.schedule",
+            "certificate_hash": "37b88402a5289cddce254540609664c65fad5a29"
+          }
+        },
+        {
           "client_id": "860398557975-9i7dpk63l9klve35abv62qmqs5skko21.apps.googleusercontent.com",
           "client_type": 3
         }
