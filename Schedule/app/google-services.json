@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "860398557975",
+    "firebase_url": "https://schedule-ce975.firebaseio.com",
+    "project_id": "schedule-ce975",
+    "storage_bucket": "schedule-ce975.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:860398557975:android:4fa08b1d711249a3563552",
+        "android_client_info": {
+          "package_name": "fr.ynov.schedule"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "860398557975-9i7dpk63l9klve35abv62qmqs5skko21.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2Qexp7qbz9XbHeklHMWxZfL26qhu-3uw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "860398557975-9i7dpk63l9klve35abv62qmqs5skko21.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
