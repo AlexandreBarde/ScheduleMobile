@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TimePicker;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -41,6 +42,7 @@ public class Activity_gestion_des_taches extends AppCompatActivity implements Vi
 
 
 
+
     }
 
     @Override
@@ -60,7 +62,7 @@ public class Activity_gestion_des_taches extends AppCompatActivity implements Vi
         for(DocumentSnapshot doc : documents) {
             Map<String, Object> map = doc.getData();
             int image_task;
-            switch (doc.get("Status").toString()) {
+            switch (doc.get("image_status").toString()) {
                 case "1" :
                     Log.i("xxxx", "image task : ok");
                     image_task = R.drawable.image_task_green;
@@ -76,7 +78,7 @@ public class Activity_gestion_des_taches extends AppCompatActivity implements Vi
 
 
             }
-            list_task.add(new Task(doc.get("Nom").toString(), doc.get("Description").toString(), "9H00", image_task ));
+            list_task.add(new Task(doc.get("name").toString(), doc.get("description").toString(), "9H00", image_task ));
         }
 
         recyclerView = findViewById(R.id.taches_list);
