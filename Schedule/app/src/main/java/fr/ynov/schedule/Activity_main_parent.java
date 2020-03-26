@@ -19,6 +19,7 @@ public class Activity_main_parent extends AppCompatActivity implements View.OnCl
         button_ajouter_une_tache.setOnClickListener(this);
         button_ajouter_un_reveil.setOnClickListener(this);
         Log.d("test", "build: build");
+
     }
 
     @Override
@@ -28,7 +29,8 @@ public class Activity_main_parent extends AppCompatActivity implements View.OnCl
             startActivity(gestion_des_taches_view);
         }
         if(v.getId() == R.id.button_ajouter_un_reveil) {
+            Intent ajout_reveil_view = new Intent(getApplicationContext(), ParentsSetAlarmClock.class);
+            startActivity(ajout_reveil_view);
         }
-
     }
 }
