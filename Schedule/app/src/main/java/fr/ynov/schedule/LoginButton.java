@@ -1,6 +1,5 @@
 package fr.ynov.schedule;
 
-
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -32,7 +31,7 @@ public class LoginButton extends AppCompatActivity implements View.OnClickListen
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Task<QuerySnapshot> docRef = db.collection("users").get();
         docRef.addOnCompleteListener(this);
-    };
+    }
 
     @Override
     public void onComplete(@NonNull Task task)
@@ -75,30 +74,6 @@ public class LoginButton extends AppCompatActivity implements View.OnClickListen
             error.setText("Autre...");
         }
     }
-
-
-    /**
-        ApiFuture<DocumentSnapshot> future = (ApiFuture<DocumentSnapshot>) docRef.get();
-        DocumentSnapshot document = null;
-        try
-        {
-            document = future.get();
-            if(document.exists())
-            {
-
-            }
-            else
-            {
-                error.setText("L'utilisateur n'a pas été trouvé !");
-            }
-        }
-        catch (ExecutionException | InterruptedException e)
-        {
-            e.printStackTrace();
-            error.setText("Erreur !");
-        }
-
-         **/
 
 
 }
