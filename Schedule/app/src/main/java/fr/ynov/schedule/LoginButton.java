@@ -1,5 +1,7 @@
 package fr.ynov.schedule;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -67,7 +69,8 @@ public class LoginButton extends AppCompatActivity implements View.OnClickListen
         }
         else if(isFound && correctPassword)
         {
-            error.setText("Connexion OK");
+            Intent childView = new Intent(parent.getContext(), Activity_main_parent.class);
+            parent.getContext().startActivity(childView);
         }
         else
         {
