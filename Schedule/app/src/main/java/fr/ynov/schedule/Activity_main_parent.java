@@ -28,7 +28,6 @@ public class Activity_main_parent extends AppCompatActivity implements View.OnCl
             startActivity(gestion_des_taches_view);
         }
         if(v.getId() == R.id.button_ajouter_un_reveil) {
-
         }
 
     }

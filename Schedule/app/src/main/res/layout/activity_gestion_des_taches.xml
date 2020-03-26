@@ -15,7 +15,7 @@
         android:layout_height="650dp" />
 
     <Button
-        android:id="@+id/button_gestion_des_taches"
+        android:id="@+id/button_ajouter_des_taches"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_below="@+id/taches_list"
