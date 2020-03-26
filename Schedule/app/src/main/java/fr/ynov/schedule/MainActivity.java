@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,9 +25,12 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
 
+    public static Preference prefs;
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+        MainActivity.prefs = new Preference(getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         Button btn_parents = findViewById(R.id.btn_parents);
@@ -42,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(view.getId() == R.id.btn_parents)
         {
             Intent parentsView = new Intent(getApplicationContext(), LoginActivity.class);
-            SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.prefs.getContext());
             final String login = prefs.getString("login", "");
             final String password = prefs.getString("password", "");
             Log.i("xxxx", "login:" + login + " password:" + password);
@@ -90,7 +94,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     else if(isFound && correctPassword)
                     {
                         text = "Re-bienvenue " + login;
-                        // intent de la vue parent
+                        Intent childView = new Intent(getApplicationContext(), Activity_main_parent.class);
+                        startActivity(childView);
                     }
                     else
                     {

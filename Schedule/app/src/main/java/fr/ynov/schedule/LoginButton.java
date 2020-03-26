@@ -1,6 +1,8 @@
 package fr.ynov.schedule;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -68,6 +70,11 @@ public class LoginButton extends AppCompatActivity implements View.OnClickListen
         }
         else if(isFound && correctPassword)
         {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.prefs.getContext());
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("login", username.getText().toString());
+            editor.putString("password", password.getText().toString());
+            editor.apply();
             Intent childView = new Intent(parent.getContext(), Activity_main_parent.class);
             parent.getContext().startActivity(childView);
         }
