@@ -1,7 +1,6 @@
 package fr.ynov.schedule;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;

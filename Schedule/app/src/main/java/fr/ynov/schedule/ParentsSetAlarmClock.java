@@ -1,5 +1,7 @@
 package fr.ynov.schedule;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -7,6 +9,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.AlarmClock;
 import android.util.Log;
@@ -14,8 +17,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class ParentsSetAlarmClock extends AppCompatActivity implements View.OnClickListener {
@@ -39,6 +53,7 @@ public class ParentsSetAlarmClock extends AppCompatActivity implements View.OnCl
         picker.setIs24HourView(true);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.setAlarm)
@@ -48,6 +63,35 @@ public class ParentsSetAlarmClock extends AppCompatActivity implements View.OnCl
             
             TimePicker picker=(TimePicker)findViewById(R.id.alarmTimePicker);
             picker.setIs24HourView(true);
+
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            Iterator iterator = clickedButtons.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map<String, Object> alarmes = new HashMap<>();
+
+                Map.Entry val = (Map.Entry) iterator.next();
+                if((Boolean) val.getValue()) {
+                    alarmes.put("day", val.getKey());
+                    alarmes.put("hour", picker.getHour() + ":" + picker.getMinute());
+
+                    db.collection("alarmes")
+                            .add(alarmes)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override public void onSuccess(DocumentReference documentReference) {
+                                    Toast toast = Toast.makeText(getApplicationContext(), "L'alarme a bien été ajoutée", Toast.LENGTH_LONG);
+                                    toast.show();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override public void onFailure(@NonNull Exception e) {
+                                    Toast toast = Toast.makeText(getApplicationContext(), "Erreur.", Toast.LENGTH_LONG);
+                                    toast.show();
+                                }
+                            });
+                }
+            }
+
         }
         if(view.getId() == R.id.lundi) {
             clickedButtons.put("Lundi", !(Boolean)clickedButtons.get("Lundi"));
