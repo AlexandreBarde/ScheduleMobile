@@ -35,7 +35,7 @@
                 android:layout_gravity="center_horizontal"
                 />
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/name_new_task"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
@@ -55,7 +55,7 @@
                 android:layout_gravity="center_horizontal"
                 />
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/description_new_task"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
@@ -81,26 +81,99 @@
                 android:id="@+id/timePicker1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:timePickerMode="spinner"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView2"
                 android:layout_gravity="center_horizontal"
                 />
+
             <TextView
                 android:id="@+id/Label_recurence_task"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:text="Ajoutez une descrition a la tache "
+                android:text="Ajoutez une récurence a la tache "
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editText"
                 android:layout_gravity="center_horizontal"
                 />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
 
+                >
+
+                <CheckBox
+                    android:id="@+id/checkbox_lundi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lundi" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_mardi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mardi" />
+                <CheckBox android:id="@+id/checkbox_mercredi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mercredi"
+                    />
+                <CheckBox android:id="@+id/checkbox_jeudi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Jeudi"
+                    />
+                <CheckBox android:id="@+id/checkbox_vendredi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vendredi"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <CheckBox android:id="@+id/checkbox_samedi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Samedi"
+                    />
+                <CheckBox android:id="@+id/checkbox_dimanche"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dimanche"
+
+                    />
+
+            </LinearLayout>
+            <Button
+                android:id="@+id/button_ajouter_la_tache"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_below="@+id/taches_list"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="start"
+                android:layout_marginStart="55dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="55dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/button_btn"
+                android:enabled="true"
+                android:text="Ajouter la tache "
+                android:textColor="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.466"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label_tache" />
         </LinearLayout>
 
     </ScrollView>
