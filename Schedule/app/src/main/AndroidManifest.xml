@@ -2,12 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="fr.ynov.schedule">
 
-    //You need the wake lock so the phone can be activated
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    //You need the permision to set the alarm
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
-    //And you need the permision to listen the boot
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
