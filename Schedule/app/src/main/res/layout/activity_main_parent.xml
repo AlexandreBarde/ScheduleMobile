@@ -31,7 +31,7 @@
         app:layout_constraintTop_toBottomOf="@+id/label_title" />
 
     <Button
-        android:id="@+id/button_ajouter_une_tache"
+        android:id="@+id/button_gestion_des_taches"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_gravity="start"
@@ -73,5 +73,5 @@
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_ajouter_une_tache" />
+        app:layout_constraintTop_toBottomOf="@+id/button_gestion_des_taches" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,7 +14,7 @@ public class Activity_main_parent extends AppCompatActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_parent);
-        Button button_ajouter_une_tache = findViewById(R.id.button_ajouter_une_tache);
+        Button button_ajouter_une_tache = findViewById(R.id.button_gestion_des_taches);
         Button button_ajouter_un_reveil =  findViewById(R.id.button_ajouter_un_reveil);
         button_ajouter_une_tache.setOnClickListener(this);
         button_ajouter_un_reveil.setOnClickListener(this);
@@ -23,7 +23,7 @@ public class Activity_main_parent extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.button_ajouter_une_tache) {
+        if(v.getId() == R.id.button_gestion_des_taches) {
             Intent gestion_des_taches_view = new Intent(getApplicationContext(), Activity_gestion_des_taches.class);
             startActivity(gestion_des_taches_view);
         }

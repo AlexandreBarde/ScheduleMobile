@@ -22,7 +22,15 @@ public class Activity_gestion_des_taches extends AppCompatActivity {
         setContentView(R.layout.activity_gestion_des_taches);
         ArrayList<Task> list_task = new ArrayList<Task>();
         for (int i = 0; i < 30; i ++ ) {
-            list_task.add(new Task("Test" + i));
+            int date = 9 + i;
+            int image_task = R.drawable.image_task_green;
+            if(i == 4) {
+                image_task = R.drawable.image_task_red;
+            } else if (i > 4 ) {
+                image_task = R.drawable.image_task_grey;
+            }
+
+            list_task.add(new Task("Task " + i, "description of the task" + i,Integer.toString(date) + "H00", image_task ));
         }
 
         recyclerView = findViewById(R.id.taches_list);
