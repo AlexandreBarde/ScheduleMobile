@@ -1,5 +1,6 @@
 package fr.ynov.schedule;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -8,7 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-public class Activity_main_parent extends AppCompatActivity implements View.OnClickListener {
+
+public class Activity_main_parent extends AppCompatActivity implements View.OnClickListener  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
