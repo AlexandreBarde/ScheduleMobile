@@ -20,8 +20,6 @@ public class Activity_main_parent extends AppCompatActivity implements View.OnCl
         Button button_ajouter_un_reveil =  findViewById(R.id.button_ajouter_un_reveil);
         button_ajouter_une_tache.setOnClickListener(this);
         button_ajouter_un_reveil.setOnClickListener(this);
-        Log.d("test", "build: build");
-
     }
 
     @Override
