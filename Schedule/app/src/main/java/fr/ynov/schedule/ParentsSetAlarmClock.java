@@ -68,15 +68,15 @@ public class ParentsSetAlarmClock extends AppCompatActivity implements View.OnCl
 
             Iterator iterator = clickedButtons.entrySet().iterator();
             while (iterator.hasNext()) {
-                Map<String, Object> alarmes = new HashMap<>();
+                Map<String, Object> alarms = new HashMap<>();
 
                 Map.Entry val = (Map.Entry) iterator.next();
                 if((Boolean) val.getValue()) {
-                    alarmes.put("day", val.getKey());
-                    alarmes.put("hour", picker.getHour() + ":" + picker.getMinute());
-
-                    db.collection("alarmes")
-                            .add(alarmes)
+                    alarms.put("day", val.getKey());
+                    alarms.put("hour", picker.getHour() + ":" + picker.getMinute());
+                    alarms.put("activation", "on");
+                    db.collection("alarms")
+                            .add(alarms)
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                 @Override public void onSuccess(DocumentReference documentReference) {
                                     Toast toast = Toast.makeText(getApplicationContext(), "L'alarme a bien été ajoutée", Toast.LENGTH_LONG);
@@ -91,7 +91,6 @@ public class ParentsSetAlarmClock extends AppCompatActivity implements View.OnCl
                             });
                 }
             }
-
         }
         if(view.getId() == R.id.lundi) {
             clickedButtons.put("Lundi", !(Boolean)clickedButtons.get("Lundi"));
