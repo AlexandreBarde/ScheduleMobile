@@ -38,6 +38,6 @@
         app:layout_constraintHorizontal_bias="0.92"
         app:layout_constraintStart_toEndOf="@+id/alarmClock"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/button_btn" />
+        app:srcCompat="@android:drawable/ic_delete" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

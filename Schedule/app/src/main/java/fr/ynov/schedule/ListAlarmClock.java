@@ -71,7 +71,7 @@ public class ListAlarmClock extends AppCompatActivity implements View.OnClickLis
         for(DocumentSnapshot doc : documents) {
             Switch mSwitch = new Switch(this);
             mSwitch.setChecked((Boolean) doc.get("activation"));
-            list_alarm_clock.add(new fr.ynov.schedule.AlarmClock(doc.get("hour").toString(),mSwitch, new Button(this)));
+            list_alarm_clock.add(new fr.ynov.schedule.AlarmClock(doc.get("day").toString() + ": " +  doc.get("hour").toString() ,mSwitch, new Button(this)));
         }
 
         recyclerView = findViewById(R.id.alarmClock_recyclerView);
