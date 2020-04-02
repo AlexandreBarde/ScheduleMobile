@@ -35,6 +35,7 @@
         <activity android:name=".login.LoginPassword" />
         <activity android:name=".login.LoginButton" />
         <activity android:name=".ListAlarmClock" />
+        <activity android:name=".ListAlarmClockChild" />
         <activity android:name=".Activity_main_parent" />
         <activity android:name=".Activity_gestion_des_taches" />
         <activity android:name=".Activity_add_task" />
