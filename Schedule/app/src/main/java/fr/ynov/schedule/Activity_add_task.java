@@ -1,9 +1,11 @@
 package fr.ynov.schedule;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -92,9 +94,31 @@ public class Activity_add_task extends AppCompatActivity implements OnSuccessLis
             CheckBox checkBox_dimanche= (CheckBox) findViewById(R.id.checkbox_dimanche);
             list_recurrence.add(checkChecked(checkBox_dimanche));
             Log.d("xxxx","Liste : " + list_recurrence.toString());
-            Task new_task = new Task(new_name_text, new_description_text, hour_task, 1,list_recurrence.toString());
-
-            db.collection("Task").add(new_task).addOnSuccessListener(this);
+            boolean nbDays = false;
+            for(Integer i : list_recurrence)
+            {
+                if(i == 1) nbDays = true;
+            }
+            if(!nbDays)
+            {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Vous devez choisir au moins un jour.")
+                        .setIcon(android.R.drawable.ic_delete)
+                        .setTitle("Erreur !")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+            else
+            {
+                Task new_task = new Task(new_name_text, new_description_text, hour_task, 1,list_recurrence.toString());
+                db.collection("Task").add(new_task).addOnSuccessListener(this);
+            }
         }
     }
 
