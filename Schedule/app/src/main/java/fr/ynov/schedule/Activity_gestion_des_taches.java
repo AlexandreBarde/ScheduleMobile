@@ -44,9 +44,6 @@ public class Activity_gestion_des_taches extends AppCompatActivity implements Vi
         docRef.addOnCompleteListener(this);
         Button button_add_task = findViewById(R.id.button_ajouter_des_taches);
         button_add_task.setOnClickListener(this);
-
-
-
     }
 
     @Override
