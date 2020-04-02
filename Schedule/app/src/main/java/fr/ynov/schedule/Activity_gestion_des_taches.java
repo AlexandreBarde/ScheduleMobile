@@ -78,7 +78,7 @@ public class Activity_gestion_des_taches extends AppCompatActivity implements Vi
 
 
             }
-            list_task.add(new Task(doc.get("name").toString(), doc.get("description").toString(), "9H00", image_task ));
+            list_task.add(new Task(doc.get("name").toString(), doc.get("description").toString(), doc.get("date").toString(), image_task,"[]" ));
         }
 
         recyclerView = findViewById(R.id.taches_list);
