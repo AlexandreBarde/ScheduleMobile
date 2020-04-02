@@ -9,32 +9,31 @@
 
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/taches_list"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="650dp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/button_ajouter_des_taches"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_below="@+id/taches_list"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="start"
-        android:layout_marginStart="55dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="55dp"
-        android:layout_marginBottom="15dp"
-        android:background="@drawable/button_btn"
-        android:enabled="true"
-        android:text="Ajoutez une tache "
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.466"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label_tache" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/taches_list"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            />
+        <Button
+            android:id="@+id/button_ajouter_des_taches"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:background="@drawable/button_btn"
+            android:enabled="true"
+            android:layout_gravity="center"
+            android:text="Ajoutez une tache "
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:textColor="#FFFFFF" />
+
+
+    </LinearLayout>
 
 
 </RelativeLayout>
