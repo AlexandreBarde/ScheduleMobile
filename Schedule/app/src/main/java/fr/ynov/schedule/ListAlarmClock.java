@@ -28,7 +28,7 @@ import java.util.Map;
 
 import fr.ynov.schedule.login.LoginActivity;
 
-public class ListAlarmClock extends AppCompatActivity implements View.OnClickListener{
+public class ListAlarmClock extends AppCompatActivity implements View.OnClickListener, OnCompleteListener<QuerySnapshot> {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recyclerViewAdapter;
     private RecyclerView.LayoutManager recyclerViewLManager;
@@ -41,24 +41,9 @@ public class ListAlarmClock extends AppCompatActivity implements View.OnClickLis
         ajouter_reveil.setOnClickListener(this);
         ArrayList<AlarmClock> alarmClockList = new ArrayList<>();
 
-        alarmClockList.add(new AlarmClock("9h05", new Switch(this), new Button(this)));
-        alarmClockList.add(new AlarmClock("10h47", new Switch(this), new Button(this)));
-        alarmClockList.add(new AlarmClock("15h30", new Switch(this), new Button(this)));
-        alarmClockList.add(new AlarmClock("15h30", new Switch(this), new Button(this)));
-        alarmClockList.add(new AlarmClock("15h30", new Switch(this), new Button(this)));
-        alarmClockList.add(new AlarmClock("15h30", new Switch(this), new Button(this)));
-        alarmClockList.add(new AlarmClock("15h30", new Switch(this), new Button(this)));
-        alarmClockList.add(new AlarmClock("15h30", new Switch(this), new Button(this)));
-        alarmClockList.add(new AlarmClock("15h30", new Switch(this), new Button(this)));
-        alarmClockList.add(new AlarmClock("15h30", new Switch(this), new Button(this)));
-        alarmClockList.add(new AlarmClock("15h30", new Switch(this), new Button(this)));
-        alarmClockList.add(new AlarmClock("15h30", new Switch(this), new Button(this)));
-        alarmClockList.add(new AlarmClock("15h30", new Switch(this), new Button(this)));
-        alarmClockList.add(new AlarmClock("15h30", new Switch(this), new Button(this)));
-        alarmClockList.add(new AlarmClock("15h30", new Switch(this), new Button(this)));
-        alarmClockList.add(new AlarmClock("15h30", new Switch(this), new Button(this)));
-        alarmClockList.add(new AlarmClock("15h30", new Switch(this), new Button(this)));
-        alarmClockList.add(new AlarmClock("15h30", new Switch(this), new Button(this)));
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        com.google.android.gms.tasks.Task<QuerySnapshot> docRef = db.collection("alarms").get();
+        docRef.addOnCompleteListener(this);
 
         recyclerView = findViewById(R.id.alarmClock_recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -76,5 +61,24 @@ public class ListAlarmClock extends AppCompatActivity implements View.OnClickLis
             Intent ajouter_reveil = new Intent(getApplicationContext(), ParentsSetAlarmClock.class);
             startActivity(ajouter_reveil);
         }
+    }
+
+    @Override
+    public void onComplete(@NonNull com.google.android.gms.tasks.Task<QuerySnapshot> alarms) {
+        QuerySnapshot querySnap = (QuerySnapshot) alarms.getResult();
+        List<DocumentSnapshot> documents = querySnap.getDocuments();
+        ArrayList<fr.ynov.schedule.AlarmClock> list_alarm_clock = new ArrayList<AlarmClock>();
+        for(DocumentSnapshot doc : documents) {
+            Switch mSwitch = new Switch(this);
+            mSwitch.setChecked((Boolean) doc.get("activation"));
+            list_alarm_clock.add(new fr.ynov.schedule.AlarmClock(doc.get("hour").toString(),mSwitch, new Button(this)));
+        }
+
+        recyclerView = findViewById(R.id.alarmClock_recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerViewLManager = new LinearLayoutManager(this);
+        recyclerViewAdapter = new AlarmClockAdapter(list_alarm_clock);
+        recyclerView.setLayoutManager(recyclerViewLManager);
+        recyclerView.setAdapter(recyclerViewAdapter);
     }
 }

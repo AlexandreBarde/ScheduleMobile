@@ -74,7 +74,7 @@ public class ParentsSetAlarmClock extends AppCompatActivity implements View.OnCl
                 if((Boolean) val.getValue()) {
                     alarms.put("day", val.getKey());
                     alarms.put("hour", picker.getHour() + ":" + picker.getMinute());
-                    alarms.put("activation", "on");
+                    alarms.put("activation", true);
                     db.collection("alarms")
                             .add(alarms)
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
