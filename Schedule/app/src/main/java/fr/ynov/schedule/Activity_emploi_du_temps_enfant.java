@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class Activity_emploi_du_temps_enfant extends AppCompatActivity  implements OnCompleteListener<QuerySnapshot> {
     private RecyclerView recyclerView;
-    private TaskAdapter adapter;
+    private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<fr.ynov.schedule.Task> list_task;
 
@@ -64,7 +64,7 @@ public class Activity_emploi_du_temps_enfant extends AppCompatActivity  implemen
         recyclerView = findViewById(R.id.taches_list);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
-        adapter = new TaskAdapter(list_task);
+        adapter = new TaskAdapterChild(list_task);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
