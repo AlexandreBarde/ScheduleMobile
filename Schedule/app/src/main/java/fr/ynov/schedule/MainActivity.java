@@ -22,6 +22,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.List;
 import java.util.Map;
 
+import fr.ynov.schedule.login.LoginActivity;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
 

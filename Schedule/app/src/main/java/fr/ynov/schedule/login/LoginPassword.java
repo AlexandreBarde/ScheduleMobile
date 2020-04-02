@@ -1,4 +1,4 @@
-package fr.ynov.schedule;
+package fr.ynov.schedule.login;
 
 import android.text.Editable;
 import android.text.TextWatcher;

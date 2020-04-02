@@ -24,10 +24,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".LoginUsername" />
-        <activity android:name=".LoginPassword" />
-        <activity android:name=".LoginButton" />
+        <activity android:name=".login.LoginActivity" />
+        <activity android:name=".login.LoginUsername" />
+        <activity android:name=".login.LoginPassword" />
+        <activity android:name=".login.LoginButton" />
         <activity android:name=".Activity_main_parent" />
         <activity android:name=".Activity_gestion_des_taches" />
     </application>

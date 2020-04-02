@@ -1,4 +1,4 @@
-package fr.ynov.schedule;
+package fr.ynov.schedule.login;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +18,10 @@ import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import fr.ynov.schedule.Activity_main_parent;
+import fr.ynov.schedule.MainActivity;
+import fr.ynov.schedule.R;
 
 public class LoginButton extends AppCompatActivity implements View.OnClickListener, OnCompleteListener
 {
