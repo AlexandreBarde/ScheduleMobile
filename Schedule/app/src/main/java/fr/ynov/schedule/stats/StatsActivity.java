@@ -12,9 +12,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.jjoe64.graphview.DefaultLabelFormatter;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -122,6 +128,12 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
         Log.i("xxxx", tasksWeek.toString());
         TextView txt = findViewById(R.id.stats_text);
         String text = "";
+
+        DataPoint[] points = new DataPoint[tasksWeek.size()];
+        Integer[] percents = new Integer[tasksWeek.size()];
+        String[] days = new String[tasksWeek.size()];
+
+        int posTMP = 0; // tmp -> TO REMOVE
         for(Integer i : tasksWeek.keySet())
         {
             text = text + getDayFr(i) + ":" + "\n";
@@ -140,10 +152,33 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
             {
                 text = text + tasksWeek.get(i).get(0).getName() + ": " + tasksWeek.get(i).get(0).getDescription() + "\n";
             }
-            if(nbTaskLate == 0) text = text + "0% de retard.\n";
-            else text = text + ((nbTaskLate * 100 ) / nbTasks) + "% de retard.\n";
+            int percent;
+            if (nbTaskLate == 0) percent = 0;
+            else percent = ((nbTaskLate * 100 ) / nbTasks);
+            text = text + percent + "% de retard.\n";
+            Log.i("xxxx", percent + "% de retard.");
+            //points[i] = new DataPoint(i, percent);
+            percents[posTMP] = percent;
+            days[posTMP] = getDayFr(i);
+            posTMP++;
         }
+
+        Log.i("xxxx", Arrays.toString(percents));
+
+        for(int i = 0; i < percents.length; i++)
+        {
+            points[i] = new DataPoint(i, percents[i]);
+        }
+
         txt.setText(text);
+        final GraphView graph = (GraphView) findViewById(R.id.graph);
+        graph.getViewport().setMaxY(100);
+        graph.getViewport().setYAxisBoundsManual(true);
+        LineGraphSeries <DataPoint> series = new LineGraphSeries<>(points);
+        StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
+        staticLabelsFormatter.setHorizontalLabels(days);
+        graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+        graph.addSeries(series);
     }
 
     /**
