@@ -15,6 +15,9 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Activity_emploi_du_temps_enfant"></activity>
         <activity
+            android:name=".stats.StatsActivity">
+        </activity>
+        <activity
             android:name=".ParentsSetAlarmClock"
             android:exported="true" />
         <activity android:name=".MainChildActivity" />
