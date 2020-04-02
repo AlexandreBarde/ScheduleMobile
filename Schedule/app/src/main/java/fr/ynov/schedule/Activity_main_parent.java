@@ -37,12 +37,15 @@ public class Activity_main_parent extends AppCompatActivity implements View.OnCl
             case(R.id.button_gestion_des_taches):
                 Intent gestion_des_taches_view = new Intent(getApplicationContext(), Activity_gestion_des_taches.class);
                 startActivity(gestion_des_taches_view);
+                break;
             case(R.id.button_ajouter_un_reveil):
                 Intent ajout_reveil_view = new Intent(getApplicationContext(), ParentsSetAlarmClock.class);
                 startActivity(ajout_reveil_view);
+                break;
             case(R.id.button_show_stats):
                 Intent showStats = new Intent(getApplicationContext(), StatsActivity.class);
                 startActivity(showStats);
+                break;
             default:
         }
     }

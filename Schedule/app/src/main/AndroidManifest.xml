@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Activity_emploi_du_temps_enfant"></activity>
         <activity
             android:name=".stats.StatsActivity">
         </activity>
@@ -33,6 +34,8 @@
         <activity android:name=".login.LoginUsername" />
         <activity android:name=".login.LoginPassword" />
         <activity android:name=".login.LoginButton" />
+        <activity android:name=".ListAlarmClock" />
+        <activity android:name=".ListAlarmClockChild" />
         <activity android:name=".Activity_main_parent" />
         <activity android:name=".Activity_gestion_des_taches" />
         <activity android:name=".Activity_add_task" />
