@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Activity_emploi_du_temps_enfant"></activity>
         <activity
             android:name=".ParentsSetAlarmClock"
             android:exported="true" />
