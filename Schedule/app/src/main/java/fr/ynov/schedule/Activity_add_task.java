@@ -1,11 +1,16 @@
 package fr.ynov.schedule;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -19,16 +24,36 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
-public class Activity_add_task extends AppCompatActivity implements OnSuccessListener<DocumentReference>, View.OnClickListener {
+public class Activity_add_task extends AppCompatActivity implements OnSuccessListener<DocumentReference>, View.OnClickListener
+{
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
         TimePicker picker=(TimePicker)findViewById(R.id.timePicker1);
         picker.setIs24HourView(true);
         Button addtask = findViewById(R.id.button_ajouter_la_tache);
         addtask.setOnClickListener(this);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        return true;
     }
 
     @Override
@@ -69,9 +94,31 @@ public class Activity_add_task extends AppCompatActivity implements OnSuccessLis
             CheckBox checkBox_dimanche= (CheckBox) findViewById(R.id.checkbox_dimanche);
             list_recurrence.add(checkChecked(checkBox_dimanche));
             Log.d("xxxx","Liste : " + list_recurrence.toString());
-            Task new_task = new Task(new_name_text, new_description_text, hour_task, 1,list_recurrence.toString());
-
-            db.collection("Task").add(new_task).addOnSuccessListener(this);
+            boolean nbDays = false;
+            for(Integer i : list_recurrence)
+            {
+                if(i == 1) nbDays = true;
+            }
+            if(!nbDays)
+            {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Vous devez choisir au moins un jour.")
+                        .setIcon(android.R.drawable.ic_delete)
+                        .setTitle("Erreur !")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+            else
+            {
+                Task new_task = new Task(new_name_text, new_description_text, hour_task, 1,list_recurrence.toString());
+                db.collection("Task").add(new_task).addOnSuccessListener(this);
+            }
         }
     }
 
