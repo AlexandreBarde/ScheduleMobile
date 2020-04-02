@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            android:text="Liste des taches "
+            android:text="Liste des tâches "
             android:textAlignment="center"
             android:textColor="@android:color/black"
             android:textSize="30sp"
