@@ -32,6 +32,9 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
         getTasks();
     }
 
+    /**
+     * Récupère toutes les tâches de la base de données
+     */
     public void getTasks()
     {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -48,9 +51,13 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
         long timestampFirstDayWeek = getTimestampFirstDayWeek();
         for(DocumentSnapshot doc : documents)
         {
-            if(Long.parseLong(doc.get("timestamp").toString()) > timestampFirstDayWeek)
+            if(Long.parseLong(doc.get("timestamp").toString()) > timestampFirstDayWeek) // si le timestamp du document (tâche) est plus grand que le timestamp du premier jour de la semaine
             {
-                StatsTask statsTask = new StatsTask(doc.get("name").toString(), doc.get("description").toString(), Long.parseLong(doc.get("timestamp").toString()));
+                StatsTask statsTask = new StatsTask(
+                        doc.get("name").toString(),
+                        doc.get("description").toString(),
+                        Long.parseLong(doc.get("timestamp").toString()),
+                        doc.get("state").toString());
                 tasks.add(statsTask);
                 Log.i("xxxx", statsTask.toString());
             }
@@ -60,9 +67,13 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
                 Log.i("xxxx", doc.toString());
             }
         }
-        jenesaispasencore(tasks);
+        sortTasks(tasks);
     }
 
+    /**
+     * Retourne un timestamp qui correspond au premier jour de la semaine à 00h00
+     * @return
+     */
     public Long getTimestampFirstDayWeek()
     {
         Calendar calendar = Calendar.getInstance();
@@ -81,7 +92,11 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
         return(calendar.getTimeInMillis());
     }
 
-    public void jenesaispasencore(ArrayList<StatsTask> listTasks)
+    /**
+     *
+     * @param listTasks
+     */
+    public void sortTasks(ArrayList<StatsTask> listTasks)
     {
         Calendar calendar = Calendar.getInstance();
         HashMap<Integer, ArrayList<StatsTask>> tasksWeek = new HashMap<>(); // numéro du jour de la semaine : liste de tâches
@@ -109,22 +124,33 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
         String text = "";
         for(Integer i : tasksWeek.keySet())
         {
+            text = text + getDayFr(i) + ":" + "\n";
+            int nbTasks = tasksWeek.get(i).size(); // nombre de tâches par jour
+            int nbTaskLate = 0; // nombre de tâches en retard par jour
             if(tasksWeek.get(i).size() > 1)
             {
                 ArrayList<StatsTask> tasksTmp = new ArrayList<>();
                 for(StatsTask ts : tasksWeek.get(i))
                 {
-                    text = text + getDayFr(i) + " " + ts.getName() + ": " + ts.getDescription() + "\n";
+                    if(ts.getState().equals("late")) nbTaskLate ++;
+                    text = text + ts.getName() + ": " + ts.getDescription() + "\n";
                 }
             }
             else
             {
-                text = text + getDayFr(i) + " " + tasksWeek.get(i).get(0).getName() + ": " + tasksWeek.get(i).get(0).getDescription() + "\n";
+                text = text + tasksWeek.get(i).get(0).getName() + ": " + tasksWeek.get(i).get(0).getDescription() + "\n";
             }
+            if(nbTaskLate == 0) text = text + "0% de retard.\n";
+            else text = text + ((nbTaskLate * 100 ) / nbTasks) + "% de retard.\n";
         }
         txt.setText(text);
     }
 
+    /**
+     * Retourne le jour de la semaine en fonction du numéro de jour
+     * @param day
+     * @return
+     */
     public String getDayFr(int day)
     {
         String dayFr = "";
