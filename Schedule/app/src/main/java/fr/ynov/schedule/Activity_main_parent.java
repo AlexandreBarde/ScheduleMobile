@@ -39,7 +39,7 @@ public class Activity_main_parent extends AppCompatActivity implements View.OnCl
                 startActivity(gestion_des_taches_view);
                 break;
             case(R.id.button_ajouter_un_reveil):
-                Intent ajout_reveil_view = new Intent(getApplicationContext(), ParentsSetAlarmClock.class);
+                Intent ajout_reveil_view = new Intent(getApplicationContext(), ListAlarmClock.class);
                 startActivity(ajout_reveil_view);
                 break;
             case(R.id.button_show_stats):
