@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -74,6 +75,8 @@ public class ParentsSetAlarmClock extends AppCompatActivity implements View.OnCl
                                 @Override public void onSuccess(DocumentReference documentReference) {
                                     Toast toast = Toast.makeText(getApplicationContext(), "L'alarme a bien été ajoutée", Toast.LENGTH_LONG);
                                     toast.show();
+                                    Intent redirection_reveils = new Intent(getApplicationContext(), ListAlarmClock.class);
+                                    startActivity(redirection_reveils);
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
