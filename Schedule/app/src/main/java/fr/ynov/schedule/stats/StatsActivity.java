@@ -12,9 +12,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.jjoe64.graphview.DefaultLabelFormatter;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +38,9 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
         getTasks();
     }
 
+    /**
+     * Récupère toutes les tâches de la base de données
+     */
     public void getTasks()
     {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -48,9 +57,13 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
         long timestampFirstDayWeek = getTimestampFirstDayWeek();
         for(DocumentSnapshot doc : documents)
         {
-            if(Long.parseLong(doc.get("timestamp").toString()) > timestampFirstDayWeek)
+            if(Long.parseLong(doc.get("timestamp").toString()) > timestampFirstDayWeek) // si le timestamp du document (tâche) est plus grand que le timestamp du premier jour de la semaine
             {
-                StatsTask statsTask = new StatsTask(doc.get("name").toString(), doc.get("description").toString(), Long.parseLong(doc.get("timestamp").toString()));
+                StatsTask statsTask = new StatsTask(
+                        doc.get("name").toString(),
+                        doc.get("description").toString(),
+                        Long.parseLong(doc.get("timestamp").toString()),
+                        doc.get("state").toString());
                 tasks.add(statsTask);
                 Log.i("xxxx", statsTask.toString());
             }
@@ -60,9 +73,13 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
                 Log.i("xxxx", doc.toString());
             }
         }
-        jenesaispasencore(tasks);
+        sortTasks(tasks);
     }
 
+    /**
+     * Retourne un timestamp qui correspond au premier jour de la semaine à 00h00
+     * @return
+     */
     public Long getTimestampFirstDayWeek()
     {
         Calendar calendar = Calendar.getInstance();
@@ -81,7 +98,11 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
         return(calendar.getTimeInMillis());
     }
 
-    public void jenesaispasencore(ArrayList<StatsTask> listTasks)
+    /**
+     *
+     * @param listTasks
+     */
+    public void sortTasks(ArrayList<StatsTask> listTasks)
     {
         Calendar calendar = Calendar.getInstance();
         HashMap<Integer, ArrayList<StatsTask>> tasksWeek = new HashMap<>(); // numéro du jour de la semaine : liste de tâches
@@ -107,24 +128,64 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
         Log.i("xxxx", tasksWeek.toString());
         TextView txt = findViewById(R.id.stats_text);
         String text = "";
+
+        DataPoint[] points = new DataPoint[tasksWeek.size()];
+        Integer[] percents = new Integer[tasksWeek.size()];
+        String[] days = new String[tasksWeek.size()];
+
+        int posTMP = 0; // tmp -> TO REMOVE
         for(Integer i : tasksWeek.keySet())
         {
+            text = text + getDayFr(i) + ":" + "\n";
+            int nbTasks = tasksWeek.get(i).size(); // nombre de tâches par jour
+            int nbTaskLate = 0; // nombre de tâches en retard par jour
             if(tasksWeek.get(i).size() > 1)
             {
                 ArrayList<StatsTask> tasksTmp = new ArrayList<>();
                 for(StatsTask ts : tasksWeek.get(i))
                 {
-                    text = text + getDayFr(i) + " " + ts.getName() + ": " + ts.getDescription() + "\n";
+                    if(ts.getState().equals("late")) nbTaskLate ++;
+                    text = text + ts.getName() + ": " + ts.getDescription() + "\n";
                 }
             }
             else
             {
-                text = text + getDayFr(i) + " " + tasksWeek.get(i).get(0).getName() + ": " + tasksWeek.get(i).get(0).getDescription() + "\n";
+                text = text + tasksWeek.get(i).get(0).getName() + ": " + tasksWeek.get(i).get(0).getDescription() + "\n";
             }
+            int percent;
+            if (nbTaskLate == 0) percent = 0;
+            else percent = ((nbTaskLate * 100 ) / nbTasks);
+            text = text + percent + "% de retard.\n";
+            Log.i("xxxx", percent + "% de retard.");
+            //points[i] = new DataPoint(i, percent);
+            percents[posTMP] = percent;
+            days[posTMP] = getDayFr(i);
+            posTMP++;
         }
+
+        Log.i("xxxx", Arrays.toString(percents));
+
+        for(int i = 0; i < percents.length; i++)
+        {
+            points[i] = new DataPoint(i, percents[i]);
+        }
+
         txt.setText(text);
+        final GraphView graph = (GraphView) findViewById(R.id.graph);
+        graph.getViewport().setMaxY(100);
+        graph.getViewport().setYAxisBoundsManual(true);
+        LineGraphSeries <DataPoint> series = new LineGraphSeries<>(points);
+        StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
+        staticLabelsFormatter.setHorizontalLabels(days);
+        graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+        graph.addSeries(series);
     }
 
+    /**
+     * Retourne le jour de la semaine en fonction du numéro de jour
+     * @param day
+     * @return
+     */
     public String getDayFr(int day)
     {
         String dayFr = "";
