@@ -22,7 +22,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Activity_add_task extends AppCompatActivity implements OnSuccessListener<DocumentReference>, View.OnClickListener
 {
@@ -38,6 +41,16 @@ public class Activity_add_task extends AppCompatActivity implements OnSuccessLis
         picker.setIs24HourView(true);
         Button addtask = findViewById(R.id.button_ajouter_la_tache);
         addtask.setOnClickListener(this);
+        Calendar current = Calendar.getInstance();
+        for(int i = 0; i < 7 ; i ++ ) {
+            current.set(Calendar.DAY_OF_WEEK, i);
+            long timestamp = current.getTimeInMillis();
+            Date date = new Date(timestamp);
+            Timestamp ts = new Timestamp(date.getTime());
+            Log.d("xxxx","i : " + i + "Date : " + ts + "");
+
+        }
+
     }
 
     public boolean onOptionsItemSelected(MenuItem item)
@@ -71,54 +84,9 @@ public class Activity_add_task extends AppCompatActivity implements OnSuccessLis
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.button_ajouter_la_tache) {
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            EditText edit_name = findViewById(R.id.name_new_task);
-            String  new_name_text = edit_name.getText().toString();
-            EditText edit_description = findViewById(R.id.description_new_task);
-            String  new_description_text = edit_description.getText().toString();
-            TimePicker picker=(TimePicker)findViewById(R.id.timePicker1);
-            String hour_task = String.format("%02dH%02d", picker.getHour(), picker.getMinute());
-            ArrayList<Integer> list_recurrence = new ArrayList<Integer>();
-            CheckBox checkBox_lundi = (CheckBox) findViewById(R.id.checkbox_lundi);
-            list_recurrence.add(checkChecked(checkBox_lundi));
-            CheckBox checkBox_mardi = (CheckBox) findViewById(R.id.checkbox_mardi);
-            list_recurrence.add(checkChecked(checkBox_mardi));
-            CheckBox checkBox_mercredi = (CheckBox) findViewById(R.id.checkbox_mercredi);
-            list_recurrence.add(checkChecked(checkBox_mercredi));
-            CheckBox checkBox_jeudi = (CheckBox) findViewById(R.id.checkbox_jeudi);
-            list_recurrence.add(checkChecked(checkBox_jeudi));
-            CheckBox checkBox_vendredi = (CheckBox) findViewById(R.id.checkbox_vendredi);
-            list_recurrence.add(checkChecked(checkBox_vendredi));
-            CheckBox checkBox_samedi = (CheckBox) findViewById(R.id.checkbox_samedi);
-            list_recurrence.add(checkChecked(checkBox_samedi));
-            CheckBox checkBox_dimanche= (CheckBox) findViewById(R.id.checkbox_dimanche);
-            list_recurrence.add(checkChecked(checkBox_dimanche));
-            Log.d("xxxx","Liste : " + list_recurrence.toString());
-            boolean nbDays = false;
-            for(Integer i : list_recurrence)
-            {
-                if(i == 1) nbDays = true;
-            }
-            if(!nbDays)
-            {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Vous devez choisir au moins un jour.")
-                        .setIcon(android.R.drawable.ic_delete)
-                        .setTitle("Erreur !")
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-            }
-            else
-            {
-                Task new_task = new Task(new_name_text, new_description_text, hour_task, 1,list_recurrence.toString());
-                db.collection("Task").add(new_task).addOnSuccessListener(this);
-            }
+
+            ArrayList<Integer> list_recurrence = setListRecurrence();
+            createNewTask(list_recurrence);
         }
     }
 
@@ -129,5 +97,81 @@ public class Activity_add_task extends AppCompatActivity implements OnSuccessLis
             return 0;
         }
 
+
+
     }
+    public ArrayList<Integer> setListRecurrence() {
+        ArrayList<Integer> list_recurrence = new ArrayList<Integer>();
+        CheckBox checkBox_samedi = (CheckBox) findViewById(R.id.checkbox_samedi);
+        list_recurrence.add(checkChecked(checkBox_samedi));
+        CheckBox checkBox_dimanche= (CheckBox) findViewById(R.id.checkbox_dimanche);
+        list_recurrence.add(checkChecked(checkBox_dimanche));
+        CheckBox checkBox_lundi = (CheckBox) findViewById(R.id.checkbox_lundi);
+        list_recurrence.add(checkChecked(checkBox_lundi));
+        CheckBox checkBox_mardi = (CheckBox) findViewById(R.id.checkbox_mardi);
+        list_recurrence.add(checkChecked(checkBox_mardi));
+        CheckBox checkBox_mercredi = (CheckBox) findViewById(R.id.checkbox_mercredi);
+        list_recurrence.add(checkChecked(checkBox_mercredi));
+        CheckBox checkBox_jeudi = (CheckBox) findViewById(R.id.checkbox_jeudi);
+        list_recurrence.add(checkChecked(checkBox_jeudi));
+        CheckBox checkBox_vendredi = (CheckBox) findViewById(R.id.checkbox_vendredi);
+        list_recurrence.add(checkChecked(checkBox_vendredi));
+        Log.d("xxxx","Liste : " + list_recurrence.toString());
+        return  list_recurrence;
+
+    }
+
+    public void createNewTask(ArrayList<Integer> listRecurrence) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        ArrayList<Task> list_new_task = new ArrayList<Task>();
+        EditText edit_name = findViewById(R.id.name_new_task);
+        String  new_name_text = edit_name.getText().toString();
+        EditText edit_description = findViewById(R.id.description_new_task);
+        String  new_description_text = edit_description.getText().toString();
+        TimePicker picker=(TimePicker)findViewById(R.id.timePicker1);
+       // String hour_task = String.format("%02dH%02d", picker.getHour(), picker.getMinute());
+        for(int i =0; i < listRecurrence.size(); i ++) {
+            if(listRecurrence.get(i) == 1 ) {
+                Calendar calendar_task = Calendar.getInstance();
+                calendar_task.set(Calendar.DAY_OF_WEEK, i);
+                calendar_task.set(Calendar.HOUR_OF_DAY, picker.getHour());
+                calendar_task.set(Calendar.MINUTE, picker.getMinute());
+                long timestamp = calendar_task.getTimeInMillis();
+                Log.d("xxxx","Long  : " + timestamp);
+                list_new_task.add(new Task(new_name_text, new_description_text, timestamp , 1));
+            }
+        }
+        boolean nbDays = false;
+        for(Integer i : listRecurrence)
+        {
+            if(i == 1) nbDays = true;
+        }
+        if(!nbDays)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Vous devez choisir au moins un jour.")
+                    .setIcon(android.R.drawable.ic_delete)
+                    .setTitle("Erreur !")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+        else
+        {
+            for(int i = 0; i < list_new_task.size(); i ++ ) {
+                if(i == list_new_task.size() -1 ) {
+                    db.collection("Task").add(list_new_task.get(i)).addOnSuccessListener(this);
+                } else {
+                    db.collection("Task").add(list_new_task.get(i));
+                }
+            }
+        }
+
+    }
+
 }

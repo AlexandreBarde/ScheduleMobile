@@ -33,7 +33,7 @@ public class Activity_emploi_du_temps_enfant extends AppCompatActivity  implemen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emploi_du_temps_enfant);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        com.google.android.gms.tasks.Task<QuerySnapshot> docRef = db.collection("Task").get();
+        com.google.android.gms.tasks.Task<QuerySnapshot> docRef = db.collection("Task").orderBy("date").get();
         docRef.addOnCompleteListener(this);
     }
 
@@ -59,7 +59,7 @@ public class Activity_emploi_du_temps_enfant extends AppCompatActivity  implemen
                 default :
                     image_task = R.drawable.image_task_green;
             }
-            list_task.add(new fr.ynov.schedule.Task(doc.get("name").toString(), doc.get("description").toString(), doc.get("date").toString(), image_task,"[]" ));
+            list_task.add(new fr.ynov.schedule.Task(doc.get("name").toString(), doc.get("description").toString(), Long.parseLong(doc.get("date").toString()), image_task ));
         }
         recyclerView = findViewById(R.id.taches_list);
         recyclerView.setHasFixedSize(true);

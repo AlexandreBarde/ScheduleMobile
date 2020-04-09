@@ -23,7 +23,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.model.Document;
 
 import java.lang.reflect.Array;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +42,7 @@ public class Activity_gestion_des_taches extends AppCompatActivity implements Vi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gestion_des_taches);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        com.google.android.gms.tasks.Task<QuerySnapshot> docRef = db.collection("Task").get();
+        com.google.android.gms.tasks.Task<QuerySnapshot> docRef = db.collection("Task").orderBy("date").get();
         docRef.addOnCompleteListener(this);
         Button button_add_task = findViewById(R.id.button_ajouter_des_taches);
         button_add_task.setOnClickListener(this);
@@ -81,7 +83,11 @@ public class Activity_gestion_des_taches extends AppCompatActivity implements Vi
 
 
             }
-            list_task.add(new Task(doc.get("name").toString(), doc.get("description").toString(), doc.get("date").toString(), image_task,"[]" ));
+
+            long timestamp = Long.parseLong(doc.get("date").toString());
+            Date date = new Date(timestamp);
+            Timestamp ts = new Timestamp(date.getTime());
+            list_task.add(new Task(doc.get("name").toString(), doc.get("description").toString(), timestamp, image_task));
         }
 
         recyclerView = findViewById(R.id.taches_list);
