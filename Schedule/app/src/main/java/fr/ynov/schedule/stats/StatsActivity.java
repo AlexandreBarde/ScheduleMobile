@@ -3,6 +3,7 @@ package fr.ynov.schedule.stats;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -12,7 +13,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import fr.ynov.schedule.R;
+import fr.ynov.schedule.Activity_no_data_graph;
 
 public class StatsActivity extends AppCompatActivity implements OnCompleteListener<QuerySnapshot>
 {
@@ -44,7 +45,7 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
     public void getTasks()
     {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Task<QuerySnapshot> docRef = db.collection("tasks_new").get();
+        Task<QuerySnapshot> docRef = db.collection("Task").get();
         docRef.addOnCompleteListener(this);
     }
 
@@ -73,7 +74,14 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
                 Log.i("xxxx", doc.toString());
             }
         }
-        sortTasks(tasks);
+        Log.i("xxxx","tasks : ");
+        Log.i("xxxx", tasks.toString());
+        if(tasks.size() <= 1)
+        {
+            Intent noDataView = new Intent(getApplicationContext(), Activity_no_data_graph.class);
+            startActivity(noDataView);
+        }
+        else sortTasks(tasks);
     }
 
     /**
@@ -129,6 +137,14 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
         TextView txt = findViewById(R.id.stats_text);
         String text = "";
 
+        Log.i("xxxx", "size : " + tasksWeek.size());
+
+        if(tasksWeek.size() == 0)
+        {
+            Intent noDataView = new Intent(getApplicationContext(), Activity_no_data_graph.class);
+            startActivity(noDataView);
+        }
+
         DataPoint[] points = new DataPoint[tasksWeek.size()];
         Integer[] percents = new Integer[tasksWeek.size()];
         String[] days = new String[tasksWeek.size()];
@@ -176,9 +192,17 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
         graph.getViewport().setYAxisBoundsManual(true);
         LineGraphSeries <DataPoint> series = new LineGraphSeries<>(points);
         StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
-        staticLabelsFormatter.setHorizontalLabels(days);
-        graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
-        graph.addSeries(series);
+        try
+        {
+            staticLabelsFormatter.setHorizontalLabels(days);
+            graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+            graph.addSeries(series);
+        }
+        catch(IllegalStateException e)
+        {
+            Intent noDataView = new Intent(getApplicationContext(), Activity_no_data_graph.class);
+            startActivity(noDataView);
+        }
     }
 
     /**
