@@ -138,7 +138,7 @@ public class Activity_add_task extends AppCompatActivity implements OnSuccessLis
                 calendar_task.set(Calendar.MINUTE, picker.getMinute());
                 long timestamp = calendar_task.getTimeInMillis();
                 Log.d("xxxx","Long  : " + timestamp);
-                list_new_task.add(new Task(new_name_text, new_description_text, timestamp , 1));
+                list_new_task.add(new Task(new_name_text, new_description_text, timestamp , "todo", 1));
             }
         }
         boolean nbDays = false;

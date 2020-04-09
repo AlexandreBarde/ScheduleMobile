@@ -41,9 +41,7 @@ public class Activity_gestion_des_taches extends AppCompatActivity implements Vi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gestion_des_taches);
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        com.google.android.gms.tasks.Task<QuerySnapshot> docRef = db.collection("Task").orderBy("date").get();
-        docRef.addOnCompleteListener(this);
+        getTask();
         Button button_add_task = findViewById(R.id.button_ajouter_des_taches);
         button_add_task.setOnClickListener(this);
     }
@@ -61,35 +59,8 @@ public class Activity_gestion_des_taches extends AppCompatActivity implements Vi
     public void onComplete(@NonNull final com.google.android.gms.tasks.Task<QuerySnapshot> task) {
         QuerySnapshot querySnap = (QuerySnapshot) task.getResult();
         List<DocumentSnapshot> documents = querySnap.getDocuments();
-
-        list_task = new ArrayList<Task>();
         map_task_references = new  HashMap<String, DocumentSnapshot>();
-        for(DocumentSnapshot doc : documents) {
-            map_task_references.put(doc.get("name").toString(),doc);
-            Map<String, Object> map = doc.getData();
-            int image_task;
-            switch (doc.get("image_status").toString()) {
-                case "1" :
-                    image_task = R.drawable.image_task_green;
-                    break;
-                case "3" :
-                    image_task = R.drawable.image_task_grey;
-                    break;
-                case "2" :
-                    image_task = R.drawable.image_task_red;
-                    break;
-                default :
-                    image_task = R.drawable.image_task_green;
-
-
-            }
-
-            long timestamp = Long.parseLong(doc.get("date").toString());
-            Date date = new Date(timestamp);
-            Timestamp ts = new Timestamp(date.getTime());
-            list_task.add(new Task(doc.get("name").toString(), doc.get("description").toString(), timestamp, image_task));
-        }
-
+        createTaskList(documents);
         recyclerView = findViewById(R.id.taches_list);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -111,8 +82,8 @@ public class Activity_gestion_des_taches extends AppCompatActivity implements Vi
     }
     public void removeItem(int position) {
         Task task_to_remove = list_task.get(position);
-
-        DocumentSnapshot doc =  map_task_references.get(task_to_remove.getName());
+        Log.i("xxxx", task_to_remove.getName());
+        DocumentSnapshot doc =  map_task_references.get(task_to_remove.getName() + position);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         list_task.remove(position);
         adapter.notifyItemRemoved(position);
@@ -120,8 +91,41 @@ public class Activity_gestion_des_taches extends AppCompatActivity implements Vi
             @Override
             public void onComplete(@NonNull com.google.android.gms.tasks.Task<Void> task) {
                 Log.i("xxxx", "suppr ok");
+                getTask();
             }
         });
     }
-}
 
+    public  void createTaskList(List<DocumentSnapshot> documents) {
+        list_task = new ArrayList<Task>();
+        int nb_task = 0;
+        for (DocumentSnapshot doc : documents) {
+            map_task_references.put(doc.get("name").toString() + nb_task, doc);
+            Map<String, Object> map = doc.getData();
+            int image_task;
+            switch (doc.get("state").toString()) {
+                case "done":
+                    image_task = R.drawable.image_task_green;
+                    break;
+                case "todo":
+                    image_task = R.drawable.image_task_grey;
+                    break;
+                case "late":
+                    image_task = R.drawable.image_task_red;
+                    break;
+                default:
+                    image_task = R.drawable.image_task_green;
+            }
+            long timestamp = Long.parseLong(doc.get("timestamp").toString());
+            Date date = new Date(timestamp);
+            Timestamp ts = new Timestamp(date.getTime());
+            list_task.add(new Task(doc.get("name").toString(), doc.get("description").toString(), timestamp,doc.get("state").toString(), image_task));
+            nb_task ++;
+        }
+    }
+    public void getTask() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        com.google.android.gms.tasks.Task<QuerySnapshot> docRef = db.collection("Task").orderBy("timestamp").get();
+        docRef.addOnCompleteListener(this);
+    }
+}
