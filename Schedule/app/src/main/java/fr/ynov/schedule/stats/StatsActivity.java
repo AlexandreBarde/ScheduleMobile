@@ -45,7 +45,7 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
     public void getTasks()
     {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Task<QuerySnapshot> docRef = db.collection("tasks_new").get();
+        Task<QuerySnapshot> docRef = db.collection("Task").get();
         docRef.addOnCompleteListener(this);
     }
 
@@ -192,9 +192,17 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
         graph.getViewport().setYAxisBoundsManual(true);
         LineGraphSeries <DataPoint> series = new LineGraphSeries<>(points);
         StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
-        staticLabelsFormatter.setHorizontalLabels(days);
-        graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
-        graph.addSeries(series);
+        try
+        {
+            staticLabelsFormatter.setHorizontalLabels(days);
+            graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+            graph.addSeries(series);
+        }
+        catch(IllegalStateException e)
+        {
+            Intent noDataView = new Intent(getApplicationContext(), Activity_no_data_graph.class);
+            startActivity(noDataView);
+        }
     }
 
     /**
