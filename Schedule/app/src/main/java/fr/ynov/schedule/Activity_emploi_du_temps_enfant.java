@@ -17,7 +17,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +35,7 @@ public class Activity_emploi_du_temps_enfant extends AppCompatActivity  implemen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emploi_du_temps_enfant);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        com.google.android.gms.tasks.Task<QuerySnapshot> docRef = db.collection("Task").get();
+        com.google.android.gms.tasks.Task<QuerySnapshot> docRef = db.collection("Task").orderBy("timestamp").get();
         docRef.addOnCompleteListener(this);
     }
 
@@ -46,20 +48,23 @@ public class Activity_emploi_du_temps_enfant extends AppCompatActivity  implemen
         for(DocumentSnapshot doc : documents) {
             Map<String, Object> map = doc.getData();
             int image_task;
-            switch (doc.get("image_status").toString()) {
-                case "1" :
+            switch (doc.get("state").toString()) {
+                case "done" :
                     image_task = R.drawable.image_task_green;
                     break;
-                case "3" :
+                case "todo" :
                     image_task = R.drawable.image_task_grey;
                     break;
-                case "2" :
+                case "late" :
                     image_task = R.drawable.image_task_red;
                     break;
                 default :
                     image_task = R.drawable.image_task_green;
             }
-            list_task.add(new fr.ynov.schedule.Task(doc.get("name").toString(), doc.get("description").toString(), doc.get("date").toString(), image_task,"[]" ));
+            long timestamp = Long.parseLong(doc.get("timestamp").toString());
+            Date date = new Date(timestamp);
+            Timestamp ts = new Timestamp(date.getTime());
+            list_task.add(new fr.ynov.schedule.Task(doc.get("name").toString(), doc.get("description").toString(), timestamp,doc.get("state").toString(), image_task ));
         }
         recyclerView = findViewById(R.id.taches_list);
         recyclerView.setHasFixedSize(true);

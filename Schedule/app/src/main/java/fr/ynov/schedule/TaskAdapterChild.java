@@ -30,7 +30,7 @@ public class TaskAdapterChild extends RecyclerView.Adapter<TaskAdapterChild.Task
         Task current_task = mTask_list.get(position);
         holder.name_task.setText(current_task.getName());
         holder.description_task.setText(current_task.getDescription());
-        holder.date_task.setText(current_task.getDate());
+        holder.date_task.setText(current_task.getDateFormat());
         holder.image_status_task.setImageResource(current_task.getImage_status());
     }
 

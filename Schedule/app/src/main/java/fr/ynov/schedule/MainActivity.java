@@ -1,5 +1,6 @@
 package fr.ynov.schedule;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button btn_childs = findViewById(R.id.btn_childs);
         btn_childs.setOnClickListener(this);
+        TextView aPropos = findViewById(R.id.aPropos);
+        aPropos.setOnClickListener(this);
     }
 
     @Override
@@ -112,6 +116,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else if(view.getId() == R.id.btn_childs) {
             Intent childView = new Intent(getApplicationContext(), MainChildActivity.class);
             startActivity(childView);
+        }
+        else if(view.getId() == R.id.aPropos) {
+            Intent aProposView = new Intent(getApplicationContext(), Activity_a_propos.class);
+            startActivity(aProposView);
         }
     }
 
