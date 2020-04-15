@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -22,6 +23,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -66,9 +68,18 @@ public class ParentsSetAlarmClock extends AppCompatActivity implements View.OnCl
 
                 Map.Entry val = (Map.Entry) iterator.next();
                 if((Boolean) val.getValue()) {
+                    Calendar calendar = Calendar.getInstance();
+
+                    calendar.setTimeInMillis(System.currentTimeMillis());
+                    calendar.set(Calendar.HOUR_OF_DAY, picker.getHour());
+                    calendar.set(Calendar.MINUTE, picker.getMinute());
+                    calendar.set(Calendar.SECOND, 0);
+
                     alarms.put("day", val.getKey());
                     alarms.put("hour", picker.getHour() + ":" + picker.getMinute());
                     alarms.put("activation", true);
+                    alarms.put("timestamp", calendar.getTimeInMillis());
+
                     db.collection("alarms")
                             .add(alarms)
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {

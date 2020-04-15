@@ -41,8 +41,8 @@ public class AlarmClockAdapter extends RecyclerView.Adapter<AlarmClockAdapter.Al
     @Override
     public void onBindViewHolder(@NonNull AlarmClockViewHolder holder, int position) {
         AlarmClock currentAlarmClock = alarmClockList.get(position);
-        holder.hourAlarmClock.setText(currentAlarmClock.getHourAlarmClock());
-        holder.onOffAlarmClock.setChecked(currentAlarmClock.getOnOffAlarmClock().isChecked());
+        holder.hourAlarmClock.setText(currentAlarmClock.getDay() + " " + currentAlarmClock.getHourAlarmClock());
+        holder.onOffAlarmClock.setChecked(currentAlarmClock.getActivation());
     }
 
     @Override

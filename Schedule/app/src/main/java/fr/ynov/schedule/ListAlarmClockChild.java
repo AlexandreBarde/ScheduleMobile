@@ -60,7 +60,7 @@ public class ListAlarmClockChild extends AppCompatActivity implements OnComplete
         List<DocumentSnapshot> documents = querySnap.getDocuments();
         ArrayList<fr.ynov.schedule.AlarmClock> list_alarm_clock = new ArrayList<AlarmClock>();
         for(DocumentSnapshot doc : documents) {
-            list_alarm_clock.add(new fr.ynov.schedule.AlarmClock(doc.get("day").toString() + ": " +  doc.get("hour").toString() ,new Switch(this), new Button(this)));
+            list_alarm_clock.add(new fr.ynov.schedule.AlarmClock(doc.get("hour").toString(),(Boolean) doc.get("activation") ,doc.get("day").toString(), (long) doc.get("timestamp")));
         }
 
         recyclerViewChild = findViewById(R.id.alarmClock_recyclerView);

@@ -1,5 +1,6 @@
 package fr.ynov.schedule;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,13 +27,16 @@ import fr.ynov.schedule.login.LoginActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
-
+    Intent mServiceIntent;
+    private ReveilService mReveilService;
+    public static Context context;
     public static Preference prefs;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         MainActivity.prefs = new Preference(getApplicationContext());
+        context = getApplicationContext();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         Button btn_parents = findViewById(R.id.btn_parents);
@@ -40,6 +44,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button btn_childs = findViewById(R.id.btn_childs);
         btn_childs.setOnClickListener(this);
+
+        mReveilService = new ReveilService();
+        mServiceIntent = new Intent(this, mReveilService.getClass());
+        if (!isMyServiceRunning(mReveilService.getClass())) {
+            startService(mServiceIntent);
+        }
     }
 
     @Override
@@ -115,5 +125,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                Log.i ("Service status", "Running");
+                return true;
+            }
+        }
+        Log.i ("Service status", "Not running");
+        return false;
+    }
 }

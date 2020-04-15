@@ -6,22 +6,25 @@ import android.widget.Switch;
 
 public class AlarmClock {
     private String hourAlarmClock;
-    private Switch onOffAlarmClock;
-    private Button onDelete;
+    private Boolean activation;
+    private String day;
+    private long timestamp;
 
-    public AlarmClock(String c_hourAlarmClock, Switch c_onOffAlarmClock, Button c_onDelete) {
+    public AlarmClock(String c_hourAlarmClock, Boolean c_activation, String c_day, long c_timestamp) {
         hourAlarmClock = c_hourAlarmClock;
-        onOffAlarmClock = c_onOffAlarmClock;
-        onDelete = c_onDelete;
+        activation = c_activation;
+        day = c_day;
+        timestamp = c_timestamp;
     }
 
     public String getHourAlarmClock() {
         return hourAlarmClock;
     }
-    public Switch getOnOffAlarmClock() {
-        return onOffAlarmClock;
+    public Boolean getActivation() {
+        return activation;
     }
-    public Button getOnDelete() {
-        return onDelete;
+    public String getDay() {
+        return day;
     }
+    public long getTimestamp() { return timestamp; }
 }
