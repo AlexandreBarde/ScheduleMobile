@@ -57,8 +57,10 @@ public class ReveilService extends Service implements OnCompleteListener<QuerySn
             if(!sortedAlarms.isEmpty()) {
                 sortedAlarms.remove(0);
                 Intent intent = new Intent(serviceContext, AlarmReceiver.class);
-                alarmIntent = PendingIntent.getBroadcast(serviceContext, 0, intent, 0);
-                alarmMgr.setExact(AlarmManager.RTC, sortedAlarms.get(0), alarmIntent);
+                if(!sortedAlarms.isEmpty()) {
+                    alarmIntent = PendingIntent.getBroadcast(serviceContext, 0, intent, 0);
+                    alarmMgr.setExact(AlarmManager.RTC, sortedAlarms.get(0), alarmIntent);
+                }
             }
         }
 
@@ -68,6 +70,7 @@ public class ReveilService extends Service implements OnCompleteListener<QuerySn
             serviceContext.startActivity(dialogIntent);
         }
     }
+
     @Override
     public void onCreate() {
         alarmMgr = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
@@ -136,7 +139,7 @@ public class ReveilService extends Service implements OnCompleteListener<QuerySn
                 docRef.addOnCompleteListener(ReveilService.this);
             }
         };
-        timer.schedule(timerTask, 1000, 1000000); //
+        timer.schedule(timerTask, 1000, 30000); //
     }
 
     public void stoptimertask() {

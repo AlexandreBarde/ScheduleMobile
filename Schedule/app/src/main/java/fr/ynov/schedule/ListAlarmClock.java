@@ -23,6 +23,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +44,8 @@ public class ListAlarmClock extends AppCompatActivity implements View.OnClickLis
         ArrayList<AlarmClock> alarmClockList = new ArrayList<>();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        com.google.android.gms.tasks.Task<QuerySnapshot> docRef = db.collection("alarms").get();
+        Date currentTime = Calendar.getInstance().getTime();
+        com.google.android.gms.tasks.Task<QuerySnapshot> docRef = db.collection("alarms").orderBy("timestamp").get();
         docRef.addOnCompleteListener(this);
 
         recyclerView = findViewById(R.id.alarmClock_recyclerView);
