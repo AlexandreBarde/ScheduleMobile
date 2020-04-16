@@ -68,7 +68,7 @@ public class ReveilService extends Service implements OnCompleteListener<QuerySn
         }
 
         public static void startActivityFromBackground() {
-            Intent dialogIntent = new Intent(serviceContext, stopRingingAlarm.class);
+            Intent dialogIntent = new Intent(serviceContext, MainActivity.class);
             dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             serviceContext.startActivity(dialogIntent);
         }
@@ -80,6 +80,34 @@ public class ReveilService extends Service implements OnCompleteListener<QuerySn
         serviceContext = getApplicationContext();
         joursSemaines = new String[]{" ", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"};
         super.onCreate();
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O)
+            startMyOwnForeground();
+        else
+            startForeground(1, new Notification());
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private void startMyOwnForeground()
+    {
+
+        String NOTIFICATION_CHANNEL_ID = "example.permanence";
+        String channelName = "Background Service";
+        NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
+        chan.setLightColor(Color.BLUE);
+        chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        assert manager != null;
+        manager.createNotificationChannel(chan);
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+        Notification notification = notificationBuilder.setOngoing(true)
+                .setContentTitle("App is running in background")
+                .setPriority(NotificationManager.IMPORTANCE_MIN)
+                .setCategory(Notification.CATEGORY_SERVICE)
+                .build();
+        startForeground(2, notification);
     }
 
     @Override
