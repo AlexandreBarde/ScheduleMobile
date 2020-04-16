@@ -30,8 +30,10 @@ public class TaskAdapterChild extends RecyclerView.Adapter<TaskAdapterChild.Task
         Task current_task = mTask_list.get(position);
         holder.name_task.setText(current_task.getName());
         holder.description_task.setText(current_task.getDescription());
-        holder.date_task.setText(current_task.getDate());
+        holder.date_task.setText(current_task.dateFormat());
         holder.image_status_task.setImageResource(current_task.getImage_status());
+        holder.durée_task.setText(current_task.heureFormat());
+
     }
 
     @Override
@@ -45,6 +47,7 @@ public class TaskAdapterChild extends RecyclerView.Adapter<TaskAdapterChild.Task
         public  TextView description_task;
         public  TextView date_task;
         public ImageView image_status_task;
+        public  TextView durée_task;
 
         public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -52,6 +55,8 @@ public class TaskAdapterChild extends RecyclerView.Adapter<TaskAdapterChild.Task
             description_task = itemView.findViewById(R.id.descriptionText);
             date_task = itemView.findViewById(R.id.dateText);
             image_status_task = itemView.findViewById(R.id.statusImage);
+            durée_task = itemView.findViewById(R.id.durée);
+
 
         }
     }

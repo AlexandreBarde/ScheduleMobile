@@ -15,10 +15,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+      
         <activity android:name=".stopRingingAlarm"></activity>
         <activity android:name=".Activity_emploi_du_temps_enfant" />
         <activity android:name=".stats.StatsActivity"></activity>
-        <activity
+        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".Activity_a_propos" />
+        <activity android:name=".Activity_emploi_du_temps_enfant" />
+        <activity android:name=".stats.StatsActivity" />
+        <activity android:name=".Activity_no_data_graph" />
+
+      <activity
             android:name=".ParentsSetAlarmClock"
             android:exported="true" />
         <activity android:name=".MainChildActivity" />

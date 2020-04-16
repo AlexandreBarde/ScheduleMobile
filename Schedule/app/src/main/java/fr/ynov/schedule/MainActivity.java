@@ -9,10 +9,12 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -50,6 +52,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (!isMyServiceRunning(mReveilService.getClass())) {
             startService(mServiceIntent);
         }
+
+        TextView aPropos = findViewById(R.id.aPropos);
+        aPropos.setOnClickListener(this);
+
+        TextView settings = findViewById(R.id.button_settings);
+        settings.setOnClickListener(this);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.prefs.getContext());
+        if(prefs.getBoolean("nightMode", false))
+        {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+        else
+        {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
     }
 
     @Override
@@ -122,6 +141,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else if(view.getId() == R.id.btn_childs) {
             Intent childView = new Intent(getApplicationContext(), MainChildActivity.class);
             startActivity(childView);
+        }
+        else if(view.getId() == R.id.aPropos) {
+            Intent aProposView = new Intent(getApplicationContext(), Activity_a_propos.class);
+            startActivity(aProposView);
+        }
+        else if(view.getId() == R.id.button_settings)
+        {
+            Intent settingsView = new Intent(getApplicationContext(), SettingsActivity.class);
+            startActivity(settingsView);
         }
     }
 

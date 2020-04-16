@@ -23,7 +23,6 @@
                 android:layout_marginTop="40dp"
                 android:text="Création d'une tache"
                 android:textAlignment="center"
-                android:textColor="@android:color/black"
                 android:textSize="30sp" />
             <TextView
                 android:id="@+id/label_name_tache"
@@ -90,6 +89,27 @@
                 />
 
             <TextView
+                android:id="@+id/label_durée_tache"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="Ajoutez une durée a la tache"
+                android:textAlignment="center"
+                android:layout_gravity="center_horizontal"
+                />
+
+            <TimePicker
+                android:id="@+id/timePickerDurée"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:timePickerMode="spinner"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+            <TextView
                 android:id="@+id/Label_recurence_task"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -111,46 +131,58 @@
 
                 <CheckBox
                     android:id="@+id/checkbox_lundi"
+                    style="@style/AppTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Lundi" />
 
                 <CheckBox
                     android:id="@+id/checkbox_mardi"
+                    style="@style/AppTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Mardi" />
-                <CheckBox android:id="@+id/checkbox_mercredi"
+
+                <CheckBox
+                    android:id="@+id/checkbox_mercredi"
+                    style="@style/AppTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Mercredi"
-                    />
-                <CheckBox android:id="@+id/checkbox_jeudi"
+                    android:text="Mercredi" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_jeudi"
+                    style="@style/AppTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Jeudi"
-                    />
-                <CheckBox android:id="@+id/checkbox_vendredi"
+                    android:text="Jeudi" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_vendredi"
+                    style="@style/AppTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Vendredi"
-                    />
+                    android:text="Vendredi" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
-                <CheckBox android:id="@+id/checkbox_samedi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Samedi"
-                    />
-                <CheckBox android:id="@+id/checkbox_dimanche"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Dimanche"
 
-                    />
+                <CheckBox
+                    android:id="@+id/checkbox_samedi"
+                    style="@style/AppTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Samedi" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_dimanche"
+                    style="@style/AppTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="Dimanche" />
 
             </LinearLayout>
             <Button

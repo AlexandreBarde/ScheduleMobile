@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         android:text="TextView"
 
-        android:textColor="@android:color/black"
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,16 +34,30 @@
 
     <TextView
         android:id="@+id/dateText"
-        android:layout_width="85dp"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text="TextView"
+        android:textAlignment="textEnd"
+
+        app:layout_constraintBottom_toTopOf="@+id/durée"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/descriptionText"
+        app:layout_constraintTop_toBottomOf="@+id/nameText"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/durée"
+        android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:text="TextView"
         android:textAlignment="textEnd"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.724"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/descriptionText"
         app:layout_constraintTop_toBottomOf="@+id/nameText"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
         android:id="@+id/statusImage"
