@@ -25,6 +25,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +48,8 @@ public class ListAlarmClock extends AppCompatActivity implements View.OnClickLis
         ArrayList<AlarmClock> alarmClockList = new ArrayList<>();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        com.google.android.gms.tasks.Task<QuerySnapshot> docRef = db.collection("alarms").get();
+        Date currentTime = Calendar.getInstance().getTime();
+        com.google.android.gms.tasks.Task<QuerySnapshot> docRef = db.collection("alarms").orderBy("timestamp").get();
         docRef.addOnCompleteListener(this);
 
         recyclerView = findViewById(R.id.alarmClock_recyclerView);
@@ -85,7 +88,7 @@ public class ListAlarmClock extends AppCompatActivity implements View.OnClickLis
         for(DocumentSnapshot doc : documents) {
             Switch mSwitch = new Switch(this);
             mSwitch.setChecked((Boolean) doc.get("activation"));
-            list_alarm_clock.add(new fr.ynov.schedule.AlarmClock(doc.get("day").toString() + ": " +  doc.get("hour").toString() ,mSwitch, new Button(this)));
+            list_alarm_clock.add(new fr.ynov.schedule.AlarmClock(doc.get("hour").toString(),(Boolean) doc.get("activation") ,doc.get("day").toString(), (long) doc.get("timestamp")));
         }
 
         recyclerView = findViewById(R.id.alarmClock_recyclerView);
