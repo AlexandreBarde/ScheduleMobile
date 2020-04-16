@@ -39,6 +39,10 @@ public class Activity_add_task extends AppCompatActivity implements OnSuccessLis
         setContentView(R.layout.activity_add_task);
         TimePicker picker=(TimePicker)findViewById(R.id.timePicker1);
         picker.setIs24HourView(true);
+        TimePicker picker_durée=(TimePicker)findViewById(R.id.timePickerDurée);
+        picker_durée.setIs24HourView(true);
+        picker_durée.setHour(0);
+        picker_durée.setMinute(0);
         Button addtask = findViewById(R.id.button_ajouter_la_tache);
         addtask.setOnClickListener(this);
         Calendar current = Calendar.getInstance();
@@ -130,6 +134,8 @@ public class Activity_add_task extends AppCompatActivity implements OnSuccessLis
         String  new_description_text = edit_description.getText().toString();
         TimePicker picker=(TimePicker)findViewById(R.id.timePicker1);
        // String hour_task = String.format("%02dH%02d", picker.getHour(), picker.getMinute());
+        TimePicker picker_durée=(TimePicker)findViewById(R.id.timePickerDurée);
+        long durée_minutes = picker_durée.getHour()*60 + picker_durée.getMinute();
         for(int i =0; i < listRecurrence.size(); i ++) {
             if(listRecurrence.get(i) == 1 ) {
                 Calendar calendar_task = Calendar.getInstance();
@@ -138,7 +144,7 @@ public class Activity_add_task extends AppCompatActivity implements OnSuccessLis
                 calendar_task.set(Calendar.MINUTE, picker.getMinute());
                 long timestamp = calendar_task.getTimeInMillis();
                 Log.d("xxxx","Long  : " + timestamp);
-                list_new_task.add(new Task(new_name_text, new_description_text, timestamp , "todo", 1));
+                list_new_task.add(new Task(new_name_text, new_description_text, timestamp , "todo", 1,durée_minutes));
             }
         }
         boolean nbDays = false;

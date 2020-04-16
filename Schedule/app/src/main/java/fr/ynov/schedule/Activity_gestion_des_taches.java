@@ -119,7 +119,8 @@ public class Activity_gestion_des_taches extends AppCompatActivity implements Vi
             long timestamp = Long.parseLong(doc.get("timestamp").toString());
             Date date = new Date(timestamp);
             Timestamp ts = new Timestamp(date.getTime());
-            list_task.add(new Task(doc.get("name").toString(), doc.get("description").toString(), timestamp,doc.get("state").toString(), image_task));
+            Long durré =  Long.parseLong(doc.get("durée_minutes").toString());
+            list_task.add(new Task(doc.get("name").toString(), doc.get("description").toString(), timestamp,doc.get("state").toString(), image_task, durré));
             nb_task ++;
         }
     }
