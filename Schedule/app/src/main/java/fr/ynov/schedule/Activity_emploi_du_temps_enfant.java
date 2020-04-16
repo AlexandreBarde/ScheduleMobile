@@ -64,7 +64,8 @@ public class Activity_emploi_du_temps_enfant extends AppCompatActivity  implemen
             long timestamp = Long.parseLong(doc.get("timestamp").toString());
             Date date = new Date(timestamp);
             Timestamp ts = new Timestamp(date.getTime());
-            list_task.add(new fr.ynov.schedule.Task(doc.get("name").toString(), doc.get("description").toString(), timestamp,doc.get("state").toString(), image_task ));
+            Long durré =  Long.parseLong(doc.get("durée_minutes").toString());
+            list_task.add(new fr.ynov.schedule.Task(doc.get("name").toString(), doc.get("description").toString(), timestamp,doc.get("state").toString(), image_task, durré ));
         }
         recyclerView = findViewById(R.id.taches_list);
         recyclerView.setHasFixedSize(true);

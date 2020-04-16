@@ -42,8 +42,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         Task current_task = mTask_list.get(position);
         holder.name_task.setText(current_task.getName());
         holder.description_task.setText(current_task.getDescription());
-        holder.date_task.setText(current_task.getDateFormat());
+        holder.date_task.setText(current_task.dateFormat());
         holder.image_status_task.setImageResource(current_task.getImage_status());
+        holder.durée_task.setText(current_task.heureFormat());
     }
 
     @Override
@@ -58,6 +59,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         public  TextView date_task;
         public ImageView image_status_task;
         public ImageView image_delete_task;
+        public  TextView durée_task;
 
         public TaskViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
@@ -66,6 +68,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             date_task = itemView.findViewById(R.id.dateText);
             image_status_task = itemView.findViewById(R.id.statusImage);
             image_delete_task = itemView.findViewById(R.id.delete_task);
+            durée_task = itemView.findViewById(R.id.durée);
             image_delete_task.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
