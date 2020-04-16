@@ -47,6 +47,23 @@
         app:layout_constraintTop_toBottomOf="@+id/label_tache" />
 
     <Button
+        android:id="@+id/button_tache_mois"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_gravity="start"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/button_btn"
+        android:enabled="true"
+        android:text="Calendrier des tâches"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.676" />
+
+    <Button
         android:id="@+id/button_voir_les_reveils"
         android:layout_width="300dp"
         android:layout_height="50dp"
