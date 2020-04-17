@@ -21,6 +21,8 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import static android.content.Context.POWER_SERVICE;
+
 public class AlarmReceiver extends BroadcastReceiver {
     private static final String CHANNEL_ID = "monchannel";
     private AlarmManager alarmMgr;
@@ -31,7 +33,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onReceive(Context context, Intent intent) {
-        PowerManager pm = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
+        PowerManager pm = (PowerManager)context.getSystemService(POWER_SERVICE);
         boolean isScreenOn = pm.isScreenOn();
         if(!isScreenOn)
         {
@@ -93,6 +95,5 @@ public class AlarmReceiver extends BroadcastReceiver {
             notificationManager.createNotificationChannel(notificationChannel);
         }
         notificationManager.notify(1,notification);
-        WakeLocker.release();
     }
 }
