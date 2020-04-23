@@ -11,18 +11,16 @@
 
     </style>
 
-    <style name="CalenderViewCustom" parent="Theme.AppCompat">
-        <item name="colorAccent">#FF0000</item>
-        <item name="colorPrimary">#00BCD4</item>
+    <style name="CalenderViewCustom">
+        <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
     <style name="CalenderViewDateCustomText" parent="android:TextAppearance.DeviceDefault.Small">
-        <item name="android:textColor">#FF5722</item>
-        <item name="android:weekNumberColor">#FF0000</item>
+        <item name="android:textColor">#808080</item>
     </style>
 
     <style name="CalenderViewWeekCustomText" parent="android:TextAppearance.DeviceDefault.Small">
-        <item name="android:textColor">#E91E63</item>
+        <item name="android:textColor">#808080</item>
     </style>
 
 </resources>

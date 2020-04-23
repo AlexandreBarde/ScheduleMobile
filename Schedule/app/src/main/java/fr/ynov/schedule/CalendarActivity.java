@@ -6,6 +6,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -13,6 +15,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,6 +28,10 @@ import fr.ynov.schedule.stats.StatsTask;
 public class CalendarActivity extends AppCompatActivity implements CalendarView.OnDateChangeListener, OnCompleteListener<QuerySnapshot> {
 
     public static Calendar calendar;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<fr.ynov.schedule.Task> list_task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -74,8 +81,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarView.
     {
         QuerySnapshot querySnap = (QuerySnapshot) task.getResult();
         List<DocumentSnapshot> documents = querySnap.getDocuments();
-        ArrayList<StatsTask> tasks = new ArrayList<>();
-
+        list_task = new ArrayList<fr.ynov.schedule.Task>();
         long minTimestamp = getMinTimestamp(CalendarActivity.calendar);
         long maxTimestamp = getMaxTimestamp(CalendarActivity.calendar);
 
@@ -83,23 +89,20 @@ public class CalendarActivity extends AppCompatActivity implements CalendarView.
         {
             if(Long.parseLong(doc.get("timestamp").toString()) >= minTimestamp && Long.parseLong(doc.get("timestamp").toString()) <= maxTimestamp)
             {
-                StatsTask statsTask = new StatsTask(
-                        doc.get("name").toString(),
-                        doc.get("description").toString(),
-                        Long.parseLong(doc.get("timestamp").toString()),
-                        doc.get("state").toString());
-                tasks.add(statsTask);
+                long timestamp = Long.parseLong(doc.get("timestamp").toString());
+                Date date = new Date(timestamp);
+                Timestamp ts = new Timestamp(date.getTime());
+                Long durré =  Long.parseLong(doc.get("durée_minutes").toString());
+                list_task.add(new fr.ynov.schedule.Task(doc.get("name").toString(), doc.get("description").toString(), timestamp,doc.get("state").toString(), 1, durré ));
             }
         }
-        TextView textView = findViewById(R.id.calendar_textview2);
-        String tasksString = "";
-        int taskIterator = 0;
-        for(StatsTask st : tasks)
-        {
-            tasksString = tasksString + "Tâche n°" + taskIterator + ": " + st.getName() + " " + st.getDescription() + "\n";
-            taskIterator++;
-        }
-        textView.setText(tasksString);
+        recyclerView = findViewById(R.id.recycler_tasks_calendar);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        adapter = new TaskAdapterCalendar(list_task);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+
     }
 
     public Calendar getCalendarDay(int day, int month, int year)
