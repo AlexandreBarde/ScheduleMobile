@@ -13,7 +13,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="alarmClock"
-
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,25 +20,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/jourClock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="alarmClock"
+        android:textAlignment="viewStart"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alarmClock"
+        app:layout_constraintVertical_bias="0.01" />
+
     <Switch
         android:id="@+id/onOff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="56dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintHorizontal_bias="0.995"
+        app:layout_constraintStart_toEndOf="@+id/alarmClock"
+        app:layout_constraintTop_toBottomOf="@+id/delete_alarm" />
 
     <ImageView
-        android:id="@+id/delete_task"
+        android:id="@+id/delete_alarm"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginTop="4dp"
         android:src="@drawable/delete_task"
         app:layout_constraintBottom_toTopOf="@+id/deleteAlarm"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/onOff"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.285"
         tools:ignore="UnknownId" />
