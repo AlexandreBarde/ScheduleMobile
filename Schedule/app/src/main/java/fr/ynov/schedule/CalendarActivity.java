@@ -22,13 +22,10 @@ public class CalendarActivity extends AppCompatActivity implements CalendarView.
         if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
-
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = new Date();
-
         TextView textView = findViewById(R.id.calendar_textview);
         textView.setText(dateFormat.format(date));
-
         CalendarView calendarButton = findViewById(R.id.calendar);
         calendarButton.setOnDateChangeListener(this);
     }
@@ -49,13 +46,10 @@ public class CalendarActivity extends AppCompatActivity implements CalendarView.
     {
         String newMonth = "";
         String newDay = "";
-
         if(month < 10) newMonth = "0" + month;
         else newMonth = String.valueOf(month);
-
         if(dayOfMonth < 10) newDay = "0" + dayOfMonth;
         else newDay = String.valueOf(dayOfMonth);
-
         String date = newDay + "/" + newMonth + "/" + year;
         TextView textView = findViewById(R.id.calendar_textview);
         textView.setText(date);
