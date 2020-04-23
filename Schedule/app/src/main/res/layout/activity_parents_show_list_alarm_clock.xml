@@ -7,12 +7,12 @@
     tools:context=".Activity_gestion_des_taches">
 
 
-
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/alarmClock_recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="650dp" />
+        android:layout_height="match_parent"
+        android:layout_above="@+id/button_ajouter_un_reveil"
+        android:layout_marginBottom="6dp" />
 
     <Button
         android:id="@+id/button_ajouter_un_reveil"
@@ -25,8 +25,8 @@
         android:layout_gravity="start"
         android:layout_marginStart="55dp"
         android:layout_marginTop="15dp"
-        android:layout_marginEnd="55dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="54dp"
+        android:layout_marginBottom="7dp"
         android:background="@drawable/button_btn"
         android:enabled="true"
         android:text="Ajoutez un réveil "

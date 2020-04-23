@@ -25,19 +25,23 @@
         android:id="@+id/onOff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="56dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/deleteAlarm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/onOff"
-        app:layout_constraintHorizontal_bias="0.92"
-        app:layout_constraintStart_toEndOf="@+id/alarmClock"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_delete" />
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/delete_task"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/delete_task"
+        app:layout_constraintBottom_toTopOf="@+id/deleteAlarm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/onOff"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.285"
+        tools:ignore="UnknownId" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
