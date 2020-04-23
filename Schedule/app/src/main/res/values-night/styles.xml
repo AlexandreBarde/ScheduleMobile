@@ -1,4 +1,5 @@
 <resources>
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">#303030</item>
         <item name="colorPrimaryDark">#303030</item>
@@ -11,4 +12,19 @@
         <item name="android:timePickerStyle">@color/colorPrimaryDark</item>
         <item name="android:button">@color/design_default_color_primary_dark</item>
     </style>
+
+    <style name="CalenderViewCustom" parent="Theme.AppCompat">
+        <item name="colorAccent">#FF0000</item>
+        <item name="colorPrimary">#E4E4E4</item>
+    </style>
+
+    <style name="CalenderViewDateCustomText" parent="android:TextAppearance.DeviceDefault.Small">
+        <item name="android:textColor">#E4E4E4</item>
+        <item name="android:weekNumberColor">#FF0000</item>
+    </style>
+
+    <style name="CalenderViewWeekCustomText" parent="android:TextAppearance.DeviceDefault.Small">
+        <item name="android:textColor">#E4E4E4</item>
+    </style>
+
 </resources>
