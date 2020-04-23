@@ -185,7 +185,7 @@ public class ReveilService extends Service {
                         if (currentTime.getHours() < hour || (currentTime.getHours() == hour && currentTime.getMinutes() < minutes)) {
                             sortedAlarms.add(alarm_clock.getTimestamp());
                             Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
-                            alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, );
+                            alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
                         }
                     }
                 }
