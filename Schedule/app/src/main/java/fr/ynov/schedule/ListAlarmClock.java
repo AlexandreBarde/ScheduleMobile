@@ -27,39 +27,48 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.prefs.AbstractPreferences;
 
 import fr.ynov.schedule.login.LoginActivity;
 
 public class ListAlarmClock extends AppCompatActivity implements View.OnClickListener, OnCompleteListener<QuerySnapshot> {
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter recyclerViewAdapter;
+    private AlarmClockAdapter adapter;
     private RecyclerView.LayoutManager recyclerViewLManager;
+    private ArrayList<fr.ynov.schedule.AlarmClock> list_alarm_clock;
+    private HashMap<String,DocumentSnapshot> map_task_references;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parents_show_list_alarm_clock);
-
         Button ajouter_reveil = this.findViewById(R.id.button_ajouter_un_reveil);
         ajouter_reveil.setOnClickListener(this);
         ArrayList<AlarmClock> alarmClockList = new ArrayList<>();
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         Date currentTime = Calendar.getInstance().getTime();
-        com.google.android.gms.tasks.Task<QuerySnapshot> docRef = db.collection("alarms").orderBy("timestamp").get();
-        docRef.addOnCompleteListener(this);
-
-        recyclerView = findViewById(R.id.alarmClock_recyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerViewLManager = new LinearLayoutManager(this);
-        recyclerViewAdapter = new AlarmClockAdapter(alarmClockList);
-
-        recyclerView.setLayoutManager(recyclerViewLManager);
-        recyclerView.setAdapter(recyclerViewAdapter);
+        getAlarms();
     }
+
+    public void removeItem(int position) {
+        AlarmClock alarm_to_remove = list_alarm_clock.get(position);
+        DocumentSnapshot doc =  map_task_references.get(alarm_to_remove.getDay() + alarm_to_remove.getHourAlarmClock() + position);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        list_alarm_clock.remove(position);
+        adapter.notifyItemRemoved(position);
+        db.collection("alarms").document(doc.getId()).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Log.d("xxxx", "onComplete: suppr ok");
+                getAlarms();
+            }
+        });
+    }
+
 
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -84,18 +93,40 @@ public class ListAlarmClock extends AppCompatActivity implements View.OnClickLis
     public void onComplete(@NonNull com.google.android.gms.tasks.Task<QuerySnapshot> alarms) {
         QuerySnapshot querySnap = (QuerySnapshot) alarms.getResult();
         List<DocumentSnapshot> documents = querySnap.getDocuments();
-        ArrayList<fr.ynov.schedule.AlarmClock> list_alarm_clock = new ArrayList<AlarmClock>();
+        list_alarm_clock = new ArrayList<AlarmClock>();
+        map_task_references = new  HashMap<String, DocumentSnapshot>();
+        int nb_alarm = 0;
         for(DocumentSnapshot doc : documents) {
             Switch mSwitch = new Switch(this);
             mSwitch.setChecked((Boolean) doc.get("activation"));
+            map_task_references.put(doc.get("day").toString() + doc.get("hour").toString() + nb_alarm, doc);
             list_alarm_clock.add(new fr.ynov.schedule.AlarmClock(doc.get("hour").toString(),(Boolean) doc.get("activation") ,doc.get("day").toString(), (long) doc.get("timestamp")));
+            nb_alarm ++;
         }
 
         recyclerView = findViewById(R.id.alarmClock_recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerViewLManager = new LinearLayoutManager(this);
-        recyclerViewAdapter = new AlarmClockAdapter(list_alarm_clock);
+        adapter = new AlarmClockAdapter(list_alarm_clock);
         recyclerView.setLayoutManager(recyclerViewLManager);
-        recyclerView.setAdapter(recyclerViewAdapter);
+        recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new AlarmClockAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+
+            }
+
+            @Override
+            public void onDeleteClick(int position) {
+                Log.d("xxxx", "onDeleteClick: " + position);
+                removeItem(position);
+            }
+        });
+    }
+
+    public void getAlarms() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        com.google.android.gms.tasks.Task<QuerySnapshot> docRef = db.collection("alarms").orderBy("timestamp").get();
+        docRef.addOnCompleteListener(this);
     }
 }
