@@ -38,7 +38,7 @@ public class ListAlarmClockChild extends AppCompatActivity implements OnComplete
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_parents_show_list_alarm_clock);
+        setContentView(R.layout.child_listing_alarm_clock);
 
         ArrayList<AlarmClock> alarmClockList = new ArrayList<>();
 
@@ -47,7 +47,7 @@ public class ListAlarmClockChild extends AppCompatActivity implements OnComplete
         com.google.android.gms.tasks.Task<QuerySnapshot> docRef = db.collection("alarms").orderBy("timestamp").get();
         docRef.addOnCompleteListener(this);
 
-        recyclerViewChild = findViewById(R.id.alarmClock_recyclerView);
+        recyclerViewChild = findViewById(R.id.alarmClock_recyclerView_child);
         recyclerViewChild.setHasFixedSize(true);
         recyclerViewChildLManager = new LinearLayoutManager(this);
         recyclerViewChildAdapter = new AlarmClockAdapter(alarmClockList);
@@ -65,7 +65,7 @@ public class ListAlarmClockChild extends AppCompatActivity implements OnComplete
             list_alarm_clock.add(new fr.ynov.schedule.AlarmClock(doc.get("hour").toString(),(Boolean) doc.get("activation") ,doc.get("day").toString(), (long) doc.get("timestamp")));
         }
 
-        recyclerViewChild = findViewById(R.id.alarmClock_recyclerView);
+        recyclerViewChild = findViewById(R.id.alarmClock_recyclerView_child);
         recyclerViewChild.setHasFixedSize(true);
         recyclerViewChildLManager = new LinearLayoutManager(this);
         recyclerViewChildAdapter = new ListAlarmClockChildAdapter(list_alarm_clock);
