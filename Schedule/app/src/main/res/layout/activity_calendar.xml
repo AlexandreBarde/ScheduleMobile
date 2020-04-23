@@ -33,28 +33,26 @@
 
     <TextView
         android:id="@+id/calendar_textview2"
-        android:layout_width="264dp"
-        android:layout_height="62dp"
+        android:layout_width="267dp"
+        android:layout_height="106dp"
         android:text="Nombre de tâches ..."
         android:textAlignment="center"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendar"
-        app:layout_constraintVertical_bias="0.407" />
+        app:layout_constraintVertical_bias="0.511" />
 
-    <Button
-        android:id="@+id/button_calendar_show"
-        android:layout_width="250dp"
-        android:layout_height="57dp"
-        android:background="@drawable/button_btn"
-        android:text="Voir les tâches"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_tasks_calendar"
+        android:layout_width="262dp"
+        android:layout_height="112dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.469"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.961" />
+        app:layout_constraintTop_toTopOf="@+id/calendar"
+        app:layout_constraintVertical_bias="0.974" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
