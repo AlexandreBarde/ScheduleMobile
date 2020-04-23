@@ -32,7 +32,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -90,7 +93,6 @@ public class ReveilService extends Service implements OnCompleteListener<QuerySn
     @RequiresApi(Build.VERSION_CODES.O)
     private void startMyOwnForeground()
     {
-
         String NOTIFICATION_CHANNEL_ID = "example.permanence";
         String channelName = "Background Service";
         NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
@@ -107,7 +109,20 @@ public class ReveilService extends Service implements OnCompleteListener<QuerySn
                 .setPriority(NotificationManager.IMPORTANCE_MIN)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .build();
-        startForeground(2, notification);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("alarms").whereEqualTo("activation", true).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w("ListenerError", "Listen Failed");
+                    return;
+                }
+
+                for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                    Log.i("Service status", doc.toString());
+                }
+            }
+        });
     }
 
     @Override
@@ -161,6 +176,7 @@ public class ReveilService extends Service implements OnCompleteListener<QuerySn
 
     @Override
     public void onComplete(@NonNull com.google.android.gms.tasks.Task<QuerySnapshot> alarms) {
+
         sortedAlarms = new ArrayList<Long>();
         ComponentName receiver = new ComponentName(getApplicationContext(), AlarmReceiver.class);
         PackageManager pm = getApplicationContext().getPackageManager();
