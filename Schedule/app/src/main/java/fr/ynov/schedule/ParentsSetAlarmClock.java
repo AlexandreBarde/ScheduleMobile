@@ -2,6 +2,7 @@ package fr.ynov.schedule;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -13,6 +14,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TimePicker;
@@ -33,6 +35,8 @@ public class ParentsSetAlarmClock extends AppCompatActivity implements View.OnCl
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parents_set_alarm_clock);
 
@@ -48,6 +52,17 @@ public class ParentsSetAlarmClock extends AppCompatActivity implements View.OnCl
         TimePicker picker=(TimePicker)findViewById(R.id.alarmTimePicker);
         picker.setIs24HourView(true);
     }
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override

@@ -1,12 +1,14 @@
 package fr.ynov.schedule;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -32,13 +34,24 @@ public class Activity_emploi_du_temps_enfant extends AppCompatActivity  implemen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emploi_du_temps_enfant);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         com.google.android.gms.tasks.Task<QuerySnapshot> docRef = db.collection("Task").orderBy("timestamp").get();
         docRef.addOnCompleteListener(this);
     }
-
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     public void onComplete(@NonNull Task<QuerySnapshot> task) {
         QuerySnapshot querySnap = (QuerySnapshot) task.getResult();
