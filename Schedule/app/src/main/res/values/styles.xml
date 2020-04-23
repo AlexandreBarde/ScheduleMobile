@@ -1,6 +1,4 @@
 <resources>
-
-
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
@@ -8,7 +6,5 @@
         <item name="android:background">#fcfcfc</item>
         <item name="cardBackgroundColor">#ffffff</item>
         <item name="android:textColor">#808080</item>
-
     </style>
-
 </resources>
