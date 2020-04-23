@@ -23,8 +23,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import fr.ynov.schedule.stats.StatsTask;
-
 public class CalendarActivity extends AppCompatActivity implements CalendarView.OnDateChangeListener, OnCompleteListener<QuerySnapshot> {
 
     public static Calendar calendar;
@@ -49,6 +47,24 @@ public class CalendarActivity extends AppCompatActivity implements CalendarView.
 
         CalendarView calendarButton = findViewById(R.id.calendar);
         calendarButton.setOnDateChangeListener(this);
+
+        String[] dateSplitted = dateFormat.format(date).split("/");
+
+        int day =  Integer.parseInt(dateSplitted[0]);
+        int month =  Integer.parseInt(dateSplitted[1]);
+
+        String newMonth = "";
+        String newDay = "";
+
+        if(month < 10) newMonth = "0" + month;
+        else newMonth = String.valueOf(month);
+
+        if(day < 10) newDay = "0" + day;
+        else newDay = String.valueOf(day);
+
+        int year = Integer.parseInt(dateSplitted[2]);
+
+        getTasks(Integer.parseInt(newDay), Integer.parseInt(newMonth) - 1, year);
     }
 
     @Override
@@ -67,13 +83,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarView.
         TextView textView = findViewById(R.id.calendar_textview);
         textView.setText(date);
 
-        CalendarActivity.calendar = getCalendarDay(Integer.parseInt(newDay), Integer.parseInt(newMonth), year);
-
-        // Récupération des tâches en fonction du jour sur lequel on a cliqué
-
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Task<QuerySnapshot> docRef = db.collection("Task").get();
-        docRef.addOnCompleteListener(this);
+        getTasks(Integer.parseInt(newDay), Integer.parseInt(newMonth), year);
     }
 
     @Override
@@ -84,7 +94,6 @@ public class CalendarActivity extends AppCompatActivity implements CalendarView.
         list_task = new ArrayList<fr.ynov.schedule.Task>();
         long minTimestamp = getMinTimestamp(CalendarActivity.calendar);
         long maxTimestamp = getMaxTimestamp(CalendarActivity.calendar);
-
         for(DocumentSnapshot doc : documents)
         {
             if(Long.parseLong(doc.get("timestamp").toString()) >= minTimestamp && Long.parseLong(doc.get("timestamp").toString()) <= maxTimestamp)
@@ -92,8 +101,8 @@ public class CalendarActivity extends AppCompatActivity implements CalendarView.
                 long timestamp = Long.parseLong(doc.get("timestamp").toString());
                 Date date = new Date(timestamp);
                 Timestamp ts = new Timestamp(date.getTime());
-                Long durré =  Long.parseLong(doc.get("durée_minutes").toString());
-                list_task.add(new fr.ynov.schedule.Task(doc.get("name").toString(), doc.get("description").toString(), timestamp,doc.get("state").toString(), 1, durré ));
+                Long duration =  Long.parseLong(doc.get("durée_minutes").toString());
+                list_task.add(new fr.ynov.schedule.Task(doc.get("name").toString(), doc.get("description").toString(), timestamp,doc.get("state").toString(), 1, duration));
             }
         }
         recyclerView = findViewById(R.id.recycler_tasks_calendar);
@@ -102,7 +111,17 @@ public class CalendarActivity extends AppCompatActivity implements CalendarView.
         adapter = new TaskAdapterCalendar(list_task);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+    }
 
+    public void getTasks(int day, int month, int year)
+    {
+        CalendarActivity.calendar = getCalendarDay(day, month, year);
+
+        // Récupération des tâches en fonction du jour sur lequel on a cliqué
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Task<QuerySnapshot> docRef = db.collection("Task").get();
+        docRef.addOnCompleteListener(this);
     }
 
     public Calendar getCalendarDay(int day, int month, int year)
