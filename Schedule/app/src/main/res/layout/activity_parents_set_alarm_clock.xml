@@ -7,6 +7,7 @@
     tools:context=".ParentsSetAlarmClock">
 
     <TimePicker
+        style="@style/myTimePickerDark"
         android:id="@+id/alarmTimePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
