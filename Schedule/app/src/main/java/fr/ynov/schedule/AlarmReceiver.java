@@ -24,10 +24,9 @@ import androidx.core.app.NotificationManagerCompat;
 import static android.content.Context.POWER_SERVICE;
 
 public class AlarmReceiver extends BroadcastReceiver {
-    private static final String CHANNEL_ID = "monchannel";
+    private static final String CHANNEL_ID = "reveil";
     private AlarmManager alarmMgr;
     private Context c_context;
-    public static Vibrator alarmReceiverVibrator;
     public static Ringtone r;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -48,8 +47,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         c_context = context;
         Toast.makeText(context, "ALARM....", Toast.LENGTH_LONG).show();
-        alarmReceiverVibrator = (Vibrator)context.getSystemService(context.VIBRATOR_SERVICE);
-        alarmReceiverVibrator.vibrate(5000);
+
 
         Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         r = RingtoneManager.getRingtone(context, alert);
@@ -70,10 +68,10 @@ public class AlarmReceiver extends BroadcastReceiver {
         ReveilService.setNewAlarm.setNewAlarm();
 
         Intent n_intent =new Intent(c_context,stopRingingAlarm.class);
-        String CHANNEL_ID="MYCHANNEL";
+        String CHANNEL_ID="reveil";
         NotificationChannel notificationChannel= null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notificationChannel = new NotificationChannel(CHANNEL_ID,"name", NotificationManager.IMPORTANCE_LOW);
+            notificationChannel = new NotificationChannel(CHANNEL_ID,"reveil", NotificationManager.IMPORTANCE_LOW);
         }
         PendingIntent pendingIntent=PendingIntent.getActivity(c_context,1,n_intent,PendingIntent.FLAG_ONE_SHOT);
         Notification notification= null;

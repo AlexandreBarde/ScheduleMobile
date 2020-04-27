@@ -53,23 +53,24 @@ public class ReveilService extends Service {
     public int counter=0;
     public static AlarmManager alarmMgr;
     public static PendingIntent alarmIntent;
-    private String[] joursSemaines;
+    private static String[] joursSemaines;
     public static Context serviceContext;
-    private int hour;
-    private int minutes;
+    private static int hour;
+    private static int minutes;
     public static List<Long> sortedAlarms;
     public static List<Long> sortedTasks;
 
     public static class setNewAlarm {
         public static void setNewAlarm() {
-            if(!sortedAlarms.isEmpty()) {
-                sortedAlarms.remove(0);
-                Intent intent = new Intent(serviceContext, AlarmReceiver.class);
-                if(!sortedAlarms.isEmpty()) {
-                    alarmIntent = PendingIntent.getBroadcast(serviceContext, 0, intent, 0);
-                    alarmMgr.setExact(AlarmManager.RTC, sortedAlarms.get(0), alarmIntent);
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            Date currentTime = Calendar.getInstance().getTime();
+            com.google.android.gms.tasks.Task<QuerySnapshot> docRef = db.collection("alarms").orderBy("timestamp").get();
+            docRef.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull com.google.android.gms.tasks.Task<QuerySnapshot> task) {
+                    ReveilService.setAlarmNotification((QuerySnapshot) task.getResult());
                 }
-            }
+            });
         }
 
 
@@ -156,43 +157,7 @@ public class ReveilService extends Service {
         });
         db.collection("alarms").whereEqualTo("activation", true).addSnapshotListener(new EventListener<QuerySnapshot>() {
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    Log.w("ListenerError", "Listen Failed");
-                    return;
-                }
-
-                sortedAlarms = new ArrayList<Long>();
-                ComponentName receiver = new ComponentName(getApplicationContext(), AlarmReceiver.class);
-                PackageManager pm = getApplicationContext().getPackageManager();
-
-                pm.setComponentEnabledSetting(receiver,
-                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                        PackageManager.DONT_KILL_APP);
-                QuerySnapshot querySnap = queryDocumentSnapshots;
-                List<DocumentSnapshot> documents = querySnap.getDocuments();
-                ArrayList<AlarmClock> list_alarm_clock = new ArrayList<AlarmClock>();
-                for(DocumentSnapshot doc : documents) {
-                    Switch mSwitch = new Switch(serviceContext);
-                    mSwitch.setChecked((Boolean) doc.get("activation"));
-                    list_alarm_clock.add(new fr.ynov.schedule.AlarmClock(doc.get("hour").toString(),(Boolean) doc.get("activation") ,doc.get("day").toString(), (long) doc.get("timestamp")));
-                }
-
-                for (AlarmClock alarm_clock : list_alarm_clock) {
-                    hour = Integer.parseInt(alarm_clock.getHourAlarmClock().split(":")[0]);
-                    minutes = Integer.parseInt(alarm_clock.getHourAlarmClock().split(":")[1]);
-                    Date currentTime = Calendar.getInstance().getTime();
-                    if(alarm_clock.getDay().equals(joursSemaines[currentTime.getDay()])) {
-                        if (currentTime.getHours() < hour || (currentTime.getHours() == hour && currentTime.getMinutes() < minutes)) {
-                            sortedAlarms.add(alarm_clock.getTimestamp());
-                            Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
-                            alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
-                        }
-                    }
-                }
-                Collections.sort(sortedAlarms);
-                if (!sortedAlarms.isEmpty()) {
-                    alarmMgr.setExact(AlarmManager.RTC_WAKEUP, sortedAlarms.get(0), alarmIntent);
-                }
+                setAlarmNotification(queryDocumentSnapshots);
             }
         });
     }
@@ -217,7 +182,38 @@ public class ReveilService extends Service {
         return null;
     }
 
-    public int hourToMillis(int hour, int minutes) {
-        return hour * 3600000 + minutes * 60000;
+    public static void setAlarmNotification(QuerySnapshot queryDocumentSnapshots) {
+        sortedAlarms = new ArrayList<Long>();
+        ComponentName receiver = new ComponentName(serviceContext, AlarmReceiver.class);
+        PackageManager pm = serviceContext.getPackageManager();
+
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+        QuerySnapshot querySnap = queryDocumentSnapshots;
+        List<DocumentSnapshot> documents = querySnap.getDocuments();
+        ArrayList<AlarmClock> list_alarm_clock = new ArrayList<AlarmClock>();
+        for(DocumentSnapshot doc : documents) {
+            Switch mSwitch = new Switch(serviceContext);
+            mSwitch.setChecked((Boolean) doc.get("activation"));
+            list_alarm_clock.add(new fr.ynov.schedule.AlarmClock(doc.get("hour").toString(),(Boolean) doc.get("activation") ,doc.get("day").toString(), (long) doc.get("timestamp")));
+        }
+
+        for (AlarmClock alarm_clock : list_alarm_clock) {
+            hour = Integer.parseInt(alarm_clock.getHourAlarmClock().split(":")[0]);
+            minutes = Integer.parseInt(alarm_clock.getHourAlarmClock().split(":")[1]);
+            Date currentTime = Calendar.getInstance().getTime();
+            if(alarm_clock.getDay().equals(joursSemaines[currentTime.getDay()])) {
+                if (currentTime.getHours() < hour || (currentTime.getHours() == hour && currentTime.getMinutes() < minutes)) {
+                    sortedAlarms.add(alarm_clock.getTimestamp());
+                    Intent intent = new Intent(serviceContext, AlarmReceiver.class);
+                    alarmIntent = PendingIntent.getBroadcast(serviceContext, 0, intent, 0);
+                }
+            }
+        }
+        Collections.sort(sortedAlarms);
+        if (!sortedAlarms.isEmpty()) {
+            alarmMgr.setExact(AlarmManager.RTC_WAKEUP, sortedAlarms.get(0), alarmIntent);
+        }
     }
 }

@@ -3,7 +3,6 @@
     package="fr.ynov.schedule">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -16,19 +15,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-      
-        <activity android:name=".stopRingingAlarm"></activity>
-        <activity android:name=".CalendarActivity"></activity>
+        <activity android:name=".TaskNotificationLayout"></activity>
+        <activity android:name=".stopRingingAlarm" />
+        <activity android:name=".CalendarActivity" />
         <activity android:name=".Activity_a_propos" />
         <activity android:name=".Activity_emploi_du_temps_enfant" />
-        <activity android:name=".stats.StatsActivity"></activity>
-        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".stats.StatsActivity" />
+        <activity android:name=".SettingsActivity" />
         <activity android:name=".Activity_a_propos" />
         <activity android:name=".Activity_emploi_du_temps_enfant" />
         <activity android:name=".stats.StatsActivity" />
         <activity android:name=".Activity_no_data_graph" />
-
-      <activity
+        <activity
             android:name=".ParentsSetAlarmClock"
             android:exported="true" />
         <activity android:name=".MainChildActivity" />
@@ -62,7 +60,7 @@
 
         <service
             android:name=".ReveilService"
-            android:enabled="true"></service>
+            android:enabled="true" />
 
         <receiver
             android:name=".AlarmReceiver"
@@ -71,7 +69,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".TaskReceiver"
             android:enabled="true">
@@ -79,7 +76,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>
