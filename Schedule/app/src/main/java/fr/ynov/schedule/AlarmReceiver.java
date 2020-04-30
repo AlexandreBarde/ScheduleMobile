@@ -9,12 +9,15 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
 import android.os.Vibrator;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -47,9 +50,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         c_context = context;
         Toast.makeText(context, "ALARM....", Toast.LENGTH_LONG).show();
-
-
-        Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        Uri alert = Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.arouf);
         r = RingtoneManager.getRingtone(context, alert);
 
         if(r == null){
@@ -76,13 +77,14 @@ public class AlarmReceiver extends BroadcastReceiver {
         PendingIntent pendingIntent=PendingIntent.getActivity(c_context,1,n_intent,PendingIntent.FLAG_ONE_SHOT);
         Notification notification= null;
 
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Log.d("xxxx", "onReceive: LA NOTIF");
             notification = new Notification.Builder(c_context,CHANNEL_ID)
                     .setContentText("Cliquez pour arrêter le réveil")
                     .setContentTitle("REVEILLE TOI")
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
-                    .addAction(R.drawable.common_google_signin_btn_icon_dark,"Stop alarm",pendingIntent)
                     .setChannelId(CHANNEL_ID)
                     .setSmallIcon(android.R.drawable.sym_action_chat)
                     .build();
