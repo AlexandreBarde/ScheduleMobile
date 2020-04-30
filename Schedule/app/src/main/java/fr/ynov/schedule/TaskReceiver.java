@@ -20,6 +20,9 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import static android.content.Context.POWER_SERVICE;
 
 public class TaskReceiver extends BroadcastReceiver {
@@ -27,7 +30,6 @@ public class TaskReceiver extends BroadcastReceiver {
     private AlarmManager alarmMgr;
     private Context c_context;
     public static Vibrator alarmReceiverVibrator;
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -45,7 +47,6 @@ public class TaskReceiver extends BroadcastReceiver {
         WakeLocker.acquire(context);
         alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         c_context = context;
-        Toast.makeText(context, "ALARM....", Toast.LENGTH_LONG).show();
         alarmReceiverVibrator = (Vibrator)context.getSystemService(context.VIBRATOR_SERVICE);
         alarmReceiverVibrator.vibrate(200);
 
@@ -63,11 +64,11 @@ public class TaskReceiver extends BroadcastReceiver {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notification = new Notification.Builder(c_context,CHANNEL_ID)
-                    .setContentText("Cliquez pour arrêter l'alarme")
-                    .setContentTitle("TRAVAILLE")
+                    .setContentText(ReveilService.taskNotificationLabel.getDescription())
+                    .setContentTitle(ReveilService.taskNotificationLabel.getName())
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
-                    .addAction(R.drawable.common_google_signin_btn_icon_dark,"Arrêter",pendingIntent)
+                    .addAction(R.drawable.common_google_signin_btn_icon_dark,"Ouvrir",pendingIntent)
                     .setChannelId(CHANNEL_ID)
                     .setSmallIcon(android.R.drawable.sym_action_chat)
                     .build();
@@ -77,6 +78,8 @@ public class TaskReceiver extends BroadcastReceiver {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager.createNotificationChannel(notificationChannel);
         }
-        notificationManager.notify(2,notification);
+        notificationManager.notify((int) ReveilService.taskNotificationLabel.getTimestamp(),notification);
+        ReveilService.setNewAlarm.setNewTask();
+
     }
 }
