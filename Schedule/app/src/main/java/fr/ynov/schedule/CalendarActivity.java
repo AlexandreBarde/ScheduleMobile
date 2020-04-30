@@ -1,6 +1,8 @@
 package fr.ynov.schedule;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.CalendarView;
 import android.widget.TextView;
@@ -11,10 +13,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.sundeepk.compactcalendarview.CompactCalendarView;
+import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.sql.Timestamp;
@@ -24,8 +29,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
-public class CalendarActivity extends AppCompatActivity implements CalendarView.OnDateChangeListener, OnCompleteListener<QuerySnapshot> {
+public class CalendarActivity extends AppCompatActivity implements CalendarView.OnDateChangeListener, OnCompleteListener<QuerySnapshot>, CompactCalendarView.CompactCalendarViewListener {
 
     public static Calendar calendar;
     private RecyclerView recyclerView;
@@ -47,8 +53,9 @@ public class CalendarActivity extends AppCompatActivity implements CalendarView.
         Date date = new Date();
         TextView textView = findViewById(R.id.calendar_textview);
         textView.setText(dateFormat.format(date));
-        CalendarView calendarButton = findViewById(R.id.calendar);
-        calendarButton.setOnDateChangeListener(this);
+
+        CompactCalendarView compactCalendarView = findViewById(R.id.compactcalendar_view);
+        compactCalendarView.setListener(this);
 
         String[] dateSplitted = dateFormat.format(date).split("/");
 
@@ -99,11 +106,15 @@ public class CalendarActivity extends AppCompatActivity implements CalendarView.
     @Override
     public void onComplete(@NonNull Task<QuerySnapshot> task)
     {
+        Log.i("xxxx", "Request completed");
+        CompactCalendarView compactCalendarView = findViewById(R.id.compactcalendar_view);
+
         QuerySnapshot querySnap = (QuerySnapshot) task.getResult();
         List<DocumentSnapshot> documents = querySnap.getDocuments();
         list_task = new ArrayList<fr.ynov.schedule.Task>();
         long minTimestamp = getMinTimestamp(CalendarActivity.calendar);
         long maxTimestamp = getMaxTimestamp(CalendarActivity.calendar);
+        compactCalendarView.removeAllEvents();
         for(DocumentSnapshot doc : documents)
         {
             if(Long.parseLong(doc.get("timestamp").toString()) >= minTimestamp && Long.parseLong(doc.get("timestamp").toString()) <= maxTimestamp)
@@ -113,7 +124,10 @@ public class CalendarActivity extends AppCompatActivity implements CalendarView.
                 Timestamp ts = new Timestamp(date.getTime());
                 Long duration =  Long.parseLong(doc.get("durée_minutes").toString());
                 list_task.add(new fr.ynov.schedule.Task(doc.get("name").toString(), doc.get("description").toString(), timestamp,doc.get("state").toString(), 1, duration));
+
             }
+            Event ev = new Event(Color.RED, Long.parseLong(doc.get("timestamp").toString()));
+            compactCalendarView.addEvent(ev);
         }
         recyclerView = findViewById(R.id.recycler_tasks_calendar);
         recyclerView.setHasFixedSize(true);
@@ -125,12 +139,13 @@ public class CalendarActivity extends AppCompatActivity implements CalendarView.
 
     public void getTasks(int day, int month, int year)
     {
+        Log.i("xxxx", "new date :" + day + "/" + month + "/" + year);
         CalendarActivity.calendar = getCalendarDay(day, month, year);
 
         // Récupération des tâches en fonction du jour sur lequel on a cliqué
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Task<QuerySnapshot> docRef = db.collection("Task").get();
+        Task<QuerySnapshot> docRef = db.collection("Task").orderBy("timestamp", Query.Direction.ASCENDING).get();
         docRef.addOnCompleteListener(this);
     }
 
@@ -161,4 +176,30 @@ public class CalendarActivity extends AppCompatActivity implements CalendarView.
         return cCopy.getTimeInMillis();
     }
 
+    @Override
+    public void onDayClick(Date dateClicked)
+    {
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String[] dateSplitted = dateFormat.format(dateClicked).split("/");
+        int day =  Integer.parseInt(dateSplitted[0]);
+        int month =  Integer.parseInt(dateSplitted[1]);
+        String newMonth = "";
+        String newDay = "";
+        if(month < 10) newMonth = "0" + month;
+        else newMonth = String.valueOf(month);
+        if(day < 10) newDay = "0" + day;
+        else newDay = String.valueOf(day);
+        int year = Integer.parseInt(dateSplitted[2]);
+        Log.i("xxxx", newDay + "/" + newMonth + "/" + year);
+        TextView textView = findViewById(R.id.calendar_textview);
+        textView.setText(newDay + "/" + newMonth + "/" + year);
+        getTasks(Integer.parseInt(newDay), Integer.parseInt(newMonth) - 1, year);
+    }
+
+    @Override
+    public void onMonthScroll(Date firstDayOfNewMonth)
+    {
+        SimpleDateFormat dateFormatForMonth = new SimpleDateFormat("MMM - yyyy", Locale.getDefault());
+        Log.i("xxxx", dateFormatForMonth.format(firstDayOfNewMonth));
+    }
 }

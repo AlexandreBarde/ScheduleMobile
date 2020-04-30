@@ -28,4 +28,12 @@
         <item name="android:textColor">#808080</item>
     </style>
 
+    <style name="CustomCalendar" parent="">
+        <item name="compactCalendarBackgroundColor">#303030</item>
+        <item name="compactCalendarTextColor">#E4E4E4</item>
+        <item name="compactCalendarCurrentSelectedDayBackgroundColor">#808080</item>
+        <item name="compactCalendarCurrentDayBackgroundColor">#000000</item>
+        <item name="compactCalendarMultiEventIndicatorColor">#fff</item>
+    </style>
+
 </resources>
