@@ -7,6 +7,8 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import fr.ynov.schedule.calendar.CalendarActivity;
+
 public class MainChildActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
