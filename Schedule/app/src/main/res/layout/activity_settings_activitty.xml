@@ -35,8 +35,41 @@
             android:layout_height="wrap_content"
             android:text="Mode nuit"
             tools:layout_editor_absoluteX="-2dp"
-            tools:layout_editor_absoluteY="176dp" />
+            tools:layout_editor_absoluteY="176dp"
+            android:textSize="20sp"
+            />
 
+        <RadioGroup
+            android:id="@+id/alarm_radio_button_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <RadioButton
+                android:id="@+id/base_alarm"
+                style="@style/AppTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="20dp"
+                android:layoutDirection="rtl"
+                android:text="reveil normal"
+                android:textAlignment="textStart"
+                android:textSize="20sp" />
+
+            <RadioButton
+                android:id="@+id/custom_alarm"
+                style="@style/AppTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginTop="20dp"
+                android:layoutDirection="rtl"
+                android:text="reveil avec Arouf"
+                android:textAlignment="textStart"
+                android:textSize="20sp" />
+        </RadioGroup>
     </LinearLayout>
 
 
