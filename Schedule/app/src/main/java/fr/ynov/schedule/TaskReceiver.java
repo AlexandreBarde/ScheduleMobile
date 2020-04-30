@@ -23,6 +23,8 @@ import androidx.annotation.RequiresApi;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.HashMap;
+
 import static android.content.Context.POWER_SERVICE;
 
 public class TaskReceiver extends BroadcastReceiver {
@@ -50,10 +52,10 @@ public class TaskReceiver extends BroadcastReceiver {
         alarmReceiverVibrator = (Vibrator)context.getSystemService(context.VIBRATOR_SERVICE);
         alarmReceiverVibrator.vibrate(200);
 
-        ReveilService.setNewAlarm.startActivityFromBackground();
         ReveilService.setNewAlarm.setNewAlarm();
 
         Intent n_intent =new Intent(c_context,TaskNotificationLayout.class);
+        n_intent.putExtra("idTask", ReveilService.docIdTask);
         String CHANNEL_ID="tache";
         NotificationChannel notificationChannel= null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -62,10 +64,11 @@ public class TaskReceiver extends BroadcastReceiver {
         PendingIntent pendingIntent=PendingIntent.getActivity(c_context,1,n_intent,PendingIntent.FLAG_ONE_SHOT);
         Notification notification= null;
 
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notification = new Notification.Builder(c_context,CHANNEL_ID)
-                    .setContentText(ReveilService.taskNotificationLabel.getDescription())
-                    .setContentTitle(ReveilService.taskNotificationLabel.getName())
+                    .setContentText(ReveilService.docIdTask)
+                    .setContentTitle(ReveilService.docObjectTask.getName())
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
                     .addAction(R.drawable.common_google_signin_btn_icon_dark,"Ouvrir",pendingIntent)
@@ -78,7 +81,7 @@ public class TaskReceiver extends BroadcastReceiver {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager.createNotificationChannel(notificationChannel);
         }
-        notificationManager.notify((int) ReveilService.taskNotificationLabel.getTimestamp(),notification);
+        notificationManager.notify((int) ReveilService.docObjectTask.getTimestamp(),notification);
         ReveilService.setNewAlarm.setNewTask();
 
     }

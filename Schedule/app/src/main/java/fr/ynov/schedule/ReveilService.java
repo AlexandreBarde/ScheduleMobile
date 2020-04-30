@@ -36,6 +36,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -44,7 +45,11 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -59,8 +64,8 @@ public class ReveilService extends Service {
     private static int minutes;
     public static List<Long> sortedAlarms;
     public static List<Long> sortedTasks;
-    public static Task taskNotificationLabel;
-
+    public static String docIdTask;
+    public static Task docObjectTask;
     public static class setNewAlarm {
         public static void setNewAlarm() {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -77,20 +82,13 @@ public class ReveilService extends Service {
         public static void setNewTask() {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             Date currentTime = Calendar.getInstance().getTime();
-            com.google.android.gms.tasks.Task<QuerySnapshot> docRef = db.collection("Task").orderBy("timestamp").get();
+            com.google.android.gms.tasks.Task<QuerySnapshot> docRef = db.collection("Task").orderBy("timestamp", Query.Direction.ASCENDING).get();
             docRef.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull com.google.android.gms.tasks.Task<QuerySnapshot> task) {
                     ReveilService.setAlarmTask((QuerySnapshot) task.getResult());
                 }
             });
-        }
-
-
-        public static void startActivityFromBackground() {
-            Intent dialogIntent = new Intent(serviceContext, MainActivity.class);
-            dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            serviceContext.startActivity(dialogIntent);
         }
     }
 
@@ -127,7 +125,7 @@ public class ReveilService extends Service {
                 .build();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Task").orderBy("timestamp").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        db.collection("Task").orderBy("timestamp", Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 setAlarmTask(queryDocumentSnapshots);
             }
@@ -206,25 +204,30 @@ public class ReveilService extends Service {
 
         QuerySnapshot querySnap = queryDocumentSnapshots;
         List<DocumentSnapshot> documents = querySnap.getDocuments();
-        ArrayList<Task> list_tasks = new ArrayList<>();
-        ArrayList<Task> daily_tasks = new ArrayList<>();
+        LinkedHashMap<String, Task> list_tasks = new LinkedHashMap<>();
+        LinkedHashMap<String, Task> daily_tasks = new LinkedHashMap<>();
         long millis = System.currentTimeMillis();
-
         for (DocumentSnapshot doc : documents) {
-            list_tasks.add(new Task(doc.get("name").toString(), doc.get("description").toString(), Long.parseLong(doc.get("timestamp").toString()), doc.get("state").toString(), Integer.parseInt(doc.get("image_status").toString()), Long.parseLong(doc.get("durée_minutes").toString())));
+            list_tasks.put(doc.getId(), new Task(doc.get("name").toString(), doc.get("description").toString(), Long.parseLong(doc.get("timestamp").toString()), doc.get("state").toString(), Integer.parseInt(doc.get("image_status").toString()), Long.parseLong(doc.get("durée_minutes").toString())));
         }
-        for (Task current_task : list_tasks) {
-            if (current_task.getTimestamp() > millis) {
-                daily_tasks.add(current_task);
+        Iterator it = list_tasks.entrySet().iterator();
+
+        for (Map.Entry current_task : list_tasks.entrySet()) {
+            Task current = (Task) current_task.getValue();
+            if (current.getTimestamp() > millis) {
+                daily_tasks.put((String) current_task.getKey(), current);
+                Long alarmMilis = daily_tasks.entrySet().iterator().next().getValue().getTimestamp();
             }
         }
+
         if (!daily_tasks.isEmpty()) {
-            Log.i("Service status", daily_tasks.get(0).getName() + daily_tasks.get(0).getDescription());
+            Long alarmMilis = daily_tasks.entrySet().iterator().next().getValue().getTimestamp();
 
             Intent intent = new Intent(serviceContext, TaskReceiver.class);
             alarmIntent = PendingIntent.getBroadcast(serviceContext, 0, intent, 0);
-            alarmMgr.setExact(AlarmManager.RTC_WAKEUP, daily_tasks.get(0).getTimestamp(), alarmIntent);
-            taskNotificationLabel = daily_tasks.get(0);
+            alarmMgr.setExact(AlarmManager.RTC_WAKEUP, alarmMilis, alarmIntent);
+            docIdTask = daily_tasks.entrySet().iterator().next().getKey();
+            docObjectTask = daily_tasks.entrySet().iterator().next().getValue();
         }
     }
 }

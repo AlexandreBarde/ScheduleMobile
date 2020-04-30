@@ -64,7 +64,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
         if(r != null)
             r.play();
-        ReveilService.setNewAlarm.startActivityFromBackground();
         ReveilService.setNewAlarm.setNewAlarm();
 
         Intent n_intent =new Intent(c_context,stopRingingAlarm.class);
