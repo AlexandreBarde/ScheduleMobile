@@ -20,19 +20,19 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import static android.content.Context.POWER_SERVICE;
 
 public class TaskReceiver extends BroadcastReceiver {
-    private static final String CHANNEL_ID = "monchannel";
+    private static final String CHANNEL_ID = "tache";
     private AlarmManager alarmMgr;
     private Context c_context;
     public static Vibrator alarmReceiverVibrator;
-    public static Ringtone r;
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.i("Service status", "oui ptain");
         PowerManager pm = (PowerManager)context.getSystemService(POWER_SERVICE);
         boolean isScreenOn = pm.isScreenOn();
         if(!isScreenOn)
@@ -47,44 +47,28 @@ public class TaskReceiver extends BroadcastReceiver {
         WakeLocker.acquire(context);
         alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         c_context = context;
-        Toast.makeText(context, "ALARM....", Toast.LENGTH_LONG).show();
         alarmReceiverVibrator = (Vibrator)context.getSystemService(context.VIBRATOR_SERVICE);
-        alarmReceiverVibrator.vibrate(5000);
+        alarmReceiverVibrator.vibrate(200);
 
-        Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        r = RingtoneManager.getRingtone(context, alert);
-
-        if(r == null){
-
-            alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            r = RingtoneManager.getRingtone(context, alert);
-
-            if(r == null){
-                alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-                r = RingtoneManager.getRingtone(context, alert);
-            }
-        }
-        if(r != null)
-            r.play();
         ReveilService.setNewAlarm.startActivityFromBackground();
         ReveilService.setNewAlarm.setNewAlarm();
 
-        Intent n_intent =new Intent(c_context,stopRingingAlarm.class);
-        String CHANNEL_ID="MYCHANNEL";
+        Intent n_intent =new Intent(c_context,TaskNotificationLayout.class);
+        String CHANNEL_ID="tache";
         NotificationChannel notificationChannel= null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notificationChannel = new NotificationChannel(CHANNEL_ID,"name", NotificationManager.IMPORTANCE_LOW);
+            notificationChannel = new NotificationChannel(CHANNEL_ID,"tache", NotificationManager.IMPORTANCE_LOW);
         }
         PendingIntent pendingIntent=PendingIntent.getActivity(c_context,1,n_intent,PendingIntent.FLAG_ONE_SHOT);
         Notification notification= null;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notification = new Notification.Builder(c_context,CHANNEL_ID)
-                    .setContentText("Cliquez pour arrêter l'alarme")
-                    .setContentTitle("TRAVAILLE")
+                    .setContentText(ReveilService.taskNotificationLabel.getDescription())
+                    .setContentTitle(ReveilService.taskNotificationLabel.getName())
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
-                    .addAction(R.drawable.common_google_signin_btn_icon_dark,"Arrêter",pendingIntent)
+                    .addAction(R.drawable.common_google_signin_btn_icon_dark,"Ouvrir",pendingIntent)
                     .setChannelId(CHANNEL_ID)
                     .setSmallIcon(android.R.drawable.sym_action_chat)
                     .build();
@@ -94,6 +78,8 @@ public class TaskReceiver extends BroadcastReceiver {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager.createNotificationChannel(notificationChannel);
         }
-        notificationManager.notify(1,notification);
+        notificationManager.notify((int) ReveilService.taskNotificationLabel.getTimestamp(),notification);
+        ReveilService.setNewAlarm.setNewTask();
+
     }
 }

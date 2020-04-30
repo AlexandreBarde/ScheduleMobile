@@ -21,8 +21,6 @@ public class stopRingingAlarm extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stop_ringing_alarm);
         context = getApplicationContext();
-        Vibrator vibrator = AlarmReceiver.alarmReceiverVibrator;
-        vibrator.cancel();
 
         Ringtone r = AlarmReceiver.r;
         r.stop();
