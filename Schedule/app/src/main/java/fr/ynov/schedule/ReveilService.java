@@ -59,7 +59,7 @@ public class ReveilService extends Service {
     private static int minutes;
     public static List<Long> sortedAlarms;
     public static List<Long> sortedTasks;
-
+    public static Task taskNotificationLabel;
     public static class setNewAlarm {
         public static void setNewAlarm() {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -115,8 +115,10 @@ public class ReveilService extends Service {
                 .build();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Task").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        db.collection("Task").orderBy("timestamp").addSnapshotListener(new EventListener<QuerySnapshot>() {
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+
+
                 if (e != null) {
                     Log.w("ListenerError", "Listen Failed");
                     return;
@@ -133,26 +135,25 @@ public class ReveilService extends Service {
                 QuerySnapshot querySnap = queryDocumentSnapshots;
                 List<DocumentSnapshot> documents = querySnap.getDocuments();
                 ArrayList<Task> list_tasks = new ArrayList<>();
+                ArrayList<Task> daily_tasks = new ArrayList<>();
+                long millis = System.currentTimeMillis();
+
                 for(DocumentSnapshot doc : documents) {
                     list_tasks.add(new Task(doc.get("name").toString(), doc.get("description").toString(), Long.parseLong(doc.get("timestamp").toString()), doc.get("state").toString(), Integer.parseInt(doc.get("image_status").toString()), Long.parseLong(doc.get("durée_minutes").toString())));
                 }
-
-                for (Task current_task : list_tasks) {
-                    Long tsLong = System.currentTimeMillis();
-                    if(current_task.getTimestamp() > tsLong) {
-                        sortedTasks.add(current_task.getTimestamp());
-                        Intent intent = new Intent(getApplicationContext(), TaskReceiver.class);
-                        alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, 0);
+                for(Task current_task : list_tasks) {
+                    if(current_task.getTimestamp() > millis) {
+                        daily_tasks.add(current_task);
                     }
                 }
+                if (!daily_tasks.isEmpty()) {
+                    Log.i("Service status", daily_tasks.get(0).getName() + daily_tasks.get(0).getDescription());
 
-                Collections.sort(sortedTasks);
-
-                if (!sortedTasks.isEmpty()) {
-                    Log.i("Service status", sortedTasks.toString());
-                    alarmMgr.setExact(AlarmManager.RTC_WAKEUP, sortedTasks.get(0), alarmIntent);
+                    Intent intent = new Intent(serviceContext, TaskReceiver.class);
+                    alarmIntent = PendingIntent.getBroadcast(serviceContext, 0, intent, 0);
+                    alarmMgr.setExact(AlarmManager.RTC_WAKEUP, daily_tasks.get(0).getTimestamp(), alarmIntent);
+                    taskNotificationLabel = daily_tasks.get(0);
                 }
-
             }
         });
         db.collection("alarms").whereEqualTo("activation", true).addSnapshotListener(new EventListener<QuerySnapshot>() {
