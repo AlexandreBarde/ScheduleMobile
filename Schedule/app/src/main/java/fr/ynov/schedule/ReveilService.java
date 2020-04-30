@@ -69,6 +69,7 @@ public class ReveilService extends Service {
     public static QuerySnapshot querysnap;
     public static class setNewAlarm {
         public static void setNewAlarm() {
+
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             Date currentTime = Calendar.getInstance().getTime();
             com.google.android.gms.tasks.Task<QuerySnapshot> docRef = db.collection("alarms").orderBy("timestamp").get();
@@ -78,6 +79,10 @@ public class ReveilService extends Service {
                     setAlarmNotification(task.getResult());
                 }
             });
+        }
+        public static void startActivityFromBackground() {
+            Intent dialogIntent = new Intent(serviceContext, MainActivity.class);
+            serviceContext.startActivity(dialogIntent);
         }
 
         public static void setNewTask() {
@@ -106,6 +111,7 @@ public class ReveilService extends Service {
             startForeground(1, new Notification());
     }
 
+
     @RequiresApi(Build.VERSION_CODES.O)
     private void startMyOwnForeground() {
         String NOTIFICATION_CHANNEL_ID = "example.permanence";
@@ -124,6 +130,7 @@ public class ReveilService extends Service {
                 .setPriority(NotificationManager.IMPORTANCE_MIN)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .build();
+        startForeground(2, notification);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Task").orderBy("timestamp", Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -147,7 +154,7 @@ public class ReveilService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Intent broadcastIntent = new Intent();
+        Intent broadcastIntent = new Intent("com.android.ServiceStopped");
         broadcastIntent.setAction("restartservice");
         broadcastIntent.setClass(this, Restarter.class);
         this.sendBroadcast(broadcastIntent);

@@ -36,6 +36,8 @@ public class AlarmReceiver extends BroadcastReceiver {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onReceive(Context context, Intent intent) {
+
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.prefs.getContext());
         PowerManager pm = (PowerManager)context.getSystemService(POWER_SERVICE);
         boolean isScreenOn = pm.isScreenOn();
@@ -61,8 +63,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         Log.d("xxxx", "onReceive: " + alert);
         r = RingtoneManager.getRingtone(context, alert);
 
-        ReveilService.setNewAlarm.setNewAlarm();
-
         if(r == null){
 
             alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -75,11 +75,13 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
         if(r != null)
             r.play();
+        ReveilService.setNewAlarm.setNewAlarm();
+
 
         Intent n_intent =new Intent(c_context,stopRingingAlarm.class);
         NotificationChannel notificationChannel= null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notificationChannel = new NotificationChannel("blbl","reveil", NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel = new NotificationChannel("blbl","reveil", NotificationManager.IMPORTANCE_HIGH);
         }
         PendingIntent pendingIntent=PendingIntent.getActivity(c_context,1,n_intent,PendingIntent.FLAG_ONE_SHOT);
         Notification notification= null;
@@ -101,6 +103,5 @@ public class AlarmReceiver extends BroadcastReceiver {
             notificationManager.createNotificationChannel(notificationChannel);
         }
         notificationManager.notify(1,notification);
-
     }
 }

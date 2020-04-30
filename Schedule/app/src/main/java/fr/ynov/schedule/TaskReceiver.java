@@ -31,7 +31,6 @@ public class TaskReceiver extends BroadcastReceiver {
     private AlarmManager alarmMgr;
     private Context c_context;
     public static Vibrator alarmReceiverVibrator;
-    public static Ringtone r;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -40,42 +39,23 @@ public class TaskReceiver extends BroadcastReceiver {
         boolean isScreenOn = pm.isScreenOn();
         if(!isScreenOn)
         {
-            @SuppressLint("InvalidWakeLockTag") PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK |PowerManager.ACQUIRE_CAUSES_WAKEUP |PowerManager.ON_AFTER_RELEASE,"MyLock");
-            wl.acquire(10000);
             @SuppressLint("InvalidWakeLockTag") PowerManager.WakeLock wl_cpu = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"MyCpuLock");
 
             wl_cpu.acquire(10000);
         }
-
-        WakeLocker.acquire(context);
         alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         c_context = context;
         alarmReceiverVibrator = (Vibrator)context.getSystemService(context.VIBRATOR_SERVICE);
         alarmReceiverVibrator.vibrate(200);
 
-        Uri alert = Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.arouf);
-        r = RingtoneManager.getRingtone(context, alert);
-
-        if(r == null){
-
-            alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            r = RingtoneManager.getRingtone(context, alert);
-
-            if(r == null){
-                alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-                r = RingtoneManager.getRingtone(context, alert);
-            }
-        }
-        if(r != null)
-            r.play();
-
+        ReveilService.setNewAlarm.setNewTask();
 
         Intent n_intent =new Intent(c_context,TaskNotificationLayout.class);
         n_intent.putExtra("idTask", ReveilService.docIdTask);
 
         NotificationChannel notificationChannel= null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notificationChannel = new NotificationChannel("blbl","tache", NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel = new NotificationChannel("blbl","tache", NotificationManager.IMPORTANCE_HIGH);
         }
         PendingIntent pendingIntent=PendingIntent.getActivity(c_context,1,n_intent,PendingIntent.FLAG_ONE_SHOT);
         Notification notification= null;
@@ -98,7 +78,7 @@ public class TaskReceiver extends BroadcastReceiver {
             notificationManager.createNotificationChannel(notificationChannel);
         }
         notificationManager.notify((int) ReveilService.docObjectTask.getTimestamp(),notification);
-        ReveilService.setNewAlarm.setNewTask();
+
 
     }
 }

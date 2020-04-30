@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,15 +15,10 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import org.w3c.dom.Document;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -37,11 +33,11 @@ public class TaskNotificationLayout extends AppCompatActivity {
     private com.google.android.gms.tasks.Task<DocumentSnapshot> docRef;
     private String docRefIntent;
     private String task_state;
+    private long taskDureeMinutesToMillis;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_notification_layout);
-
         tasks_result = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         docRefIntent = getIntent().getExtras().getString("idTask");
@@ -72,11 +68,27 @@ public class TaskNotificationLayout extends AppCompatActivity {
         duree_tache.setText("Durée de la tache : " + heureFormat());
 
         Button ok_tache = findViewById(R.id.ok_tache);
+        final TextView timer = findViewById(R.id.timer);
+        taskDureeMinutesToMillis = TimeUnit.MINUTES.toMillis(taskDureeMinutes);
+
+        CountDownTimer cdt = new CountDownTimer(taskDureeMinutesToMillis, 1000) {
+            public void onTick(long taskTimestamp) {
+                long h = TimeUnit.MILLISECONDS.toHours((taskTimestamp));
+                long m = TimeUnit.MILLISECONDS.toMinutes(taskTimestamp - h*3600*1000);
+                long s = TimeUnit.MILLISECONDS.toSeconds(taskTimestamp - (h*3600*1000 + m*60*1000));
+                timer.setText(""+String.format("%02d:%02d:%02d",h,m,s) + " restants");
+            }
+
+            public void onFinish() {
+                Log.i("oui", "oui");
+            }
+        }.start();
+
         ok_tache.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(v.getId() == R.id.ok_tache) {
-                    long taskDureeMinutesToMillis = TimeUnit.MINUTES.toMillis(taskDureeMinutes);
+                    taskDureeMinutesToMillis = TimeUnit.MINUTES.toMillis(taskDureeMinutes);
                     long currentTimeMillis = System.currentTimeMillis();
                     if((taskTimestamp + taskDureeMinutesToMillis) - currentTimeMillis >= 0) {
                         task_state = "done";
