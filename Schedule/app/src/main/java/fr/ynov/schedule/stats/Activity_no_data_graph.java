@@ -1,11 +1,14 @@
-package fr.ynov.schedule;
-
-import androidx.appcompat.app.AppCompatActivity;
+package fr.ynov.schedule.stats;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import fr.ynov.schedule.Activity_main_parent;
+import fr.ynov.schedule.R;
 
 public class Activity_no_data_graph extends AppCompatActivity implements View.OnClickListener
 {
