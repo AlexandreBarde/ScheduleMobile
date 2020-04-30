@@ -22,7 +22,5 @@ public class stopRingingAlarm extends AppCompatActivity{
         setContentView(R.layout.activity_stop_ringing_alarm);
         context = getApplicationContext();
 
-        Ringtone r = AlarmReceiver.r;
-        r.stop();
     }
 }

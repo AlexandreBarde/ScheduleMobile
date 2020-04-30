@@ -28,10 +28,11 @@ import java.util.HashMap;
 import static android.content.Context.POWER_SERVICE;
 
 public class TaskReceiver extends BroadcastReceiver {
-    private static final String CHANNEL_ID = "tache";
     private AlarmManager alarmMgr;
     private Context c_context;
     public static Vibrator alarmReceiverVibrator;
+    public static Ringtone r;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -52,27 +53,42 @@ public class TaskReceiver extends BroadcastReceiver {
         alarmReceiverVibrator = (Vibrator)context.getSystemService(context.VIBRATOR_SERVICE);
         alarmReceiverVibrator.vibrate(200);
 
-        ReveilService.setNewAlarm.setNewAlarm();
+        Uri alert = Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.arouf);
+        r = RingtoneManager.getRingtone(context, alert);
+
+        if(r == null){
+
+            alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            r = RingtoneManager.getRingtone(context, alert);
+
+            if(r == null){
+                alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+                r = RingtoneManager.getRingtone(context, alert);
+            }
+        }
+        if(r != null)
+            r.play();
+
 
         Intent n_intent =new Intent(c_context,TaskNotificationLayout.class);
         n_intent.putExtra("idTask", ReveilService.docIdTask);
-        String CHANNEL_ID="tache";
+
         NotificationChannel notificationChannel= null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notificationChannel = new NotificationChannel(CHANNEL_ID,"tache", NotificationManager.IMPORTANCE_LOW);
+            notificationChannel = new NotificationChannel("blbl","tache", NotificationManager.IMPORTANCE_DEFAULT);
         }
         PendingIntent pendingIntent=PendingIntent.getActivity(c_context,1,n_intent,PendingIntent.FLAG_ONE_SHOT);
         Notification notification= null;
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notification = new Notification.Builder(c_context,CHANNEL_ID)
+            notification = new Notification.Builder(c_context,"blbl")
                     .setContentText(ReveilService.docIdTask)
                     .setContentTitle(ReveilService.docObjectTask.getName())
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
                     .addAction(R.drawable.common_google_signin_btn_icon_dark,"Ouvrir",pendingIntent)
-                    .setChannelId(CHANNEL_ID)
+                    .setChannelId("blbl")
                     .setSmallIcon(android.R.drawable.sym_action_chat)
                     .build();
         }

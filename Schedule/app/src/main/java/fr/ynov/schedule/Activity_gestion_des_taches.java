@@ -110,7 +110,7 @@ public class Activity_gestion_des_taches extends AppCompatActivity implements Vi
         });
     }
 
-    public  void createTaskList(List<DocumentSnapshot> documents) {
+    public void createTaskList(List<DocumentSnapshot> documents) {
         list_task = new ArrayList<Task>();
         int nb_task = 0;
         for (DocumentSnapshot doc : documents) {

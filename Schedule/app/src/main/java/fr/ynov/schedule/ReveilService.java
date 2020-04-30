@@ -66,6 +66,7 @@ public class ReveilService extends Service {
     public static List<Long> sortedTasks;
     public static String docIdTask;
     public static Task docObjectTask;
+    public static QuerySnapshot querysnap;
     public static class setNewAlarm {
         public static void setNewAlarm() {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -74,7 +75,7 @@ public class ReveilService extends Service {
             docRef.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull com.google.android.gms.tasks.Task<QuerySnapshot> task) {
-                    ReveilService.setAlarmNotification((QuerySnapshot) task.getResult());
+                    setAlarmNotification(task.getResult());
                 }
             });
         }
@@ -86,7 +87,7 @@ public class ReveilService extends Service {
             docRef.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull com.google.android.gms.tasks.Task<QuerySnapshot> task) {
-                    ReveilService.setAlarmTask((QuerySnapshot) task.getResult());
+                    setAlarmTask(task.getResult());
                 }
             });
         }

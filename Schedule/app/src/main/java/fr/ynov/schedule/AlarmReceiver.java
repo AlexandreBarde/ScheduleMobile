@@ -27,7 +27,6 @@ import androidx.core.app.NotificationManagerCompat;
 import static android.content.Context.POWER_SERVICE;
 
 public class AlarmReceiver extends BroadcastReceiver {
-    private static final String CHANNEL_ID = "reveil";
     private AlarmManager alarmMgr;
     private Context c_context;
     public static Ringtone r;
@@ -53,6 +52,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         Uri alert = Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.arouf);
         r = RingtoneManager.getRingtone(context, alert);
 
+        ReveilService.setNewAlarm.setNewAlarm();
+
         if(r == null){
 
             alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -65,26 +66,23 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
         if(r != null)
             r.play();
-        ReveilService.setNewAlarm.setNewAlarm();
 
         Intent n_intent =new Intent(c_context,stopRingingAlarm.class);
-        String CHANNEL_ID="reveil";
         NotificationChannel notificationChannel= null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notificationChannel = new NotificationChannel(CHANNEL_ID,"reveil", NotificationManager.IMPORTANCE_LOW);
+            notificationChannel = new NotificationChannel("blbl","reveil", NotificationManager.IMPORTANCE_DEFAULT);
         }
         PendingIntent pendingIntent=PendingIntent.getActivity(c_context,1,n_intent,PendingIntent.FLAG_ONE_SHOT);
         Notification notification= null;
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Log.d("xxxx", "onReceive: LA NOTIF");
-            notification = new Notification.Builder(c_context,CHANNEL_ID)
+            notification = new Notification.Builder(c_context,"blbl")
                     .setContentText("Cliquez pour arrêter le réveil")
                     .setContentTitle("REVEILLE TOI")
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
-                    .setChannelId(CHANNEL_ID)
+                    .setChannelId("blbl")
                     .setSmallIcon(android.R.drawable.sym_action_chat)
                     .build();
         }
@@ -94,5 +92,6 @@ public class AlarmReceiver extends BroadcastReceiver {
             notificationManager.createNotificationChannel(notificationChannel);
         }
         notificationManager.notify(1,notification);
+
     }
 }
