@@ -1,8 +1,7 @@
-package fr.ynov.schedule;
+package fr.ynov.schedule.calendar;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.CalendarView;
 import android.widget.TextView;
@@ -30,6 +29,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import fr.ynov.schedule.R;
+import fr.ynov.schedule.TaskAdapterCalendar;
 
 public class CalendarActivity extends AppCompatActivity implements CalendarView.OnDateChangeListener, OnCompleteListener<QuerySnapshot>, CompactCalendarView.CompactCalendarViewListener {
 
@@ -106,7 +108,6 @@ public class CalendarActivity extends AppCompatActivity implements CalendarView.
     @Override
     public void onComplete(@NonNull Task<QuerySnapshot> task)
     {
-        Log.i("xxxx", "Request completed");
         CompactCalendarView compactCalendarView = findViewById(R.id.compactcalendar_view);
 
         QuerySnapshot querySnap = (QuerySnapshot) task.getResult();
@@ -139,7 +140,6 @@ public class CalendarActivity extends AppCompatActivity implements CalendarView.
 
     public void getTasks(int day, int month, int year)
     {
-        Log.i("xxxx", "new date :" + day + "/" + month + "/" + year);
         CalendarActivity.calendar = getCalendarDay(day, month, year);
 
         // Récupération des tâches en fonction du jour sur lequel on a cliqué
@@ -190,7 +190,6 @@ public class CalendarActivity extends AppCompatActivity implements CalendarView.
         if(day < 10) newDay = "0" + day;
         else newDay = String.valueOf(day);
         int year = Integer.parseInt(dateSplitted[2]);
-        Log.i("xxxx", newDay + "/" + newMonth + "/" + year);
         TextView textView = findViewById(R.id.calendar_textview);
         textView.setText(newDay + "/" + newMonth + "/" + year);
         getTasks(Integer.parseInt(newDay), Integer.parseInt(newMonth) - 1, year);
@@ -202,6 +201,5 @@ public class CalendarActivity extends AppCompatActivity implements CalendarView.
         SimpleDateFormat dateFormatForMonth = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
         TextView textView = findViewById(R.id.calendar_month);
         textView.setText(dateFormatForMonth.format(firstDayOfNewMonth));
-        Log.i("xxxx", dateFormatForMonth.format(firstDayOfNewMonth));
     }
 }

@@ -17,15 +17,15 @@
         android:theme="@style/AppTheme">
         <activity android:name=".TaskNotificationLayout"></activity>
         <activity android:name=".stopRingingAlarm" />
-        <activity android:name=".CalendarActivity" />
+        <activity android:name=".calendar.CalendarActivity" />
         <activity android:name=".Activity_a_propos" />
         <activity android:name=".Activity_emploi_du_temps_enfant" />
         <activity android:name=".stats.StatsActivity" />
-        <activity android:name=".SettingsActivity" />
+        <activity android:name=".settings.SettingsActivity" />
         <activity android:name=".Activity_a_propos" />
         <activity android:name=".Activity_emploi_du_temps_enfant" />
         <activity android:name=".stats.StatsActivity" />
-        <activity android:name=".Activity_no_data_graph" />
+        <activity android:name=".stats.Activity_no_data_graph" />
         <activity
             android:name=".ParentsSetAlarmClock"
             android:exported="true" />
