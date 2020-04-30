@@ -9,6 +9,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.Ringtone;
@@ -17,6 +18,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -34,6 +36,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onReceive(Context context, Intent intent) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.prefs.getContext());
         PowerManager pm = (PowerManager)context.getSystemService(POWER_SERVICE);
         boolean isScreenOn = pm.isScreenOn();
         if(!isScreenOn)
@@ -49,7 +52,13 @@ public class AlarmReceiver extends BroadcastReceiver {
         alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         c_context = context;
         Toast.makeText(context, "ALARM....", Toast.LENGTH_LONG).show();
-        Uri alert = Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.arouf);
+        Uri alert;
+        if(null  != prefs.getString("alarm_song",null) ) {
+             alert = Uri.parse(prefs.getString("alarm_song",null));
+        }else {
+             alert = Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.arouf);
+        }
+        Log.d("xxxx", "onReceive: " + alert);
         r = RingtoneManager.getRingtone(context, alert);
 
         ReveilService.setNewAlarm.setNewAlarm();
