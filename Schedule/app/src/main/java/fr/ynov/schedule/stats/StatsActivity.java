@@ -182,7 +182,6 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
             else percent = 100 - ((nbTaskLate * 100 ) / nbTasks); // 100 % - (nombre de tâches en retard du jour * 100) / nombre de tâches total du jour
             text = text + percent + "% de retard.\n";
             Log.i("xxxx", percent + "% de retard.");
-            //points[i] = new DataPoint(i, percent);
             percents[posTMP] = percent;
             days[posTMP] = getDayFr(i);
             posTMP++;
@@ -248,7 +247,6 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
             table.addView(row);
         }
 
-        //txt.setText(text);
         final GraphView graph = (GraphView) findViewById(R.id.graph);
         graph.getViewport().setMaxY(100);
         graph.getViewport().setYAxisBoundsManual(true);
@@ -269,9 +267,6 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
             Intent noDataView = new Intent(getApplicationContext(), Activity_no_data_graph.class);
             startActivity(noDataView);
         }
-
-
-
     }
 
     /**
