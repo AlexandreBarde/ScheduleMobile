@@ -36,4 +36,12 @@
         <item name="compactCalendarMultiEventIndicatorColor">#fff</item>
     </style>
 
+    <style name="border_table">
+        <item name="android:background">@drawable/border</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
 </resources>
