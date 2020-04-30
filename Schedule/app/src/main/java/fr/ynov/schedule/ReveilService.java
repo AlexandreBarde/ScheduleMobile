@@ -190,6 +190,7 @@ public class ReveilService extends Service {
         Collections.sort(sortedAlarms);
         if (!sortedAlarms.isEmpty()) {
             alarmMgr.setExact(AlarmManager.RTC_WAKEUP, sortedAlarms.get(0), alarmIntent);
+
         }
     }
 

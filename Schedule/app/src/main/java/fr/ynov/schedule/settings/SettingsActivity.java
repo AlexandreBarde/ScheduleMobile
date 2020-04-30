@@ -1,4 +1,4 @@
-package fr.ynov.schedule;
+package fr.ynov.schedule.settings;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,6 +8,9 @@ import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+
+import fr.ynov.schedule.MainActivity;
+import fr.ynov.schedule.R;
 
 public class SettingsActivity extends AppCompatActivity
 {
@@ -45,7 +48,6 @@ public class SettingsActivity extends AppCompatActivity
                 }
             }
         });
-
     }
 
     private void saveNightMode(boolean state)

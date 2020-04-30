@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CalendarActivity">
+    tools:context=".calendar.CalendarActivity">
 
 
 
@@ -13,15 +13,30 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <CalendarView
-            android:id="@+id/calendar"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/calendar_month"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:dateTextAppearance="@style/CalenderViewDateCustomText"
-            android:theme="@style/CalenderViewCustom"
-            android:weekDayTextAppearance="@style/CalenderViewWeekCustomText"
-            tools:layout_editor_absoluteX="-2dp"
-            tools:layout_editor_absoluteY="4dp" />
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <com.github.sundeepk.compactcalendarview.CompactCalendarView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/compactcalendar_view"
+            android:layout_width="fill_parent"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:layout_height="250dp"
+            app:compactCalendarTextSize="15sp"
+            app:theme="@style/CustomCalendar"
+            app:compactCalendarTargetHeight="250dp"
+            />
+
 
         <TextView
             android:id="@+id/calendar_textview"

@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import fr.ynov.schedule.R;
-import fr.ynov.schedule.Activity_no_data_graph;
 
 public class StatsActivity extends AppCompatActivity implements OnCompleteListener<QuerySnapshot>
 {
