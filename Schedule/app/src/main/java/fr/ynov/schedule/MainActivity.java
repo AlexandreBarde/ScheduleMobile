@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import fr.ynov.schedule.login.LoginActivity;
+import fr.ynov.schedule.settings.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
