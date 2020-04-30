@@ -50,7 +50,7 @@ import java.util.TimerTask;
 
 
 public class ReveilService extends Service {
-    public int counter=0;
+    public int counter = 0;
     public static AlarmManager alarmMgr;
     public static PendingIntent alarmIntent;
     private static String[] joursSemaines;
@@ -60,6 +60,7 @@ public class ReveilService extends Service {
     public static List<Long> sortedAlarms;
     public static List<Long> sortedTasks;
     public static Task taskNotificationLabel;
+
     public static class setNewAlarm {
         public static void setNewAlarm() {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -69,6 +70,18 @@ public class ReveilService extends Service {
                 @Override
                 public void onComplete(@NonNull com.google.android.gms.tasks.Task<QuerySnapshot> task) {
                     ReveilService.setAlarmNotification((QuerySnapshot) task.getResult());
+                }
+            });
+        }
+
+        public static void setNewTask() {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            Date currentTime = Calendar.getInstance().getTime();
+            com.google.android.gms.tasks.Task<QuerySnapshot> docRef = db.collection("Task").orderBy("timestamp").get();
+            docRef.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull com.google.android.gms.tasks.Task<QuerySnapshot> task) {
+                    ReveilService.setAlarmTask((QuerySnapshot) task.getResult());
                 }
             });
         }
@@ -83,7 +96,7 @@ public class ReveilService extends Service {
 
     @Override
     public void onCreate() {
-        alarmMgr = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        alarmMgr = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
         serviceContext = getApplicationContext();
         joursSemaines = new String[]{" ", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"};
         super.onCreate();
@@ -95,8 +108,7 @@ public class ReveilService extends Service {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private void startMyOwnForeground()
-    {
+    private void startMyOwnForeground() {
         String NOTIFICATION_CHANNEL_ID = "example.permanence";
         String channelName = "Background Service";
         NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
@@ -117,43 +129,7 @@ public class ReveilService extends Service {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Task").orderBy("timestamp").addSnapshotListener(new EventListener<QuerySnapshot>() {
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-
-
-                if (e != null) {
-                    Log.w("ListenerError", "Listen Failed");
-                    return;
-                }
-
-                sortedTasks = new ArrayList<Long>();
-                ComponentName receiver = new ComponentName(getApplicationContext(), TaskReceiver.class);
-                PackageManager pm = getApplicationContext().getPackageManager();
-
-                pm.setComponentEnabledSetting(receiver,
-                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                        PackageManager.DONT_KILL_APP);
-
-                QuerySnapshot querySnap = queryDocumentSnapshots;
-                List<DocumentSnapshot> documents = querySnap.getDocuments();
-                ArrayList<Task> list_tasks = new ArrayList<>();
-                ArrayList<Task> daily_tasks = new ArrayList<>();
-                long millis = System.currentTimeMillis();
-
-                for(DocumentSnapshot doc : documents) {
-                    list_tasks.add(new Task(doc.get("name").toString(), doc.get("description").toString(), Long.parseLong(doc.get("timestamp").toString()), doc.get("state").toString(), Integer.parseInt(doc.get("image_status").toString()), Long.parseLong(doc.get("durée_minutes").toString())));
-                }
-                for(Task current_task : list_tasks) {
-                    if(current_task.getTimestamp() > millis) {
-                        daily_tasks.add(current_task);
-                    }
-                }
-                if (!daily_tasks.isEmpty()) {
-                    Log.i("Service status", daily_tasks.get(0).getName() + daily_tasks.get(0).getDescription());
-
-                    Intent intent = new Intent(serviceContext, TaskReceiver.class);
-                    alarmIntent = PendingIntent.getBroadcast(serviceContext, 0, intent, 0);
-                    alarmMgr.setExact(AlarmManager.RTC_WAKEUP, daily_tasks.get(0).getTimestamp(), alarmIntent);
-                    taskNotificationLabel = daily_tasks.get(0);
-                }
+                setAlarmTask(queryDocumentSnapshots);
             }
         });
         db.collection("alarms").whereEqualTo("activation", true).addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -168,6 +144,7 @@ public class ReveilService extends Service {
         super.onStartCommand(intent, flags, startId);
         return START_STICKY;
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -194,17 +171,17 @@ public class ReveilService extends Service {
         QuerySnapshot querySnap = queryDocumentSnapshots;
         List<DocumentSnapshot> documents = querySnap.getDocuments();
         ArrayList<AlarmClock> list_alarm_clock = new ArrayList<AlarmClock>();
-        for(DocumentSnapshot doc : documents) {
+        for (DocumentSnapshot doc : documents) {
             Switch mSwitch = new Switch(serviceContext);
             mSwitch.setChecked((Boolean) doc.get("activation"));
-            list_alarm_clock.add(new fr.ynov.schedule.AlarmClock(doc.get("hour").toString(),(Boolean) doc.get("activation") ,doc.get("day").toString(), (long) doc.get("timestamp")));
+            list_alarm_clock.add(new fr.ynov.schedule.AlarmClock(doc.get("hour").toString(), (Boolean) doc.get("activation"), doc.get("day").toString(), (long) doc.get("timestamp")));
         }
 
         for (AlarmClock alarm_clock : list_alarm_clock) {
             hour = Integer.parseInt(alarm_clock.getHourAlarmClock().split(":")[0]);
             minutes = Integer.parseInt(alarm_clock.getHourAlarmClock().split(":")[1]);
             Date currentTime = Calendar.getInstance().getTime();
-            if(alarm_clock.getDay().equals(joursSemaines[currentTime.getDay()])) {
+            if (alarm_clock.getDay().equals(joursSemaines[currentTime.getDay()])) {
                 if (currentTime.getHours() < hour || (currentTime.getHours() == hour && currentTime.getMinutes() < minutes)) {
                     sortedAlarms.add(alarm_clock.getTimestamp());
                     Intent intent = new Intent(serviceContext, AlarmReceiver.class);
@@ -215,6 +192,39 @@ public class ReveilService extends Service {
         Collections.sort(sortedAlarms);
         if (!sortedAlarms.isEmpty()) {
             alarmMgr.setExact(AlarmManager.RTC_WAKEUP, sortedAlarms.get(0), alarmIntent);
+        }
+    }
+
+    public static void setAlarmTask(QuerySnapshot queryDocumentSnapshots) {
+        sortedTasks = new ArrayList<Long>();
+        ComponentName receiver = new ComponentName(serviceContext, TaskReceiver.class);
+        PackageManager pm = serviceContext.getPackageManager();
+
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+
+        QuerySnapshot querySnap = queryDocumentSnapshots;
+        List<DocumentSnapshot> documents = querySnap.getDocuments();
+        ArrayList<Task> list_tasks = new ArrayList<>();
+        ArrayList<Task> daily_tasks = new ArrayList<>();
+        long millis = System.currentTimeMillis();
+
+        for (DocumentSnapshot doc : documents) {
+            list_tasks.add(new Task(doc.get("name").toString(), doc.get("description").toString(), Long.parseLong(doc.get("timestamp").toString()), doc.get("state").toString(), Integer.parseInt(doc.get("image_status").toString()), Long.parseLong(doc.get("durée_minutes").toString())));
+        }
+        for (Task current_task : list_tasks) {
+            if (current_task.getTimestamp() > millis) {
+                daily_tasks.add(current_task);
+            }
+        }
+        if (!daily_tasks.isEmpty()) {
+            Log.i("Service status", daily_tasks.get(0).getName() + daily_tasks.get(0).getDescription());
+
+            Intent intent = new Intent(serviceContext, TaskReceiver.class);
+            alarmIntent = PendingIntent.getBroadcast(serviceContext, 0, intent, 0);
+            alarmMgr.setExact(AlarmManager.RTC_WAKEUP, daily_tasks.get(0).getTimestamp(), alarmIntent);
+            taskNotificationLabel = daily_tasks.get(0);
         }
     }
 }
