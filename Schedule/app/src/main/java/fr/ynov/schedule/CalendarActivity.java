@@ -57,21 +57,21 @@ public class CalendarActivity extends AppCompatActivity implements CalendarView.
         CompactCalendarView compactCalendarView = findViewById(R.id.compactcalendar_view);
         compactCalendarView.setListener(this);
 
+        // Affichage du jour
         String[] dateSplitted = dateFormat.format(date).split("/");
-
         int day =  Integer.parseInt(dateSplitted[0]);
         int month =  Integer.parseInt(dateSplitted[1]);
-
         String newMonth = "";
         String newDay = "";
-
         if(month < 10) newMonth = "0" + month;
         else newMonth = String.valueOf(month);
-
         if(day < 10) newDay = "0" + day;
         else newDay = String.valueOf(day);
-
         int year = Integer.parseInt(dateSplitted[2]);
+
+        // Affichage du mois courant
+        TextView calendarMonth = findViewById(R.id.calendar_month);
+        calendarMonth.setText(new SimpleDateFormat("MMMM yyyy", Locale.getDefault()).format(calendar.getTime()));
 
         getTasks(Integer.parseInt(newDay), Integer.parseInt(newMonth) - 1, year);
     }
@@ -199,7 +199,9 @@ public class CalendarActivity extends AppCompatActivity implements CalendarView.
     @Override
     public void onMonthScroll(Date firstDayOfNewMonth)
     {
-        SimpleDateFormat dateFormatForMonth = new SimpleDateFormat("MMM - yyyy", Locale.getDefault());
+        SimpleDateFormat dateFormatForMonth = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
+        TextView textView = findViewById(R.id.calendar_month);
+        textView.setText(dateFormatForMonth.format(firstDayOfNewMonth));
         Log.i("xxxx", dateFormatForMonth.format(firstDayOfNewMonth));
     }
 }
