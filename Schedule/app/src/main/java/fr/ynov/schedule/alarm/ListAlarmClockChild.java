@@ -1,16 +1,7 @@
-package fr.ynov.schedule;
+package fr.ynov.schedule.alarm;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Switch;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -19,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -28,9 +18,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
-import fr.ynov.schedule.login.LoginActivity;
+import fr.ynov.schedule.R;
 
 public class ListAlarmClockChild extends AppCompatActivity implements OnCompleteListener<QuerySnapshot> {
 
@@ -74,9 +63,9 @@ public class ListAlarmClockChild extends AppCompatActivity implements OnComplete
     public void onComplete(@NonNull com.google.android.gms.tasks.Task<QuerySnapshot> alarms) {
         QuerySnapshot querySnap = (QuerySnapshot) alarms.getResult();
         List<DocumentSnapshot> documents = querySnap.getDocuments();
-        ArrayList<fr.ynov.schedule.AlarmClock> list_alarm_clock = new ArrayList<AlarmClock>();
+        ArrayList<AlarmClock> list_alarm_clock = new ArrayList<AlarmClock>();
         for(DocumentSnapshot doc : documents) {
-            list_alarm_clock.add(new fr.ynov.schedule.AlarmClock(doc.get("hour").toString(),(Boolean) doc.get("activation") ,doc.get("day").toString(), (long) doc.get("timestamp")));
+            list_alarm_clock.add(new AlarmClock(doc.get("hour").toString(),(Boolean) doc.get("activation") ,doc.get("day").toString(), (long) doc.get("timestamp")));
         }
 
         recyclerViewChild = findViewById(R.id.alarmClock_recyclerView_child);

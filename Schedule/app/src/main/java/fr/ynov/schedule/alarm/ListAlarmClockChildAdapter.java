@@ -1,9 +1,8 @@
-package fr.ynov.schedule;
+package fr.ynov.schedule.alarm;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -12,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+
+import fr.ynov.schedule.R;
 
 public class ListAlarmClockChildAdapter extends RecyclerView.Adapter<ListAlarmClockChildAdapter.AlarmClockViewHolder> {
     private ArrayList<AlarmClock> alarmClockList;

@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Locale;
 
 import fr.ynov.schedule.R;
-import fr.ynov.schedule.TaskAdapterCalendar;
+import fr.ynov.schedule.task.TaskAdapterCalendar;
 
 public class CalendarActivity extends AppCompatActivity implements CalendarView.OnDateChangeListener, OnCompleteListener<QuerySnapshot>, CompactCalendarView.CompactCalendarViewListener {
 
@@ -39,7 +39,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarView.
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<fr.ynov.schedule.Task> list_task;
+    private ArrayList<fr.ynov.schedule.task.Task> list_task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -112,7 +112,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarView.
 
         QuerySnapshot querySnap = (QuerySnapshot) task.getResult();
         List<DocumentSnapshot> documents = querySnap.getDocuments();
-        list_task = new ArrayList<fr.ynov.schedule.Task>();
+        list_task = new ArrayList<fr.ynov.schedule.task.Task>();
         long minTimestamp = getMinTimestamp(CalendarActivity.calendar);
         long maxTimestamp = getMaxTimestamp(CalendarActivity.calendar);
         compactCalendarView.removeAllEvents();
@@ -124,7 +124,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarView.
                 Date date = new Date(timestamp);
                 Timestamp ts = new Timestamp(date.getTime());
                 Long duration =  Long.parseLong(doc.get("durée_minutes").toString());
-                list_task.add(new fr.ynov.schedule.Task(doc.get("name").toString(), doc.get("description").toString(), timestamp,doc.get("state").toString(), 1, duration));
+                list_task.add(new fr.ynov.schedule.task.Task(doc.get("name").toString(), doc.get("description").toString(), timestamp,doc.get("state").toString(), 1, duration));
 
             }
             Event ev = new Event(Color.RED, Long.parseLong(doc.get("timestamp").toString()));

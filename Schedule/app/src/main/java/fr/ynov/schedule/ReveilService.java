@@ -1,6 +1,5 @@
 package fr.ynov.schedule;
 
-import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -10,48 +9,38 @@ import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
-import android.os.PowerManager;
-import android.os.SystemClock;
-import android.preference.PreferenceManager;
-import android.util.Log;
-import android.view.View;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+
+import fr.ynov.schedule.alarm.AlarmClock;
+import fr.ynov.schedule.alarm.AlarmReceiver;
+import fr.ynov.schedule.task.Task;
+import fr.ynov.schedule.task.TaskReceiver;
 
 
 public class ReveilService extends Service {
@@ -180,7 +169,7 @@ public class ReveilService extends Service {
         for (DocumentSnapshot doc : documents) {
             Switch mSwitch = new Switch(serviceContext);
             mSwitch.setChecked((Boolean) doc.get("activation"));
-            list_alarm_clock.add(new fr.ynov.schedule.AlarmClock(doc.get("hour").toString(), (Boolean) doc.get("activation"), doc.get("day").toString(), (long) doc.get("timestamp")));
+            list_alarm_clock.add(new AlarmClock(doc.get("hour").toString(), (Boolean) doc.get("activation"), doc.get("day").toString(), (long) doc.get("timestamp")));
         }
 
         for (AlarmClock alarm_clock : list_alarm_clock) {

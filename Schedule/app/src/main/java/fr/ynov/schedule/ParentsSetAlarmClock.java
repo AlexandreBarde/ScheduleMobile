@@ -8,7 +8,6 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -29,6 +28,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import fr.ynov.schedule.alarm.ListAlarmClock;
 
 public class ParentsSetAlarmClock extends AppCompatActivity implements View.OnClickListener {
     Map clickedButtons = new HashMap<String, Boolean>();

@@ -1,9 +1,8 @@
-package fr.ynov.schedule;
+package fr.ynov.schedule.task;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,16 +10,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class TaskAdapterChild extends RecyclerView.Adapter<TaskAdapterChild.TaskViewHolder>  {
+import fr.ynov.schedule.R;
+
+public class TaskAdapterCalendar extends RecyclerView.Adapter<TaskAdapterCalendar.TaskViewHolder>  {
 
     private ArrayList<Task> mTask_list;
-    public TaskAdapterChild(ArrayList<Task> task_list){
+    public TaskAdapterCalendar(ArrayList<Task> task_list){
         this.mTask_list = task_list;
     }
     @NonNull
     @Override
     public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.template_task_child,parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_calendar,parent, false);
         TaskViewHolder evh = new TaskViewHolder(v);
         return  evh;
     }
@@ -31,7 +32,6 @@ public class TaskAdapterChild extends RecyclerView.Adapter<TaskAdapterChild.Task
         holder.name_task.setText(current_task.getName());
         holder.description_task.setText(current_task.getDescription());
         holder.date_task.setText(current_task.dateFormat());
-        holder.image_status_task.setImageResource(current_task.getImage_status());
         holder.durée_task.setText(current_task.heureFormat());
 
     }
@@ -46,7 +46,6 @@ public class TaskAdapterChild extends RecyclerView.Adapter<TaskAdapterChild.Task
         public  TextView name_task;
         public  TextView description_task;
         public  TextView date_task;
-        public ImageView image_status_task;
         public  TextView durée_task;
 
         public TaskViewHolder(@NonNull View itemView) {
@@ -54,7 +53,6 @@ public class TaskAdapterChild extends RecyclerView.Adapter<TaskAdapterChild.Task
             name_task = itemView.findViewById(R.id.nameText);
             description_task = itemView.findViewById(R.id.descriptionText);
             date_task = itemView.findViewById(R.id.dateText);
-            image_status_task = itemView.findViewById(R.id.statusImage);
             durée_task = itemView.findViewById(R.id.durée);
 
 

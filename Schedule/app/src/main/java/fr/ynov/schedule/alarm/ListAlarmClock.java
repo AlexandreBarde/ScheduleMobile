@@ -1,16 +1,12 @@
-package fr.ynov.schedule;
+package fr.ynov.schedule.alarm;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -29,16 +25,17 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.prefs.AbstractPreferences;
 
-import fr.ynov.schedule.login.LoginActivity;
+import fr.ynov.schedule.ParentsSetAlarmClock;
+import fr.ynov.schedule.R;
+import fr.ynov.schedule.alarm.AlarmClock;
+import fr.ynov.schedule.alarm.AlarmClockAdapter;
 
 public class ListAlarmClock extends AppCompatActivity implements View.OnClickListener, OnCompleteListener<QuerySnapshot> {
     private RecyclerView recyclerView;
     private AlarmClockAdapter adapter;
     private RecyclerView.LayoutManager recyclerViewLManager;
-    private ArrayList<fr.ynov.schedule.AlarmClock> list_alarm_clock;
+    private ArrayList<AlarmClock> list_alarm_clock;
     private HashMap<String,DocumentSnapshot> map_task_references;
 
     @Override
@@ -100,7 +97,7 @@ public class ListAlarmClock extends AppCompatActivity implements View.OnClickLis
             Switch mSwitch = new Switch(this);
             mSwitch.setChecked((Boolean) doc.get("activation"));
             map_task_references.put(doc.get("day").toString() + doc.get("hour").toString() + nb_alarm, doc);
-            list_alarm_clock.add(new fr.ynov.schedule.AlarmClock(doc.get("hour").toString(),(Boolean) doc.get("activation") ,doc.get("day").toString(), (long) doc.get("timestamp")));
+            list_alarm_clock.add(new AlarmClock(doc.get("hour").toString(),(Boolean) doc.get("activation") ,doc.get("day").toString(), (long) doc.get("timestamp")));
             nb_alarm ++;
         }
 

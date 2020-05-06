@@ -1,4 +1,4 @@
-package fr.ynov.schedule;
+package fr.ynov.schedule.task;
 
 import android.util.Log;
 

@@ -15,14 +15,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TaskNotificationLayout"></activity>
+        <activity android:name=".task.TaskNotificationLayout"></activity>
         <activity android:name=".stopRingingAlarm" />
         <activity android:name=".calendar.CalendarActivity" />
-        <activity android:name=".Activity_a_propos" />
+        <activity android:name=".about.AboutActivity" />
         <activity android:name=".Activity_emploi_du_temps_enfant" />
         <activity android:name=".stats.StatsActivity" />
         <activity android:name=".settings.SettingsActivity" />
-        <activity android:name=".Activity_a_propos" />
+        <activity android:name=".about.AboutActivity" />
         <activity android:name=".Activity_emploi_du_temps_enfant" />
         <activity android:name=".stats.StatsActivity" />
         <activity android:name=".stats.Activity_no_data_graph" />
@@ -43,8 +43,8 @@
         <activity android:name=".login.LoginUsername" />
         <activity android:name=".login.LoginPassword" />
         <activity android:name=".login.LoginButton" />
-        <activity android:name=".ListAlarmClock" />
-        <activity android:name=".ListAlarmClockChild" />
+        <activity android:name=".alarm.ListAlarmClock" />
+        <activity android:name=".alarm.ListAlarmClockChild" />
         <activity android:name=".Activity_main_parent" />
         <activity android:name=".Activity_gestion_des_taches" />
         <activity android:name=".Activity_add_task" />
@@ -63,14 +63,14 @@
             android:enabled="true" />
 
         <receiver
-            android:name=".AlarmReceiver"
+            android:name=".alarm.AlarmReceiver"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".TaskReceiver"
+            android:name=".task.TaskReceiver"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
