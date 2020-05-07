@@ -39,7 +39,7 @@ public class TaskManagement extends AppCompatActivity implements View.OnClickLis
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gestion_des_taches);
+        setContentView(R.layout.activity_task_management);
         getTask();
         Button button_add_task = findViewById(R.id.button_ajouter_des_taches);
         button_add_task.setOnClickListener(this);

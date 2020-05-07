@@ -35,11 +35,10 @@ public class AlarmReceiver extends BroadcastReceiver {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onReceive(Context context, Intent intent) {
-
-
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.prefs.getContext());
         PowerManager pm = (PowerManager)context.getSystemService(POWER_SERVICE);
         boolean isScreenOn = pm.isScreenOn();
+
         if(!isScreenOn)
         {
             @SuppressLint("InvalidWakeLockTag") PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK |PowerManager.ACQUIRE_CAUSES_WAKEUP |PowerManager.ON_AFTER_RELEASE,"MyLock");
@@ -48,11 +47,11 @@ public class AlarmReceiver extends BroadcastReceiver {
 
             wl_cpu.acquire(10000);
         }
-
         WakeLocker.acquire(context);
         alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         c_context = context;
         Uri alert;
+
         if(null  != prefs.getString("alarm_song",null) ) {
              alert = Uri.parse(prefs.getString("alarm_song",null));
         }else {
@@ -62,28 +61,25 @@ public class AlarmReceiver extends BroadcastReceiver {
         r = RingtoneManager.getRingtone(context, alert);
 
         if(r == null){
-
             alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             r = RingtoneManager.getRingtone(context, alert);
-
             if(r == null){
                 alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
                 r = RingtoneManager.getRingtone(context, alert);
             }
         }
+
         if(r != null)
             r.play();
         ReveilService.setNewAlarm.setNewAlarm();
-
-
         Intent n_intent =new Intent(c_context, StopRingingAlarm.class);
         NotificationChannel notificationChannel= null;
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationChannel = new NotificationChannel("blbl","reveil", NotificationManager.IMPORTANCE_HIGH);
         }
         PendingIntent pendingIntent=PendingIntent.getActivity(c_context,1,n_intent,PendingIntent.FLAG_ONE_SHOT);
         Notification notification= null;
-
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notification = new Notification.Builder(c_context,"blbl")

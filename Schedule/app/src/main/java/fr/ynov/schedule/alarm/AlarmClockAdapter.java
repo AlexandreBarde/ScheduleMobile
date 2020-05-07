@@ -33,7 +33,7 @@ public class AlarmClockAdapter extends RecyclerView.Adapter<AlarmClockAdapter.Al
         public TextView hourAlarmClock;
         public Switch onOffAlarmClock;
         public ImageButton onDelete;
-        public TextView dayAlaramClock;
+        public TextView dayAlarmClock;
         public ImageView  delete_alarm;
 
         public AlarmClockViewHolder(@NonNull View alarmClockView, final OnItemClickListener listener) {
@@ -41,8 +41,9 @@ public class AlarmClockAdapter extends RecyclerView.Adapter<AlarmClockAdapter.Al
             hourAlarmClock = alarmClockView.findViewById(R.id.alarmClock);
             onOffAlarmClock = alarmClockView.findViewById(R.id.onOff);
             onDelete = alarmClockView.findViewById(R.id.deleteAlarm);
-            dayAlaramClock = alarmClockView.findViewById(R.id.jourClock);
+            dayAlarmClock = alarmClockView.findViewById(R.id.jourClock);
             delete_alarm = alarmClockView.findViewById(R.id.delete_alarm);
+
             delete_alarm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -52,14 +53,15 @@ public class AlarmClockAdapter extends RecyclerView.Adapter<AlarmClockAdapter.Al
                             listener.onDeleteClick(position);
                         }
                     }
-
                 }
             });
         }
     }
+
     public AlarmClockAdapter(ArrayList<AlarmClock> c_alarmClockList) {
         alarmClockList = c_alarmClockList;
     }
+
     @NonNull
     @Override
     public AlarmClockViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -73,9 +75,8 @@ public class AlarmClockAdapter extends RecyclerView.Adapter<AlarmClockAdapter.Al
         AlarmClock currentAlarmClock = alarmClockList.get(position);
         holder.hourAlarmClock.setText(currentAlarmClock.getHourAlarmClock());
         holder.onOffAlarmClock.setChecked(currentAlarmClock.getActivation());
-        holder.dayAlaramClock.setText(currentAlarmClock.getDay());
+        holder.dayAlarmClock.setText(currentAlarmClock.getDay());
     }
-
 
     @Override
     public int getItemCount() {

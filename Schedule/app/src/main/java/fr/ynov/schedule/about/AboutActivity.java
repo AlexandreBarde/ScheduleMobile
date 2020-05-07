@@ -13,7 +13,7 @@ public class AboutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_a_propos);
+        setContentView(R.layout.activity_about);
 
         ImageView alexandre = findViewById(R.id.image_alexandre);
         ImageView hugo = findViewById(R.id.image_hugo);

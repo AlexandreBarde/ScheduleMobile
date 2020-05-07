@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import fr.ynov.schedule.R;
-import fr.ynov.schedule.task.TaskAdapterChild;
 
 public class TaskChildSchedule extends AppCompatActivity  implements OnCompleteListener<QuerySnapshot> {
     private RecyclerView recyclerView;
@@ -35,7 +34,7 @@ public class TaskChildSchedule extends AppCompatActivity  implements OnCompleteL
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_emploi_du_temps_enfant);
+        setContentView(R.layout.activity_child_schedule);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         com.google.android.gms.tasks.Task<QuerySnapshot> docRef = db.collection("Task").orderBy("timestamp").get();
         docRef.addOnCompleteListener(this);

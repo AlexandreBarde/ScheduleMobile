@@ -16,6 +16,7 @@ import fr.ynov.schedule.R;
 
 public class ListAlarmClockChildAdapter extends RecyclerView.Adapter<ListAlarmClockChildAdapter.AlarmClockViewHolder> {
     private ArrayList<AlarmClock> alarmClockList;
+
     public static class AlarmClockViewHolder extends RecyclerView.ViewHolder {
         public TextView hourAlarmClock;
         public Switch onOffAlarmClock;
@@ -28,9 +29,11 @@ public class ListAlarmClockChildAdapter extends RecyclerView.Adapter<ListAlarmCl
             onDelete = alarmClockView.findViewById(R.id.deleteAlarm);
         }
     }
+
     public ListAlarmClockChildAdapter(ArrayList<AlarmClock> c_alarmClockList) {
         alarmClockList = c_alarmClockList;
     }
+
     @NonNull
     @Override
     public AlarmClockViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

@@ -63,7 +63,6 @@ public class ListAlarmClock extends AppCompatActivity implements View.OnClickLis
         });
     }
 
-
     public boolean onOptionsItemSelected(MenuItem item)
     {
         switch (item.getItemId())
@@ -74,6 +73,7 @@ public class ListAlarmClock extends AppCompatActivity implements View.OnClickLis
         }
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public void onClick(View view)
     {
@@ -90,6 +90,7 @@ public class ListAlarmClock extends AppCompatActivity implements View.OnClickLis
         list_alarm_clock = new ArrayList<AlarmClock>();
         map_task_references = new  HashMap<String, DocumentSnapshot>();
         int nb_alarm = 0;
+
         for(DocumentSnapshot doc : documents) {
             Switch mSwitch = new Switch(this);
             mSwitch.setChecked((Boolean) doc.get("activation"));
@@ -97,13 +98,13 @@ public class ListAlarmClock extends AppCompatActivity implements View.OnClickLis
             list_alarm_clock.add(new AlarmClock(doc.get("hour").toString(),(Boolean) doc.get("activation") ,doc.get("day").toString(), (long) doc.get("timestamp")));
             nb_alarm ++;
         }
-
         recyclerView = findViewById(R.id.alarmClock_recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerViewLManager = new LinearLayoutManager(this);
         adapter = new AlarmClockAdapter(list_alarm_clock);
         recyclerView.setLayoutManager(recyclerViewLManager);
         recyclerView.setAdapter(adapter);
+
         adapter.setOnItemClickListener(new AlarmClockAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
