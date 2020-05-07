@@ -39,7 +39,7 @@
         android:layout_marginEnd="48dp"
         android:background="@drawable/button_btn"
         android:enabled="true"
-        android:text="Taches de la jounrée"
+        android:text="Taches de la journée"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.466"
