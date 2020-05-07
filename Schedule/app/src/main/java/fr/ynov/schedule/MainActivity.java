@@ -25,6 +25,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.List;
 import java.util.Map;
 
+import fr.ynov.schedule.about.AboutActivity;
 import fr.ynov.schedule.login.LoginActivity;
 import fr.ynov.schedule.settings.SettingsActivity;
 
@@ -144,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(childView);
         }
         else if(view.getId() == R.id.aPropos) {
-            Intent aProposView = new Intent(getApplicationContext(), Activity_a_propos.class);
+            Intent aProposView = new Intent(getApplicationContext(), AboutActivity.class);
             startActivity(aProposView);
         }
         else if(view.getId() == R.id.button_settings)

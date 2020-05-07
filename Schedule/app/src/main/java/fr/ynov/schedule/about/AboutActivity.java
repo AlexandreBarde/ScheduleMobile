@@ -1,11 +1,13 @@
-package fr.ynov.schedule;
+package fr.ynov.schedule.about;
 
 import android.os.Bundle;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class Activity_a_propos extends AppCompatActivity {
+import fr.ynov.schedule.R;
+
+public class AboutActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState)

@@ -1,6 +1,5 @@
 package fr.ynov.schedule;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import fr.ynov.schedule.alarm.ListAlarmClock;
 import fr.ynov.schedule.stats.StatsActivity;
 
 

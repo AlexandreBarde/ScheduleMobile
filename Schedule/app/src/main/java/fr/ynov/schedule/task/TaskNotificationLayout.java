@@ -1,4 +1,4 @@
-package fr.ynov.schedule;
+package fr.ynov.schedule.task;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+
+import fr.ynov.schedule.Activity_emploi_du_temps_enfant;
+import fr.ynov.schedule.R;
 
 public class TaskNotificationLayout extends AppCompatActivity {
 

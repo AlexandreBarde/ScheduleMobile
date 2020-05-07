@@ -7,11 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,15 +18,16 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import fr.ynov.schedule.task.TaskAdapterChild;
 
 public class Activity_emploi_du_temps_enfant extends AppCompatActivity  implements OnCompleteListener<QuerySnapshot> {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<fr.ynov.schedule.Task> list_task;
+    private ArrayList<fr.ynov.schedule.task.Task> list_task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +54,7 @@ public class Activity_emploi_du_temps_enfant extends AppCompatActivity  implemen
         QuerySnapshot querySnap = (QuerySnapshot) task.getResult();
         List<DocumentSnapshot> documents = querySnap.getDocuments();
 
-        list_task = new ArrayList<fr.ynov.schedule.Task>();
+        list_task = new ArrayList<fr.ynov.schedule.task.Task>();
         for(DocumentSnapshot doc : documents) {
             Map<String, Object> map = doc.getData();
             int image_task;
@@ -78,7 +75,7 @@ public class Activity_emploi_du_temps_enfant extends AppCompatActivity  implemen
             Date date = new Date(timestamp);
             Timestamp ts = new Timestamp(date.getTime());
             Long durré =  Long.parseLong(doc.get("durée_minutes").toString());
-            list_task.add(new fr.ynov.schedule.Task(doc.get("name").toString(), doc.get("description").toString(), timestamp,doc.get("state").toString(), image_task, durré ));
+            list_task.add(new fr.ynov.schedule.task.Task(doc.get("name").toString(), doc.get("description").toString(), timestamp,doc.get("state").toString(), image_task, durré ));
         }
         recyclerView = findViewById(R.id.taches_list);
         recyclerView.setHasFixedSize(true);
