@@ -22,7 +22,6 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import fr.ynov.schedule.Activity_emploi_du_temps_enfant;
 import fr.ynov.schedule.R;
 
 public class TaskNotificationLayout extends AppCompatActivity {
@@ -111,7 +110,7 @@ public class TaskNotificationLayout extends AppCompatActivity {
                     db.collection("Task").document(docRefIntent).set(task_new).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull com.google.android.gms.tasks.Task<Void> task) {
-                            Intent add_task_view = new Intent(getApplicationContext(), Activity_emploi_du_temps_enfant.class);
+                            Intent add_task_view = new Intent(getApplicationContext(), TaskChildSchedule.class);
                             startActivity(add_task_view);
                         }
                     });

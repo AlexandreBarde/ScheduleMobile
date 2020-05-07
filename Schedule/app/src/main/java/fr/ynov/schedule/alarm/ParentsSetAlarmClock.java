@@ -1,4 +1,4 @@
-package fr.ynov.schedule;
+package fr.ynov.schedule.alarm;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import fr.ynov.schedule.R;
 import fr.ynov.schedule.alarm.ListAlarmClock;
 
 public class ParentsSetAlarmClock extends AppCompatActivity implements View.OnClickListener {

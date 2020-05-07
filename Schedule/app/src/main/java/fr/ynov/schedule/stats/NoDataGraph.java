@@ -7,10 +7,10 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import fr.ynov.schedule.Activity_main_parent;
+import fr.ynov.schedule.main.MainParent;
 import fr.ynov.schedule.R;
 
-public class Activity_no_data_graph extends AppCompatActivity implements View.OnClickListener
+public class NoDataGraph extends AppCompatActivity implements View.OnClickListener
 {
 
     @Override
@@ -25,7 +25,7 @@ public class Activity_no_data_graph extends AppCompatActivity implements View.On
     @Override
     public void onClick(View v)
     {
-        Intent home = new Intent(getApplicationContext(), Activity_main_parent.class);
+        Intent home = new Intent(getApplicationContext(), MainParent.class);
         startActivity(home);
     }
 

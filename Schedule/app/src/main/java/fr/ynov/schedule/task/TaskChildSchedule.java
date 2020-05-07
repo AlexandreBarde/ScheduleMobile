@@ -1,4 +1,4 @@
-package fr.ynov.schedule;
+package fr.ynov.schedule.task;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -21,9 +21,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import fr.ynov.schedule.R;
 import fr.ynov.schedule.task.TaskAdapterChild;
 
-public class Activity_emploi_du_temps_enfant extends AppCompatActivity  implements OnCompleteListener<QuerySnapshot> {
+public class TaskChildSchedule extends AppCompatActivity  implements OnCompleteListener<QuerySnapshot> {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;

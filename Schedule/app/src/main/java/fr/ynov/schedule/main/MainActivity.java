@@ -1,4 +1,4 @@
-package fr.ynov.schedule;
+package fr.ynov.schedule.main;
 
 import android.app.ActivityManager;
 import android.content.Context;
@@ -25,6 +25,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.List;
 import java.util.Map;
 
+import fr.ynov.schedule.R;
+import fr.ynov.schedule.service.ReveilService;
+import fr.ynov.schedule.utils.Preference;
 import fr.ynov.schedule.about.AboutActivity;
 import fr.ynov.schedule.login.LoginActivity;
 import fr.ynov.schedule.settings.SettingsActivity;
@@ -127,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     else if(isFound && correctPassword)
                     {
                         text = "Re-bienvenue " + login;
-                        Intent childView = new Intent(getApplicationContext(), Activity_main_parent.class);
+                        Intent childView = new Intent(getApplicationContext(), MainParent.class);
                         startActivity(childView);
                     }
                     else

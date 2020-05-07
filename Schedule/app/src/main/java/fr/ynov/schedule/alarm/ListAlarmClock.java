@@ -26,10 +26,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import fr.ynov.schedule.ParentsSetAlarmClock;
 import fr.ynov.schedule.R;
-import fr.ynov.schedule.alarm.AlarmClock;
-import fr.ynov.schedule.alarm.AlarmClockAdapter;
 
 public class ListAlarmClock extends AppCompatActivity implements View.OnClickListener, OnCompleteListener<QuerySnapshot> {
     private RecyclerView recyclerView;

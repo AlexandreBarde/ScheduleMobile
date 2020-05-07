@@ -1,4 +1,4 @@
-package fr.ynov.schedule;
+package fr.ynov.schedule.alarm;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,7 +13,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class stopRingingAlarm extends AppCompatActivity{
+import fr.ynov.schedule.R;
+import fr.ynov.schedule.alarm.AlarmReceiver;
+
+public class StopRingingAlarm extends AppCompatActivity{
     private Context context;
 
     @Override
@@ -21,6 +24,6 @@ public class stopRingingAlarm extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stop_ringing_alarm);
         context = getApplicationContext();
-
+        AlarmReceiver.r.stop();
     }
 }

@@ -19,8 +19,8 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import fr.ynov.schedule.Activity_main_parent;
-import fr.ynov.schedule.MainActivity;
+import fr.ynov.schedule.main.MainParent;
+import fr.ynov.schedule.main.MainActivity;
 import fr.ynov.schedule.R;
 
 public class LoginButton extends AppCompatActivity implements View.OnClickListener, OnCompleteListener
@@ -79,7 +79,7 @@ public class LoginButton extends AppCompatActivity implements View.OnClickListen
             editor.putString("login", username.getText().toString());
             editor.putString("password", password.getText().toString());
             editor.apply();
-            Intent childView = new Intent(parent.getContext(), Activity_main_parent.class);
+            Intent childView = new Intent(parent.getContext(), MainParent.class);
             parent.getContext().startActivity(childView);
         }
         else

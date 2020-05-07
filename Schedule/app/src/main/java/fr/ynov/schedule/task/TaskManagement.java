@@ -1,4 +1,4 @@
-package fr.ynov.schedule;
+package fr.ynov.schedule.task;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -25,10 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import fr.ynov.schedule.task.Task;
-import fr.ynov.schedule.task.TaskAdapter;
+import fr.ynov.schedule.R;
 
-public class Activity_gestion_des_taches extends AppCompatActivity implements View.OnClickListener, OnCompleteListener<QuerySnapshot> {
+public class TaskManagement extends AppCompatActivity implements View.OnClickListener, OnCompleteListener<QuerySnapshot> {
     private RecyclerView recyclerView;
     private TaskAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -59,7 +58,7 @@ public class Activity_gestion_des_taches extends AppCompatActivity implements Vi
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.button_ajouter_des_taches) {
-            Intent add_task_view = new Intent(getApplicationContext(), Activity_add_task.class);
+            Intent add_task_view = new Intent(getApplicationContext(), TaskAddNew.class);
             startActivity(add_task_view);
         }
 

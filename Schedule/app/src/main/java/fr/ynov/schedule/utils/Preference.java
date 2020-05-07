@@ -1,4 +1,4 @@
-package fr.ynov.schedule;
+package fr.ynov.schedule.utils;
 
 import android.content.Context;
 

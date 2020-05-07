@@ -1,4 +1,4 @@
-package fr.ynov.schedule;
+package fr.ynov.schedule.service;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
-
-import fr.ynov.schedule.ReveilService;
 
 public class Restarter extends BroadcastReceiver {
     @Override

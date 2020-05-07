@@ -1,4 +1,4 @@
-package fr.ynov.schedule;
+package fr.ynov.schedule.task;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,9 +27,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import fr.ynov.schedule.task.Task;
+import fr.ynov.schedule.R;
 
-public class Activity_add_task extends AppCompatActivity implements OnSuccessListener<DocumentReference>, View.OnClickListener
+public class TaskAddNew extends AppCompatActivity implements OnSuccessListener<DocumentReference>, View.OnClickListener
 {
 
     @Override
@@ -83,7 +83,7 @@ public class Activity_add_task extends AppCompatActivity implements OnSuccessLis
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
         Log.d("xxxx","Insertion Ok");
-        Intent gestion_task_view = new Intent(getApplicationContext(), Activity_gestion_des_taches.class);
+        Intent gestion_task_view = new Intent(getApplicationContext(), TaskManagement.class);
         startActivity(gestion_task_view);
     }
 

@@ -17,15 +17,13 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
-import fr.ynov.schedule.MainActivity;
+import fr.ynov.schedule.main.MainActivity;
 import fr.ynov.schedule.R;
-import fr.ynov.schedule.ReveilService;
-import fr.ynov.schedule.WakeLocker;
-import fr.ynov.schedule.stopRingingAlarm;
+import fr.ynov.schedule.service.ReveilService;
+import fr.ynov.schedule.utils.WakeLocker;
 
 import static android.content.Context.POWER_SERVICE;
 
@@ -54,7 +52,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         WakeLocker.acquire(context);
         alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         c_context = context;
-        Toast.makeText(context, "ALARM....", Toast.LENGTH_LONG).show();
         Uri alert;
         if(null  != prefs.getString("alarm_song",null) ) {
              alert = Uri.parse(prefs.getString("alarm_song",null));
@@ -79,7 +76,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         ReveilService.setNewAlarm.setNewAlarm();
 
 
-        Intent n_intent =new Intent(c_context, stopRingingAlarm.class);
+        Intent n_intent =new Intent(c_context, StopRingingAlarm.class);
         NotificationChannel notificationChannel= null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationChannel = new NotificationChannel("blbl","reveil", NotificationManager.IMPORTANCE_HIGH);

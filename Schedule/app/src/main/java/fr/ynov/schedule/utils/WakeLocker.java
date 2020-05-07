@@ -1,4 +1,4 @@
-package fr.ynov.schedule;
+package fr.ynov.schedule.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

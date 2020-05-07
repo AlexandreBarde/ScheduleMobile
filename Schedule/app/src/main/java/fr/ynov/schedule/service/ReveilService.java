@@ -1,4 +1,4 @@
-package fr.ynov.schedule;
+package fr.ynov.schedule.service;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -37,6 +37,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import fr.ynov.schedule.main.MainActivity;
 import fr.ynov.schedule.alarm.AlarmClock;
 import fr.ynov.schedule.alarm.AlarmReceiver;
 import fr.ynov.schedule.task.Task;

@@ -1,4 +1,4 @@
-package fr.ynov.schedule;
+package fr.ynov.schedule.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,8 +7,10 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import fr.ynov.schedule.R;
 import fr.ynov.schedule.alarm.ListAlarmClockChild;
 import fr.ynov.schedule.calendar.CalendarActivity;
+import fr.ynov.schedule.task.TaskChildSchedule;
 
 public class MainChildActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -32,7 +34,7 @@ public class MainChildActivity extends AppCompatActivity implements View.OnClick
     {
         if(v.getId() == R.id.button_tache)
         {
-            Intent emploi_du_temps_enfant_vew = new Intent(getApplicationContext(), Activity_emploi_du_temps_enfant.class);
+            Intent emploi_du_temps_enfant_vew = new Intent(getApplicationContext(), TaskChildSchedule.class);
             startActivity(emploi_du_temps_enfant_vew);
         }
         else if(v.getId() == R.id.button_voir_les_reveils)

@@ -16,7 +16,7 @@ import android.os.Vibrator;
 import androidx.annotation.RequiresApi;
 
 import fr.ynov.schedule.R;
-import fr.ynov.schedule.ReveilService;
+import fr.ynov.schedule.service.ReveilService;
 
 import static android.content.Context.POWER_SERVICE;
 

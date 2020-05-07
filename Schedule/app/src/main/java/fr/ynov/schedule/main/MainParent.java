@@ -1,4 +1,4 @@
-package fr.ynov.schedule;
+package fr.ynov.schedule.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,11 +8,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import fr.ynov.schedule.R;
 import fr.ynov.schedule.alarm.ListAlarmClock;
 import fr.ynov.schedule.stats.StatsActivity;
+import fr.ynov.schedule.task.TaskManagement;
 
 
-public class Activity_main_parent extends AppCompatActivity implements View.OnClickListener
+public class MainParent extends AppCompatActivity implements View.OnClickListener
 {
 
     @Override
@@ -35,7 +37,7 @@ public class Activity_main_parent extends AppCompatActivity implements View.OnCl
         switch (v.getId())
         {
             case(R.id.button_gestion_des_taches):
-                Intent gestion_des_taches_view = new Intent(getApplicationContext(), Activity_gestion_des_taches.class);
+                Intent gestion_des_taches_view = new Intent(getApplicationContext(), TaskManagement.class);
                 startActivity(gestion_des_taches_view);
                 break;
             case(R.id.button_ajouter_un_reveil):

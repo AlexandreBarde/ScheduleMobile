@@ -77,7 +77,7 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
         Log.i("xxxx", tasks.toString());
         if(tasks.size() <= 1)
         {
-            Intent noDataView = new Intent(getApplicationContext(), Activity_no_data_graph.class);
+            Intent noDataView = new Intent(getApplicationContext(), NoDataGraph.class);
             startActivity(noDataView);
         }
         else sortTasks(tasks);
@@ -140,7 +140,7 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
 
         if(tasksWeek.size() == 0)
         {
-            Intent noDataView = new Intent(getApplicationContext(), Activity_no_data_graph.class);
+            Intent noDataView = new Intent(getApplicationContext(), NoDataGraph.class);
             startActivity(noDataView);
         }
 
@@ -199,7 +199,7 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
         }
         catch(IllegalStateException e)
         {
-            Intent noDataView = new Intent(getApplicationContext(), Activity_no_data_graph.class);
+            Intent noDataView = new Intent(getApplicationContext(), NoDataGraph.class);
             startActivity(noDataView);
         }
     }

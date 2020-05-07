@@ -1,6 +1,5 @@
 package fr.ynov.schedule.settings;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -12,7 +11,7 @@ import android.widget.Switch;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
-import fr.ynov.schedule.MainActivity;
+import fr.ynov.schedule.main.MainActivity;
 import fr.ynov.schedule.R;
 
 public class SettingsActivity extends AppCompatActivity
