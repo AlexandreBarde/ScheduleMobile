@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.CompoundButton;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
 
@@ -24,9 +25,21 @@ public class SettingsActivity extends AppCompatActivity
         setContentView(R.layout.activity_settings_activitty);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.prefs.getContext());
         Log.d("xxxx", "onCreate: " + prefs.getString("alarm_song",null));
-
         Switch sMode = findViewById(R.id.switch_mode);
         RadioGroup rg = (RadioGroup) findViewById(R.id.alarm_radio_button_group);
+        RadioButton alarmBase = findViewById(R.id.base_alarm);
+        RadioButton alarmCustom = findViewById(R.id.custom_alarm);
+        if(null  != prefs.getString("alarm_song",null) ) {
+            String prefGet =   prefs.getString("alarm_song",null);
+            if(prefGet.equals("android.resource://" + getApplicationContext().getPackageName() + "/" + R.raw.fantasy_alarm_clock)) {
+                alarmBase.setChecked(true);
+            }else{
+                alarmCustom.setChecked(true);
+            }
+
+        }else {
+            alarmBase.setChecked(true);
+        }
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             @Override
