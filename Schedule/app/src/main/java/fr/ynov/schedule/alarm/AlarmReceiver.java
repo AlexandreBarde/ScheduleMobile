@@ -84,7 +84,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notification = new Notification.Builder(c_context,"blbl")
                     .setContentText("Cliquez pour arrêter le réveil")
-                    .setContentTitle("REVEILLE TOI")
+                    .setContentTitle("Reveil")
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
                     .setChannelId("blbl")
