@@ -31,7 +31,6 @@ public class AlarmClockAdapter extends RecyclerView.Adapter<AlarmClockAdapter.Al
 
     public static class AlarmClockViewHolder extends RecyclerView.ViewHolder {
         public TextView hourAlarmClock;
-        public Switch onOffAlarmClock;
         public ImageButton onDelete;
         public TextView dayAlarmClock;
         public ImageView  delete_alarm;
@@ -39,7 +38,6 @@ public class AlarmClockAdapter extends RecyclerView.Adapter<AlarmClockAdapter.Al
         public AlarmClockViewHolder(@NonNull View alarmClockView, final OnItemClickListener listener) {
             super(alarmClockView);
             hourAlarmClock = alarmClockView.findViewById(R.id.alarmClock);
-            onOffAlarmClock = alarmClockView.findViewById(R.id.onOff);
             onDelete = alarmClockView.findViewById(R.id.deleteAlarm);
             dayAlarmClock = alarmClockView.findViewById(R.id.jourClock);
             delete_alarm = alarmClockView.findViewById(R.id.delete_alarm);
@@ -74,7 +72,6 @@ public class AlarmClockAdapter extends RecyclerView.Adapter<AlarmClockAdapter.Al
     public void onBindViewHolder(@NonNull AlarmClockViewHolder holder, int position) {
         AlarmClock currentAlarmClock = alarmClockList.get(position);
         holder.hourAlarmClock.setText(currentAlarmClock.getHourAlarmClock());
-        holder.onOffAlarmClock.setChecked(currentAlarmClock.getActivation());
         holder.dayAlarmClock.setText(currentAlarmClock.getDay());
     }
 

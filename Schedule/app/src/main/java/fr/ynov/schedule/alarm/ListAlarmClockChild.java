@@ -32,7 +32,7 @@ public class ListAlarmClockChild extends AppCompatActivity implements OnComplete
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.child_listing_alarm_clock);
+        setContentView(R.layout.activity_child_listing_alarm_clock);
         ArrayList<AlarmClock> alarmClockList = new ArrayList<>();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Date currentTime = Calendar.getInstance().getTime();

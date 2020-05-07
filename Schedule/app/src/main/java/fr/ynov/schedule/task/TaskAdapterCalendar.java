@@ -21,7 +21,7 @@ public class TaskAdapterCalendar extends RecyclerView.Adapter<TaskAdapterCalenda
     @NonNull
     @Override
     public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_calendar,parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_item_calendar,parent, false);
         TaskViewHolder evh = new TaskViewHolder(v);
         return  evh;
     }

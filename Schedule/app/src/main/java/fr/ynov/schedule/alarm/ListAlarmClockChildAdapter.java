@@ -4,7 +4,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,13 +18,11 @@ public class ListAlarmClockChildAdapter extends RecyclerView.Adapter<ListAlarmCl
 
     public static class AlarmClockViewHolder extends RecyclerView.ViewHolder {
         public TextView hourAlarmClock;
-        public Switch onOffAlarmClock;
         public ImageButton onDelete;
 
         public AlarmClockViewHolder(@NonNull View alarmClockView) {
             super(alarmClockView);
             hourAlarmClock = alarmClockView.findViewById(R.id.alarmClock);
-            onOffAlarmClock = alarmClockView.findViewById(R.id.onOff);
             onDelete = alarmClockView.findViewById(R.id.deleteAlarm);
         }
     }
@@ -37,7 +34,7 @@ public class ListAlarmClockChildAdapter extends RecyclerView.Adapter<ListAlarmCl
     @NonNull
     @Override
     public AlarmClockViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.child_template_alarm_clock, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_child_template_alarm_clock, parent, false);
         AlarmClockViewHolder acvh = new AlarmClockViewHolder(view);
         return acvh;
     }
