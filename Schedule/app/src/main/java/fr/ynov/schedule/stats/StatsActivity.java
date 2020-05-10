@@ -178,7 +178,7 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
             Log.i("xxxx", "i " + i + " tmp " + posTMP + " nbTasks " + nbTasks + " nbTasksLate " + nbTaskLate);
             tasks[posTMP] = nbTasks;
             tasksLate[posTMP] = nbTaskLate;
-            if (nbTaskLate == 0) percent = 0;
+            if (nbTaskLate == 0) percent = 100;
             else percent = 100 - ((nbTaskLate * 100 ) / nbTasks); // 100 % - (nombre de tâches en retard du jour * 100) / nombre de tâches total du jour
             text = text + percent + "% de retard.\n";
             Log.i("xxxx", percent + "% de retard.");
