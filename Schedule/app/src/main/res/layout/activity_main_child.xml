@@ -21,21 +21,21 @@
         android:id="@+id/label_tache"
         android:layout_width="360dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="Voir les taches à faire"
+        android:layout_marginTop="20dp"
+        android:text="Liste des tâches à faire dans la journée."
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label_title" />
+        app:layout_constraintTop_toBottomOf="@+id/button_tache" />
 
     <Button
         android:id="@+id/button_tache"
         android:layout_width="300dp"
-        android:layout_height="50dp"
+        android:layout_height="0dp"
         android:layout_gravity="start"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="144dp"
         android:layout_marginEnd="48dp"
         android:background="@drawable/button_btn"
         android:enabled="true"
@@ -44,32 +44,30 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label_tache" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button_tache_mois"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_gravity="start"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="44dp"
         android:background="@drawable/button_btn"
         android:enabled="true"
         android:text="Calendrier des tâches"
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.676" />
+        app:layout_constraintTop_toBottomOf="@+id/label_planning" />
 
     <Button
         android:id="@+id/button_voir_les_reveils"
         android:layout_width="300dp"
-        android:layout_height="50dp"
+        android:layout_height="0dp"
         android:layout_gravity="start"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="44dp"
         android:layout_marginEnd="48dp"
         android:background="@drawable/button_btn"
         android:enabled="true"
@@ -78,17 +76,30 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label_planning" />
+        app:layout_constraintTop_toBottomOf="@+id/label_tache" />
 
     <TextView
         android:id="@+id/label_planning"
         android:layout_width="360dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="Voir à quelle heure il faut se réveiller"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:text="Liste des réveils."
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_tache" />
+        app:layout_constraintTop_toBottomOf="@+id/button_voir_les_reveils" />
+
+    <TextView
+        android:id="@+id/label_planning2"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Liste des tâches à faire sous forme de calendrier pour voir les tâches de la semaine ou du mois à venir. "
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_tache_mois" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
