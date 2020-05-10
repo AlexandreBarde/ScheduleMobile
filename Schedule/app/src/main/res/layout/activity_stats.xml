@@ -7,25 +7,92 @@
     android:layout_height="match_parent"
     tools:context=".stats.StatsActivity">
 
-    <TextView
-        android:id="@+id/stats_text"
-        android:layout_width="340dp"
-        android:layout_height="120dp"
-        android:text="TextView"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.973" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <com.jjoe64.graphview.GraphView
-        android:id="@+id/graph"
-        android:layout_width="363dp"
-        android:layout_height="547dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.152" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/stats_text_title"
+                android:layout_width="match_parent"
+                android:layout_height="53dp"
+                android:gravity="center"
+                android:text="Nombre de tâches à l'heure (en %)"
+                android:textAlignment="center"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <com.jjoe64.graphview.GraphView
+                android:id="@+id/graph"
+                android:layout_width="match_parent"
+                android:layout_height="323dp" />
+
+            <TextView
+                android:id="@+id/stats_text"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:text="Tableau récapitulatif"
+                android:textAlignment="center"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TableLayout
+                android:id="@+id/stats_table"
+                android:layout_width="match_parent"
+                android:layout_height="313dp"
+                android:background="@drawable/border">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border">
+
+                    <TextView
+                        android:id="@+id/stats_text_table_day"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border"
+                        android:text="Jour"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/stats_text_table_tasks_late"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border"
+                        android:text="Tâches en retard"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/stats_text_table_tasks"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border"
+                        android:text="Tâches"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/stats_text_table_tasks_percent"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border"
+                        android:text="%"
+                        android:textAlignment="center" />
+                </TableRow>
+
+            </TableLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

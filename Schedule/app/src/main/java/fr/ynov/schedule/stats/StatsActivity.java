@@ -1,12 +1,16 @@
 package fr.ynov.schedule.stats;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -147,10 +151,13 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
         DataPoint[] points = new DataPoint[tasksWeek.size()];
         Integer[] percents = new Integer[tasksWeek.size()];
         String[] days = new String[tasksWeek.size()];
+        Integer[] tasks = new Integer[tasksWeek.size()];
+        Integer[] tasksLate = new Integer[tasksWeek.size()];
 
         int posTMP = 0; // tmp -> TO REMOVE
         for(Integer i : tasksWeek.keySet())
         {
+            Log.i("xxxx", "tmp : " + i);
             text = text + getDayFr(i) + ":" + "\n";
             int nbTasks = tasksWeek.get(i).size(); // nombre de tâches par jour
             int nbTaskLate = 0; // nombre de tâches en retard par jour
@@ -168,24 +175,78 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
                 text = text + tasksWeek.get(i).get(0).getName() + ": " + tasksWeek.get(i).get(0).getDescription() + "\n";
             }
             int percent;
+            Log.i("xxxx", "i " + i + " tmp " + posTMP + " nbTasks " + nbTasks + " nbTasksLate " + nbTaskLate);
+            tasks[posTMP] = nbTasks;
+            tasksLate[posTMP] = nbTaskLate;
             if (nbTaskLate == 0) percent = 0;
-            else percent = ((nbTaskLate * 100 ) / nbTasks);
+            else percent = 100 - ((nbTaskLate * 100 ) / nbTasks); // 100 % - (nombre de tâches en retard du jour * 100) / nombre de tâches total du jour
             text = text + percent + "% de retard.\n";
             Log.i("xxxx", percent + "% de retard.");
-            //points[i] = new DataPoint(i, percent);
             percents[posTMP] = percent;
             days[posTMP] = getDayFr(i);
             posTMP++;
         }
 
         Log.i("xxxx", Arrays.toString(percents));
+        Log.i("xxxx", Arrays.toString(days));
 
         for(int i = 0; i < percents.length; i++)
         {
             points[i] = new DataPoint(i, percents[i]);
         }
 
-        txt.setText(text);
+        TableLayout table = findViewById(R.id.stats_table);
+
+        for (int i = 0; i < percents.length; i++)
+        {
+            Log.i("xxxx", "i " + i);
+            Log.i("xxxx", "task : " + tasks[i]);
+            Log.i("xxxx", "tasklate : " + tasksLate[i]);
+            Log.i("xxxx", "point : " + days[i]);
+            TableRow row = new TableRow(this);
+            TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
+            row.setBackgroundResource(R.drawable.border);
+            row.setLayoutParams(lp);
+
+            TextView day = new TextView(this);
+            TextView tasksLateTv = new TextView(this);
+            TextView tasksTv = new TextView(this);
+            TextView percent = new TextView(this);
+
+            day.setText(days[i] + "");
+            tasksLateTv.setText(tasksLate[i] + "");
+            tasksTv.setText(tasks[i] + "");
+            percent.setText(percents[i] + "");
+
+            day.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            tasksLateTv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            tasksTv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            percent.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
+            day.setTextAppearance(R.style.border_table);
+            day.setBackgroundResource(R.drawable.border);
+            day.setLayoutParams(new TableRow.LayoutParams((int) (100 * getBaseContext().getResources().getDisplayMetrics().density), TableRow.LayoutParams.WRAP_CONTENT));
+
+            tasksLateTv.setTextAppearance(R.style.border_table);
+            tasksLateTv.setBackgroundResource(R.drawable.border);
+            tasksLateTv.setLayoutParams(new TableRow.LayoutParams((int) (150 * getBaseContext().getResources().getDisplayMetrics().density), TableRow.LayoutParams.WRAP_CONTENT));
+
+            tasksTv.setTextAppearance(R.style.border_table);
+            tasksTv.setBackgroundResource(R.drawable.border);
+            tasksLateTv.setLayoutParams(new TableRow.LayoutParams((int) (100 * getBaseContext().getResources().getDisplayMetrics().density), TableRow.LayoutParams.WRAP_CONTENT));
+
+            percent.setTextAppearance(R.style.border_table);
+            percent.setBackgroundResource(R.drawable.border);
+            percent.setLayoutParams(new TableRow.LayoutParams((int) (61 * getBaseContext().getResources().getDisplayMetrics().density), TableRow.LayoutParams.WRAP_CONTENT));
+
+            row.addView(day, 0);
+            row.addView(tasksLateTv, 1);
+            row.addView(tasksTv, 2);
+            row.addView(percent, 3);
+
+            table.addView(row);
+        }
+
         final GraphView graph = (GraphView) findViewById(R.id.graph);
         graph.getViewport().setMaxY(100);
         graph.getViewport().setYAxisBoundsManual(true);
@@ -194,6 +255,10 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
         try
         {
             staticLabelsFormatter.setHorizontalLabels(days);
+            series.setAnimated(true);
+            series.setColor(Color.argb(100, 98, 0, 238));
+            series.setBackgroundColor(Color.argb(20, 98, 0, 238));
+            series.setDrawBackground(true);
             graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
             graph.addSeries(series);
         }
@@ -214,25 +279,25 @@ public class StatsActivity extends AppCompatActivity implements OnCompleteListen
         String dayFr = "";
         switch(day)
         {
-            case 1:
+            case 0:
                 dayFr = "Lundi";
                 break;
-            case 2:
+            case 1:
                 dayFr = "Mardi";
                 break;
-            case 3:
+            case 2:
                 dayFr = "Mercredi";
                 break;
-            case 4:
+            case 3:
                 dayFr = "Jeudi";
                 break;
-            case 5:
+            case 4:
                 dayFr = "Vendredi";
                 break;
-            case 6:
+            case 5:
                 dayFr = "Samedi";
                 break;
-            case 7:
+            case 6:
                 dayFr = "Dimanche";
                 break;
         }
